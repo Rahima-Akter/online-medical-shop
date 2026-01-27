@@ -257,7 +257,7 @@ export default function AllProducts() {
                 <option>Best Rating</option>
               </select>
             </div>
-            <div className="flex border border-gray-200 dark:border-gray-700 rounded-[0.5rem] overflow-hidden">
+            <div className="flex border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
               <button className="p-2 bg-[#146976] text-white">
                 <GridViewIcon className="text-[20px]" />
               </button>
@@ -275,7 +275,7 @@ export default function AllProducts() {
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-white dark:bg-gray-900 rounded-[0.75rem] overflow-hidden shadow-sm hover:shadow-xl transition-all group border border-gray-100 dark:border-gray-800"
+              className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all group border border-gray-100 dark:border-gray-800"
             >
               <div className="aspect-square relative overflow-hidden bg-gray-50 dark:bg-gray-800">
                 <img
