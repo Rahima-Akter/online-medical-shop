@@ -1,13 +1,20 @@
-import React from "react";
-import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
+"use client";
+
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import PersonIcon from "@mui/icons-material/Person";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import GridViewIcon from "@mui/icons-material/GridView";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import StarIcon from "@mui/icons-material/Star";
+import ViewSidebarIcon from '@mui/icons-material/ViewSidebar';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { useState } from "react";
 
-export default function AllProducts(){
+export default function AllProducts() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 12;
   const products = [
     {
       id: 1,
@@ -25,7 +32,8 @@ export default function AllProducts(){
       name: "Ibuprofen 200mg",
       description: "20 Tablets • HealthGen",
       price: "$10.00",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCoZLJzaaH_Seo2GymMwuaKLWWCJnt3RzrXUz25-wQ8-tJZgbD4lmqEqzO3iqV6e7MOMG2ggC1-6KE4IZ5OTk_FuakAQU0X0BLt6vlJYafX4xUj1zkdkpdWgN5l9CTIb3Zko3Wh94usXcdd7F1OnEKDNZxhBlLV82ewUCtz3j6RWSqH3GyOrPOufQUskcYoD25tFiAsmSdbQ4SRzql-oAfq0T78cioH2pCCp-RckTlm5Vb-ORT0RESX7mxq8riq6vQgo_Qq8ZYPhQ",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuCoZLJzaaH_Seo2GymMwuaKLWWCJnt3RzrXUz25-wQ8-tJZgbD4lmqEqzO3iqV6e7MOMG2ggC1-6KE4IZ5OTk_FuakAQU0X0BLt6vlJYafX4xUj1zkdkpdWgN5l9CTIb3Zko3Wh94usXcdd7F1OnEKDNZxhBlLV82ewUCtz3j6RWSqH3GyOrPOufQUskcYoD25tFiAsmSdbQ4SRzql-oAfq0T78cioH2pCCp-RckTlm5Vb-ORT0RESX7mxq8riq6vQgo_Qq8ZYPhQ",
       rating: 4.5,
       reviews: 98,
       rxRequired: false,
@@ -35,7 +43,8 @@ export default function AllProducts(){
       name: "Vitamin C 500mg",
       description: "60 Capsules • BioRemedy",
       price: "$18.75",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC0Q4fIgLQiHY9M01xhZnD6ciHbRpZJHGysLYx042YZ3yQJIrIns8_sWh6Mp-lf4Mblbj3iBli67vmYRMI_8oMjA-VaImL23hY1LhqPcCeV3uhcADsf1pbYjgXuNCVtLIVTwLN3X1rXQ-KeFy3gFGPkSDxCeJSri4j13Pv0Qwxg7bFb8rEZV1Z0tvjwTsIKHDZZ1iukaqX59atoB9r-DrGV6biLX9MgrIPH0MNB8Pm1QaM25gHLJYEefmtmbKQCGrTJ-b7ZzXz68g",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuC0Q4fIgLQiHY9M01xhZnD6ciHbRpZJHGysLYx042YZ3yQJIrIns8_sWh6Mp-lf4Mblbj3iBli67vmYRMI_8oMjA-VaImL23hY1LhqPcCeV3uhcADsf1pbYjgXuNCVtLIVTwLN3X1rXQ-KeFy3gFGPkSDxCeJSri4j13Pv0Qwxg7bFb8rEZV1Z0tvjwTsIKHDZZ1iukaqX59atoB9r-DrGV6biLX9MgrIPH0MNB8Pm1QaM25gHLJYEefmtmbKQCGrTJ-b7ZzXz68g",
       rating: 4.8,
       reviews: 210,
       rxRequired: false,
@@ -45,7 +54,8 @@ export default function AllProducts(){
       name: "Cough Syrup",
       description: "100ml • PharmaCorp",
       price: "$8.50",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCXPzi9slBc7OOIRccwbayUQqu5a47MVh3kwjeGYmjaN381qmXKMRGOE6IFeAoL6ue15z3Okel7XhyYX9lTNttWWunbI5YfqzkZQPLh4tF63QqksbHBcgJnKb6VqcIr4t2XhF8-KwmwYAFuQoLX7SgI2Jk89vI5wfXwsypXPkV1FQxi2Oq9kCjlbXDVP7tEhyb-tCCIIVNFgbnNxaxzsd2WBSKYxksLExv3g33QcRiVy8Kfv7w_HGy8eXCsy49G8coenBtB91__7g",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuCXPzi9slBc7OOIRccwbayUQqu5a47MVh3kwjeGYmjaN381qmXKMRGOE6IFeAoL6ue15z3Okel7XhyYX9lTNttWWunbI5YfqzkZQPLh4tF63QqksbHBcgJnKb6VqcIr4t2XhF8-KwmwYAFuQoLX7SgI2Jk89vI5wfXwsypXPkV1FQxi2Oq9kCjlbXDVP7tEhyb-tCCIIVNFgbnNxaxzsd2WBSKYxksLExv3g33QcRiVy8Kfv7w_HGy8eXCsy49G8coenBtB91__7g",
       rating: 4.6,
       reviews: 67,
       rxRequired: true,
@@ -66,7 +76,8 @@ export default function AllProducts(){
       name: "Aspirin 100mg",
       description: "50 Tablets • PharmaCorp",
       price: "$11.25",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDMdlA-Aq6Fo16pzfugiPsX8vu3KLKlsmz1yc9Xlc6PowZIffd5UZs6DMu2IJZrLqFFDt1jdPCN5ggbxQgnWhS0WGSDN8DdtdS33cu-ipHR02_PTraWOa2ammhfougRnc0Qpk-RWosPnL7g3UhVUeimVIyUScSi9cYQdmAFBZCH1SWH9bXBEckUcseEEwo5Y8l6qH5llnwUccgRho7TzHIMV3IZ7sCpQtBMfIpOKPAvYB_p3lS_mbLRochPeonjSh98G-vJMI7AmQ",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDMdlA-Aq6Fo16pzfugiPsX8vu3KLKlsmz1yc9Xlc6PowZIffd5UZs6DMu2IJZrLqFFDt1jdPCN5ggbxQgnWhS0WGSDN8DdtdS33cu-ipHR02_PTraWOa2ammhfougRnc0Qpk-RWosPnL7g3UhVUeimVIyUScSi9cYQdmAFBZCH1SWH9bXBEckUcseEEwo5Y8l6qH5llnwUccgRho7TzHIMV3IZ7sCpQtBMfIpOKPAvYB_p3lS_mbLRochPeonjSh98G-vJMI7AmQ",
       rating: 4.4,
       reviews: 89,
       rxRequired: true,
@@ -76,7 +87,8 @@ export default function AllProducts(){
       name: "Allergy Relief",
       description: "10 Tablets • BioRemedy",
       price: "$9.50",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCa5AT7T_og60p2DA6SdFnMYUcsJHM8tVitsbZCJ_lSqUfRc7Ra42i9V6U31sFWIIdsS1TqH0IYgRndnn_SMIC-pXrk_4zWVerQyemGukP4pg899c4Lg9lNoJOby2ze4hkg7pMn5pknU3MfCQmMEzetxQtLQGA8m8hlrFC70SBkrAJfnt2AAB3HcdjWPKYMM-xIIn2x17pmPWVfX4tUIt2eM3bA5ycw16jt4LpN2VE6obFGLyUYjpKO-dTl6ceOKFNEDTo1Ega35g",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuCa5AT7T_og60p2DA6SdFnMYUcsJHM8tVitsbZCJ_lSqUfRc7Ra42i9V6U31sFWIIdsS1TqH0IYgRndnn_SMIC-pXrk_4zWVerQyemGukP4pg899c4Lg9lNoJOby2ze4hkg7pMn5pknU3MfCQmMEzetxQtLQGA8m8hlrFC70SBkrAJfnt2AAB3HcdjWPKYMM-xIIn2x17pmPWVfX4tUIt2eM3bA5ycw16jt4LpN2VE6obFGLyUYjpKO-dTl6ceOKFNEDTo1Ega35g",
       rating: 4.5,
       reviews: 76,
       rxRequired: false,
@@ -86,7 +98,8 @@ export default function AllProducts(){
       name: "First Aid Kit",
       description: "1 Kit • HealthGen",
       price: "$25.00",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCj2HZPP00hSDu5LPU7hgKg2cWTYigCu6BvJG_jDlFajW_FyLPEXo09D6bAqG_69Nhl7XtaYilEgW_swuQYEPQ4si1HbHunId8YiK7ExECJOiEuFCHHvQz7zM80WkKrM_ZVFoEZDGLELg0nYUgCPRCkKRKYi1l7pVOfV797lSea9EAwWCsalA_1-DVCHCjJ9BaSYYEg0lMZSG_0ZEmLSorcYvVfg3EjCIAbai3Kz6IX4OR7U5UR1hwlOJdUlNi9HfF19NAReC8a6g",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuCj2HZPP00hSDu5LPU7hgKg2cWTYigCu6BvJG_jDlFajW_FyLPEXo09D6bAqG_69Nhl7XtaYilEgW_swuQYEPQ4si1HbHunId8YiK7ExECJOiEuFCHHvQz7zM80WkKrM_ZVFoEZDGLELg0nYUgCPRCkKRKYi1l7pVOfV797lSea9EAwWCsalA_1-DVCHCjJ9BaSYYEg0lMZSG_0ZEmLSorcYvVfg3EjCIAbai3Kz6IX4OR7U5UR1hwlOJdUlNi9HfF19NAReC8a6g",
       rating: 4.9,
       reviews: 55,
       rxRequired: false,
@@ -94,61 +107,58 @@ export default function AllProducts(){
   ];
 
   return (
-    <main className="max-w-[1440px] mx-auto px-6 py-8 flex gap-8 font-[Inter,sans-serif]">
-      {/* Sidebar Filter Panel */}
-      <aside className="w-64 flex-shrink-0 hidden lg:block">
-        <div className="bg-[#FCFBFA] dark:bg-gray-900/50 rounded-[0.75rem] p-6 shadow-sm border border-gray-200 dark:border-gray-800 sticky top-24">
+    <main className="max-w-360 mx-auto px-6 py-8 lg:flex gap-8 font-[Inter,sans-serif]">
+      {/* Sidebar Toggle for small devices */}
+      <div className="lg:hidden mb-4 w-full absolute md:left-[92%] md:bottom-[87%] left-[85%] bottom-[80%]">
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="px-2 py-1 bg-[#146976] text-white rounded-md"
+        >
+          {sidebarOpen ? <CancelIcon/> : <ViewSidebarIcon/>}
+        </button>
+      </div>
+
+      {/* Sidebar */}
+      <aside
+        className={`w-64 shrink-0 lg:block fixed lg:relative bottom-0 left-0 h-[95%] lg:h-auto z-20 transition-transform bg-[#FCFBFA] dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-800
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
+      >
+        <div className="sticky top-24">
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-bold text-lg text-[#146976]">Filters</h3>
             <button className="text-xs text-[#146976] font-semibold hover:underline">
               Clear all
             </button>
           </div>
+
           {/* Categories */}
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">
               Categories
             </p>
             <div className="space-y-3">
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <input
-                  defaultChecked
-                  className="rounded border-gray-300 text-[#146976] focus:ring-[#146976] w-4 h-4"
-                  type="checkbox"
-                />
-                <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-[#146976] transition-colors">
-                  Prescription
-                </span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <input
-                  className="rounded border-gray-300 text-[#146976] focus:ring-[#146976] w-4 h-4"
-                  type="checkbox"
-                />
-                <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-[#146976] transition-colors">
-                  OTC Medicines
-                </span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <input
-                  className="rounded border-gray-300 text-[#146976] focus:ring-[#146976] w-4 h-4"
-                  type="checkbox"
-                />
-                <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-[#146976] transition-colors">
-                  Wellness &amp; Vitamis
-                </span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <input
-                  className="rounded border-gray-300 text-[#146976] focus:ring-[#146976] w-4 h-4"
-                  type="checkbox"
-                />
-                <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-[#146976] transition-colors">
-                  First Aid
-                </span>
-              </label>
+              {[
+                "Prescription",
+                "OTC Medicines",
+                "Wellness & Vitamins",
+                "First Aid",
+              ].map((cat) => (
+                <label
+                  key={cat}
+                  className="flex items-center gap-3 cursor-pointer group"
+                >
+                  <input
+                    type="checkbox"
+                    className="rounded border-gray-300 text-[#146976] focus:ring-[#146976] w-4 h-4"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-[#146976] transition-colors">
+                    {cat}
+                  </span>
+                </label>
+              ))}
             </div>
           </div>
+
           {/* Price Range */}
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">
@@ -170,53 +180,42 @@ export default function AllProducts(){
               </div>
             </div>
           </div>
+
           {/* Manufacturers */}
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">
               Manufacturers
             </p>
             <div className="space-y-3">
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <input
-                  className="rounded border-gray-300 text-[#146976] focus:ring-[#146976] w-4 h-4"
-                  type="checkbox"
-                />
-                <span className="text-sm text-gray-700 dark:text-gray-300">
-                  PharmaCorp
-                </span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <input
-                  className="rounded border-gray-300 text-[#146976] focus:ring-[#146976] w-4 h-4"
-                  type="checkbox"
-                />
-                <span className="text-sm text-gray-700 dark:text-gray-300">
-                  HealthGen
-                </span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <input
-                  className="rounded border-gray-300 text-[#146976] focus:ring-[#146976] w-4 h-4"
-                  type="checkbox"
-                />
-                <span className="text-sm text-gray-700 dark:text-gray-300">
-                  BioRemedy
-                </span>
-              </label>
+              {["PharmaCorp", "HealthGen", "BioRemedy"].map((m) => (
+                <label
+                  key={m}
+                  className="flex items-center gap-3 cursor-pointer group"
+                >
+                  <input
+                    type="checkbox"
+                    className="rounded border-gray-300 text-[#146976] focus:ring-[#146976] w-4 h-4"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    {m}
+                  </span>
+                </label>
+              ))}
             </div>
           </div>
+
+          {/* Rating */}
           <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
             <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">
               Rating
             </p>
             <div className="space-y-2">
               <div className="flex items-center gap-1 text-[#EBBA92]">
-                <StarIcon className="text-xs" />
-                <StarIcon className="text-xs" />
-                <StarIcon className="text-xs" />
-                <StarIcon className="text-xs" />
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <StarIcon key={i} className="text-xs" />
+                ))}
                 <StarIcon className="text-xs text-gray-300" />
-                <span className="text-xs text-gray-500 ml-1">&amp; Up</span>
+                <span className="text-xs text-gray-500 ml-1">& Up</span>
               </div>
             </div>
           </div>
@@ -224,7 +223,7 @@ export default function AllProducts(){
       </aside>
 
       {/* Main Content Area */}
-      <section className="flex-1">
+      <section className="flex-1 ">
         {/* Breadcrumbs */}
         <div className="flex items-center gap-2 mb-6">
           <a
@@ -273,7 +272,7 @@ export default function AllProducts(){
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {/* PRODUCT CARDS (All 8) */}
           {/* Card 1 Example */}
-         {products.map((product) => (
+          {products.map((product) => (
             <div
               key={product.id}
               className="bg-white dark:bg-gray-900 rounded-[0.75rem] overflow-hidden shadow-sm hover:shadow-xl transition-all group border border-gray-100 dark:border-gray-800"
@@ -303,9 +302,13 @@ export default function AllProducts(){
                 <h3 className="font-bold text-gray-900 dark:text-white mb-1 line-clamp-1 group-hover:text-[#146976] transition-colors">
                   {product.name}
                 </h3>
-                <p className="text-xs text-gray-500 mb-4 italic">{product.description}</p>
+                <p className="text-xs text-gray-500 mb-4 italic">
+                  {product.description}
+                </p>
                 <div className="flex items-center justify-between mt-auto">
-                  <span className="text-xl font-bold text-[#EBBA92]">{product.price}</span>
+                  <span className="text-xl font-bold text-[#EBBA92]">
+                    {product.price}
+                  </span>
                   <button className="w-10 h-10 bg-[#146976]/10 text-[#146976] rounded-[0.5rem] flex items-center justify-center hover:bg-[#146976] hover:text-white transition-all">
                     <AddShoppingCartIcon className="text-sm" />
                   </button>
@@ -314,7 +317,60 @@ export default function AllProducts(){
             </div>
           ))}
         </div>
+
+        {/* Pagination */}
+        <div className="flex items-center gap-2 justify-center mt-10">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            className="w-10 h-10 flex items-center justify-center rounded-lg bg-white dark:bg-gray-800 text-yellow-200 hover:text-[#146976] border border-gray-100 dark:border-gray-800"
+          >
+            <span className="material-symbols-outlined">
+              <ArrowBackIosNewIcon />
+            </span>
+          </button>
+
+          {Array.from({ length: totalPages }).map((_, i) => {
+            const page = i + 1;
+            if (
+              page === 1 ||
+              page === totalPages ||
+              Math.abs(currentPage - page) <= 1
+            ) {
+              return (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`w-10 h-10 flex items-center justify-center rounded-lg ${
+                    page === currentPage
+                      ? "bg-[#146976] text-white font-bold"
+                      : "bg-white dark:bg-gray-800 text-gray-600 hover:text-[#146976] border border-gray-100 dark:border-gray-800"
+                  }`}
+                >
+                  {page}
+                </button>
+              );
+            } else if (
+              (page === 2 && currentPage > 3) ||
+              (page === totalPages - 1 && currentPage < totalPages - 2)
+            ) {
+              return (
+                <span key={page} className="text-gray-400 px-2">
+                  ...
+                </span>
+              );
+            } else return null;
+          })}
+
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            className="w-10 h-10 flex items-center justify-center rounded-lg bg-white dark:bg-gray-800 text-yellow-200 hover:text-[#146976] border border-gray-100 dark:border-gray-800"
+          >
+            <span className="material-symbols-outlined">
+              <ArrowForwardIosIcon />
+            </span>
+          </button>
+        </div>
       </section>
     </main>
   );
-};
+}
