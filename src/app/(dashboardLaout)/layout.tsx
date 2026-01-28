@@ -11,15 +11,15 @@ import RoutesNavigation from "@/routes/routes";
 
 export default function DashboardRootLayout({
   admin,
-  // customer,
-  // seller,
+  customer,
+  seller,
 }: {
   admin: React.ReactNode;
   customer: React.ReactNode;
   seller: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const role: UserRole = UserRoles.ADMIN;
+  const role: UserRole = UserRoles.SELLER;
 
   return (
     <div className="h-screen flex overflow-y-auto">
@@ -27,7 +27,14 @@ export default function DashboardRootLayout({
       <aside
         className={`${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } fixed inset-0 z-10 bg-[#121e20] text-white flex flex-col border-r border-[#146976]/20 transition-transform lg:relative lg:translate-x-0 lg:w-64 md:w-96 lg:shrink-0`}
+        } fixed inset-0 z-20 ${
+          role === UserRoles.SELLER
+            ? "bg-[#1e4147]"
+            : role === UserRoles.ADMIN
+              ? "bg-[#121e20]"
+              : "bg-[#121e20]"
+        }
+ text-white flex flex-col border-r border-[#146976]/20 transition-transform lg:relative lg:translate-x-0 lg:w-64 md:w-96 lg:shrink-0`}
       >
         <div className="p-6">
           <div className="flex items-center gap-3">
@@ -77,7 +84,13 @@ export default function DashboardRootLayout({
       </aside>
 
       {/* Main content */}
-      <div className="flex-1 bg-[#121e20] overflow-y-auto">{admin}</div>
+      <div className="flex-1 bg-[#121e20] overflow-y-auto">
+        {role === UserRoles.SELLER
+          ? seller
+          : role === UserRoles.ADMIN
+            ? admin
+            : customer}
+      </div>
 
       {/* Sidebar Toggle Button for Small Screens */}
       <button

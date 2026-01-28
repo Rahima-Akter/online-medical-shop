@@ -8,7 +8,7 @@ import { UserRoles, UserRole } from "@/roles/roles";
 import { usePathname } from "next/navigation";
 
 export default function RoutesNavigation({ role }: { role: UserRole }) {
-  const pathname = usePathname()
+  const pathname = usePathname();
   const adminRoutes = (
     <>
       <Link
@@ -21,9 +21,9 @@ export default function RoutesNavigation({ role }: { role: UserRole }) {
         <span>Dashboard</span>
       </Link>
 
-            <Link
+      <Link
         href="/orders"
-       className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
           pathname === "/orders" ? "bg-[#146976]" : "text-white/70"
         } hover:bg-[#146976]/20 hover:text-white transition-colors`}
       >
@@ -33,7 +33,7 @@ export default function RoutesNavigation({ role }: { role: UserRole }) {
 
       <Link
         href="/inventory"
-       className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
           pathname === "/inventory" ? "bg-[#146976]" : "text-white/70"
         } hover:bg-[#146976]/20 hover:text-white transition-colors`}
       >
@@ -41,10 +41,9 @@ export default function RoutesNavigation({ role }: { role: UserRole }) {
         <span>Medicine Inventory</span>
       </Link>
 
-
       <Link
         href="/manage-users"
-       className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
           pathname === "/manage-users" ? "bg-[#146976]" : "text-white/70"
         } hover:bg-[#146976]/20 hover:text-white transition-colors`}
       >
@@ -54,7 +53,7 @@ export default function RoutesNavigation({ role }: { role: UserRole }) {
 
       <Link
         href="/category"
-       className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
           pathname === "/category" ? "bg-[#146976]" : "text-white/70"
         } hover:bg-[#146976]/20 hover:text-white transition-colors`}
       >
@@ -87,11 +86,31 @@ export default function RoutesNavigation({ role }: { role: UserRole }) {
   const sellerRoutes = (
     <>
       <Link
-        href="#"
-        className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#146976] text-white font-medium"
+        href="/seller-dashboard"
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+          pathname === "/seller-dashboard" ? "bg-[#146976]" : "text-white/70"
+        } hover:bg-[#146976]/20 hover:text-white transition-colors`}
       >
         <DashboardIcon />
-        <span>Home</span>
+        <span>Dashboard</span>
+      </Link>
+      <Link
+        href="/medicine-management"
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+          pathname === "/medicine-management" ? "bg-[#146976]" : "text-white/70"
+        } hover:bg-[#146976]/20 hover:text-white transition-colors`}
+      >
+        <Inventory2Icon />
+        <span>Medicine Management</span>
+      </Link>
+      <Link
+        href="/order-management"
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+          pathname === "/order-management" ? "bg-[#146976]" : "text-white/70"
+        } hover:bg-[#146976]/20 hover:text-white transition-colors`}
+      >
+        <ShoppingCartIcon />
+        <span>Order Management</span>
       </Link>
     </>
   );

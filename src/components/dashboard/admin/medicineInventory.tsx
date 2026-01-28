@@ -16,6 +16,7 @@ import {
 } from "@mui/icons-material";
 
 const MedicineInventory = () => {
+  const stock: number = 20; // Example stock value
   return (
     <main className="flex-1 flex flex-col overflow-y-auto">
       {/* Top Nav / Breadcrumbs */}
@@ -106,7 +107,7 @@ const MedicineInventory = () => {
       </div>
 
       {/* Main Data Table Container */}
-      <div className="bg-[#ECE3DA] rounded-xl shadow-xl overflow-hidden border border-[#3d4f51]">
+      <div className="bg-[#ECE3DA] shadow-xl overflow-hidden border border-[#3d4f51]">
         <div className="p-6 border-b border-[#3d4f51] flex items-center justify-between bg-[#121e20]">
           <div className="flex gap-4">
             <button className="px-4 py-2 text-sm font-semibold text-[#146976] bg-[#146976]/5 border border-[#146976]/20 rounded-lg">
@@ -139,7 +140,8 @@ const MedicineInventory = () => {
                 <th className="px-6 py-4">Medicine Name</th>
                 <th className="px-6 py-4">SKU</th>
                 <th className="px-6 py-4">Category</th>
-                <th className="px-6 py-4">Stock Level</th>
+                <th className="px-6 py-4">Stock</th>
+                <th className="px-6 py-4">Status</th>
                 <th className="px-6 py-4">Price</th>
                 <th className="px-6 py-4 text-center">Actions</th>
               </tr>
@@ -167,20 +169,22 @@ const MedicineInventory = () => {
                 </td>
                 <td className="px-6 py-4 text-sm font-medium">Antibiotics</td>
                 <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 w-16 bg-[#3d4f51] rounded-full overflow-hidden">
-                      <div
-                        className="bg-emerald-500 h-full"
-                        style={{ width: "85%" }}
-                      ></div>
-                    </div>
-                    <span className="text-sm font-bold text-white">
-                      240{" "}
-                      <span className="text-xs text-[#9fb3b7] font-normal">
-                        units
-                      </span>
-                    </span>
-                  </div>
+                  <span
+                    className={`text-[10px] font-bold uppercase ${stock === 0 ? "text-red-600" : stock < 20 ? "text-amber-500" : "text-emerald-400"}`}
+                  >
+                    {stock} units
+                  </span>
+                </td>
+                <td className="px-2 py-4 text-[10px] font-bold">
+                  <span
+                    className={`rounded-lg px-2 py-0.5 whitespace-nowrap ${stock === 0 ? "text-red-500 bg-red-100" : stock < 20 ? "text-amber-500" : "text-emerald-400 bg-green-600/30"}`}
+                  >
+                    {stock === 0
+                      ? "Out of Stock"
+                      : stock < 20
+                        ? "Low Stock"
+                        : "In Stock"}
+                  </span>
                 </td>
                 <td className="px-6 py-4 text-sm font-bold text-white">
                   $18.50
@@ -200,7 +204,7 @@ const MedicineInventory = () => {
                   </div>
                 </td>
               </tr>
-              {/* Row 2 (Low Stock) */}
+              {/* Row 2 */}
               <tr className="hover:bg-[#2a3537] transition-colors group">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
@@ -222,20 +226,22 @@ const MedicineInventory = () => {
                 </td>
                 <td className="px-6 py-4 text-sm font-medium">Pain Relief</td>
                 <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 w-16 bg-[#3d4f51] rounded-full overflow-hidden">
-                      <div
-                        className="bg-amber-500 h-full"
-                        style={{ width: "8%" }}
-                      ></div>
-                    </div>
-                    <span className="text-sm font-bold text-amber-600">
-                      8{" "}
-                      <span className="text-xs text-amber-400 font-normal">
-                        units
-                      </span>
-                    </span>
-                  </div>
+                  <span
+                    className={`text-[10px] font-bold uppercase ${stock === 0 ? "text-red-600" : stock < 20 ? "text-amber-500" : "text-emerald-400"}`}
+                  >
+                    {stock} units
+                  </span>
+                </td>
+                <td className="px-2 py-4 text-[10px] font-bold">
+                  <span
+                    className={`rounded-lg px-2 py-0.5 whitespace-nowrap ${stock === 0 ? "text-red-500 bg-red-100" : stock < 20 ? "text-amber-500" : "text-emerald-400 bg-green-600/30"}`}
+                  >
+                    {stock === 0
+                      ? "Out of Stock"
+                      : stock < 20
+                        ? "Low Stock"
+                        : "In Stock"}
+                  </span>
                 </td>
                 <td className="px-6 py-4 text-sm font-bold text-white">
                   $12.25
@@ -277,20 +283,22 @@ const MedicineInventory = () => {
                 </td>
                 <td className="px-6 py-4 text-sm font-medium">Diabetes</td>
                 <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 w-16 bg-[#3d4f51] rounded-full overflow-hidden">
-                      <div
-                        className="bg-emerald-500 h-full"
-                        style={{ width: "60%" }}
-                      ></div>
-                    </div>
-                    <span className="text-sm font-bold text-white">
-                      112{" "}
-                      <span className="text-xs text-[#9fb3b7] font-normal">
-                        units
-                      </span>
-                    </span>
-                  </div>
+                  <span
+                    className={`text-[10px] font-bold uppercase ${stock === 0 ? "text-red-600" : stock < 20 ? "text-amber-500" : "text-emerald-400"}`}
+                  >
+                    {stock} units
+                  </span>
+                </td>
+                <td className="px-2 py-4 text-[10px] font-bold">
+                  <span
+                    className={`rounded-lg px-2 py-0.5 whitespace-nowrap ${stock === 0 ? "text-red-500 bg-red-100" : stock < 20 ? "text-amber-500" : "text-emerald-400 bg-green-600/30"}`}
+                  >
+                    {stock === 0
+                      ? "Out of Stock"
+                      : stock < 20
+                        ? "Low Stock"
+                        : "In Stock"}
+                  </span>
                 </td>
                 <td className="px-6 py-4 text-sm font-bold text-white">
                   $24.99
@@ -310,7 +318,7 @@ const MedicineInventory = () => {
                   </div>
                 </td>
               </tr>
-              {/* Row 4 (Out of Stock) */}
+              {/* Row 4 */}
               <tr className="hover:bg-[#2a3537] transition-colors group">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3 opacity-60">
@@ -334,17 +342,22 @@ const MedicineInventory = () => {
                   Antibiotics
                 </td>
                 <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 w-16 bg-[#3d4f51] rounded-full overflow-hidden">
-                      <div
-                        className="bg-red-500 h-full"
-                        style={{ width: "0%" }}
-                      ></div>
-                    </div>
-                    <span className="text-sm font-bold text-red-600 uppercase text-[10px]">
-                      Out of Stock
-                    </span>
-                  </div>
+                  <span
+                    className={`text-[10px] font-bold uppercase ${stock === 0 ? "text-red-600" : stock < 20 ? "text-amber-500" : "text-emerald-400"}`}
+                  >
+                    Out of Stock
+                  </span>
+                </td>
+                <td className="px-2 py-4 text-[10px] font-bold">
+                  <span
+                    className={`rounded-lg px-2 py-0.5 whitespace-nowrap ${stock === 0 ? "text-red-500 bg-red-100" : stock < 20 ? "text-amber-500" : "text-emerald-400 bg-green-600/30"}`}
+                  >
+                    {stock === 0
+                      ? "Out of Stock"
+                      : stock < 20
+                        ? "Low Stock"
+                        : "In Stock"}
+                  </span>
                 </td>
                 <td className="px-6 py-4 text-sm font-bold text-[#9fb3b7] opacity-60">
                   $31.00
