@@ -1,300 +1,431 @@
-import Link from "next/link";
-import EventNoteIcon from "@mui/icons-material/EventNote";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import PaymentsIcon from "@mui/icons-material/Payments";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import WarningIcon from "@mui/icons-material/Warning";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Inventory2Icon from '@mui/icons-material/Inventory2';
+import {
+  ExpandCircleDown,
+  Group,
+  Payment,
+  Storefront,
+  TrendingUp,
+} from "@mui/icons-material";
+import TodayIcon from "@mui/icons-material/Today";
 
 const Dashboard = () => {
   return (
-    <div className="p-8 space-y-8">
-      {/* Breadcrumbs & Heading */}
-      <div className="flex flex-col justify-between">
-        <div className="flex items-center gap-2 text-sm text-slate-400 mb-5">
-          <span>Seller</span>
-          <span className="material-symbols-outlined text-xs">
-            <ChevronRightIcon />
+    <div className="bg-[#1E3F45] h-full overflow-y-auto px-8 py-6 space-y-8">
+      <header className="sticky top-0 z-10 flex items-center justify-between bg-[#1e3f45]/80 backdrop-blur-md border-b border-[#416a71] pb-6">
+        <h2 className="md:text-2xl text-xl font-bold tracking-tight text-white">
+          Admin Dashboard
+        </h2>
+
+        <div className="flex items-center gap-2 bg-[#122b2f] px-3 py-1.5 rounded-lg border border-[#2a4d53]">
+          <span className="material-symbols-outlined text-white">
+            <TodayIcon />
           </span>
-          <span className="text-[#146976] font-medium">Dashboard Overview</span>
+          <span className="text-xs font-semibold text-[#9fb3b7]">
+            Oct 1, 2023 - Oct 31, 2023
+          </span>
         </div>
-        <div className="flex items-center justify-between -mb-2">
-          <h2 className="text-3xl font-black text-slate-100 tracking-tight">
-            Dashboard Overview
-          </h2>
-          <button className="flex items-center gap-2 px-4 py-2 bg-[#ECE3DA] border border-black/5 rounded-lg text-sm font-semibold text-slate-700 shadow-sm hover:shadow-md transition-all">
-            <span className="material-symbols-outlined text-xl">
-              <EventNoteIcon />
-            </span>
-            <span>Last 30 Days</span>
-            <span className="material-symbols-outlined text-xl">
-              <ExpandMoreIcon />
-            </span>
-          </button>
-        </div>
-      </div>
+      </header>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Total Orders */}
-        <div className="bg-[#ECE3DA] p-6 rounded-xl border border-black/5 shadow-sm overflow-hidden group">
-          <div className="flex items-center justify-between relative z-10">
-            <div>
-              <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">
-                Total Orders
-              </p>
-              <h3 className="text-3xl font-bold text-slate-900">1,284</h3>
-              <p className="text-sm font-bold text-emerald-600 flex items-center gap-1 mt-2">
-                <TrendingUpIcon fontSize="small" /> +12.5%{" "}
-                <span className="font-normal text-slate-500 ml-1">
-                  vs last month
-                </span>
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-[#EBBA92] rounded-lg flex items-center justify-center text-[#1E3F45]">
-              <ShoppingBagIcon fontSize="large" />
-            </div>
-          </div>
-        </div>
-
-        {/* Monthly Revenue */}
-        <div className="bg-[#ECE3DA] p-6 rounded-xl border border-black/5 shadow-sm overflow-hidden group">
-          <div className="flex items-center justify-between relative z-10">
-            <div>
-              <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">
-                Monthly Revenue
-              </p>
-              <h3 className="text-3xl font-bold text-slate-900">$42,500.00</h3>
-              <p className="text-sm font-bold text-emerald-600 flex items-center gap-1 mt-2">
-                <TrendingUpIcon fontSize="small" /> +8.2%{" "}
-                <span className="font-normal text-slate-500 ml-1">
-                  vs last month
-                </span>
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-[#EBBA92] rounded-lg flex items-center justify-center text-[#1E3F45]">
-              <PaymentsIcon fontSize="large" />
-            </div>
-          </div>
-        </div>
-
-        {/* Stock Alerts */}
-        <div className="bg-[#ECE3DA] p-6 rounded-xl border border-black/5 shadow-sm overflow-hidden group">
-          <div className="flex items-center justify-between relative z-10">
-            <div>
-              <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">
-                Stock Alerts
-              </p>
-              <h3 className="text-3xl font-bold text-slate-900">12</h3>
-              <p className="text-sm font-bold text-rose-500 flex items-center gap-1 mt-2">
-                <WarningIcon fontSize="small" /> Critical{" "}
-                <span className="font-normal text-slate-500 ml-1">
-                  items low
-                </span>
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-[#EBBA92] rounded-lg flex items-center justify-center text-[#1E3F45]">
-              <InventoryIcon fontSize="large" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-
-
-
-
-      {/* Recent Orders Table Section */}
-    <div className="bg-[#ECE3DA] rounded-xl border border-black/5 shadow-sm overflow-hidden">
-      <div className="px-6 py-5 border-b border-gray-400 flex items-center justify-between bg-[#e3cfb9]">
-        <h4 className="text-lg font-bold text-slate-900">Recent Orders</h4>
-        <div className="flex items-center gap-2">
-          <Link href="/orders" className="text-sm font-semibold text-[#146976] hover:underline">
-            View All Orders
-          </Link>
-        </div>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="bg-[#d1a57c] border-b border-gray-400">
-              <th className="px-6 py-4 text-xs font-bold text-slate-800 uppercase tracking-wider">Order ID</th>
-              <th className="px-6 py-4 text-xs font-bold text-slate-800 uppercase tracking-wider">Customer</th>
-              <th className="px-6 py-4 text-xs font-bold text-slate-800 uppercase tracking-wider">Product</th>
-              <th className="px-6 py-4 text-xs font-bold text-slate-800 uppercase tracking-wider">Date</th>
-              <th className="px-6 py-4 text-xs font-bold text-slate-800 uppercase tracking-wider">Amount</th>
-              <th className="px-6 py-4 text-xs font-bold text-slate-800 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-4 text-xs font-bold text-slate-800 uppercase tracking-wider">Action</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-black/5">
-            <tr className="hover:bg-slate-50 transition-colors">
-              <td className="px-6 py-4 text-sm font-bold text-[#146976]">#ORD-94821</td>
-              <td className="px-6 py-4 text-sm text-slate-700 font-medium">Jonathan Doe</td>
-              <td className="px-6 py-4 text-sm text-slate-600">Amoxicillin 500mg (x2)</td>
-              <td className="px-6 py-4 text-sm text-slate-500">Oct 24, 2023</td>
-              <td className="px-6 py-4 text-sm font-bold text-slate-900">$24.50</td>
-              <td className="px-6 py-4">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
-                  Delivered
-                </span>
-              </td>
-              <td className="px-6 py-4">
-                <button className="text-slate-400 hover:text-[#146976] transition-colors">
-                  <VisibilityIcon />
-                </button>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-50 transition-colors">
-              <td className="px-6 py-4 text-sm font-bold text-[#146976]">#ORD-94822</td>
-              <td className="px-6 py-4 text-sm text-slate-700 font-medium">Sarah Miller</td>
-              <td className="px-6 py-4 text-sm text-slate-600">Lisinopril 10mg</td>
-              <td className="px-6 py-4 text-sm text-slate-500">Oct 24, 2023</td>
-              <td className="px-6 py-4 text-sm font-bold text-slate-900">$18.20</td>
-              <td className="px-6 py-4">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
-                  Processing
-                </span>
-              </td>
-              <td className="px-6 py-4">
-                <button className="text-slate-400 hover:text-[#146976] transition-colors">
-                  <VisibilityIcon />
-                </button>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-50 transition-colors">
-              <td className="px-6 py-4 text-sm font-bold text-[#146976]">#ORD-94823</td>
-              <td className="px-6 py-4 text-sm text-slate-700 font-medium">Marcus Chen</td>
-              <td className="px-6 py-4 text-sm text-slate-600">Vitamin D3 2000IU</td>
-              <td className="px-6 py-4 text-sm text-slate-500">Oct 23, 2023</td>
-              <td className="px-6 py-4 text-sm font-bold text-slate-900">$12.99</td>
-              <td className="px-6 py-4">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
-                  Shipped
-                </span>
-              </td>
-              <td className="px-6 py-4">
-                <button className="text-slate-400 hover:text-[#146976] transition-colors">
-                  <VisibilityIcon />
-                </button>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-50 transition-colors">
-              <td className="px-6 py-4 text-sm font-bold text-[#146976]">#ORD-94824</td>
-              <td className="px-6 py-4 text-sm text-slate-700 font-medium">Emily White</td>
-              <td className="px-6 py-4 text-sm text-slate-600">Omeprazole 20mg</td>
-              <td className="px-6 py-4 text-sm text-slate-500">Oct 23, 2023</td>
-              <td className="px-6 py-4 text-sm font-bold text-slate-900">$35.00</td>
-              <td className="px-6 py-4">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
-                  Processing
-                </span>
-              </td>
-              <td className="px-6 py-4">
-                <button className="text-slate-400 hover:text-[#146976] transition-colors">
-                  <VisibilityIcon />
-                </button>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-50 transition-colors border-none">
-              <td className="px-6 py-4 text-sm font-bold text-[#146976]">#ORD-94825</td>
-              <td className="px-6 py-4 text-sm text-slate-700 font-medium">Robert Taylor</td>
-              <td className="px-6 py-4 text-sm text-slate-600">Paracetamol 500mg</td>
-              <td className="px-6 py-4 text-sm text-slate-500">Oct 22, 2023</td>
-              <td className="px-6 py-4 text-sm font-bold text-slate-900">$5.40</td>
-              <td className="px-6 py-4">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800">
-                  Cancelled
-                </span>
-              </td>
-              <td className="px-6 py-4">
-                <button className="text-slate-400 hover:text-[#146976] transition-colors">
-                  <VisibilityIcon />
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-      {/* Footer Summary Grid */}
-     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-8">
-      {/* Stock Alerts */}
-      <div className="bg-[#ECE3DA] p-6 rounded-xl border border-black/5 shadow-sm">
-        <h4 className="text-lg font-bold text-slate-900 mb-4">Stock Alerts</h4>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between p-3 rounded-lg bg-red-200 border border-red-100">
-            <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-rose-500">
-                <WarningIcon />
-              </span>
+      {/* Dashboard Content */}
+      <div className="">
+        {/* KPI Cards Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {/* KPI 1 */}
+          <div className="bg-[#d9f3f7] rounded-xl p-6 shadow-xl flex flex-col justify-between min-h-[140px]">
+            <div className="flex justify-between items-start">
               <div>
-                <p className="text-sm font-bold text-slate-800 leading-none">Insulin Glargine</p>
-                <p className="text-xs text-slate-500 mt-1">2 units left</p>
+                <p className="text-[#146976] text-sm font-bold uppercase tracking-wider">
+                  Total Users
+                </p>
+                <h3 className="text-[#1E3F45] text-3xl font-extrabold mt-1">
+                  45,231
+                </h3>
+              </div>
+              <div className="bg-[#146976]/10 p-2 rounded-lg text-[#146976]">
+                <span className="material-symbols-outlined">
+                  <Group />
+                </span>
               </div>
             </div>
-            <button className="px-3 py-1 bg-white border border-red-200 text-xs font-bold text-rose-600 rounded-md hover:bg-rose-500 hover:text-white transition-all">
-              Restock
-            </button>
-          </div>
-          <div className="flex items-center justify-between p-3 rounded-lg bg-orange-200 border border-orange-100">
-            <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-orange-500">
-                <Inventory2Icon />
+            <div className="flex items-center gap-2 mt-4">
+              <span className="text-emerald-600 text-sm font-bold flex items-center">
+                <span className="material-symbols-outlined text-sm">
+                  <TrendingUp />
+                </span>{" "}
+                +12.5%
               </span>
+              <span className="text-slate-500 text-xs font-medium">
+                vs last month
+              </span>
+            </div>
+          </div>
+
+          {/* KPI 2 */}
+          <div className="bg-[#d9f3f7] rounded-xl p-6 shadow-xl flex flex-col justify-between min-h-[140px]">
+            <div className="flex justify-between items-start">
               <div>
-                <p className="text-sm font-bold text-slate-800 leading-none">Metformin 500mg</p>
-                <p className="text-xs text-slate-500 mt-1">15 units left (Low)</p>
+                <p className="text-[#146976] text-sm font-bold uppercase tracking-wider">
+                  Total Sellers
+                </p>
+                <h3 className="text-[#1E3F45] text-3xl font-extrabold mt-1">
+                  1,284
+                </h3>
+              </div>
+              <div className="bg-[#146976]/10 p-2 rounded-lg text-[#146976]">
+                <span className="material-symbols-outlined">
+                  <Storefront />
+                </span>
               </div>
             </div>
-            <button className="px-3 py-1 bg-white border border-orange-200 text-xs font-bold text-orange-600 rounded-md hover:bg-orange-500 hover:text-white transition-all">
-              Restock
-            </button>
+            <div className="flex items-center gap-2 mt-4">
+              <span className="text-emerald-600 text-sm font-bold flex items-center">
+                <span className="material-symbols-outlined text-sm">
+                  <TrendingUp />
+                </span>{" "}
+                +3.2%
+              </span>
+              <span className="text-slate-500 text-xs font-medium">
+                vs last month
+              </span>
+            </div>
+          </div>
+
+          {/* KPI 3 */}
+          <div className="bg-[#d9f3f7] rounded-xl p-6 shadow-xl flex flex-col justify-between min-h-[140px]">
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="text-[#146976] text-sm font-bold uppercase tracking-wider">
+                  Platform Revenue
+                </p>
+                <h3 className="text-[#1E3F45] text-3xl font-extrabold mt-1">
+                  $582,400
+                </h3>
+              </div>
+              <div className="bg-[#146976]/10 p-2 rounded-lg text-[#146976]">
+                <span className="material-symbols-outlined">
+                  <Payment />
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 mt-4">
+              <span className="text-emerald-600 text-sm font-bold flex items-center">
+                <span className="material-symbols-outlined text-sm">
+                  trending_up
+                </span>{" "}
+                +8.7%
+              </span>
+              <span className="text-slate-500 text-xs font-medium">
+                vs last month
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Performance Insights */}
-      <div className="bg-[#ECE3DA] p-6 rounded-xl border border-black/5 shadow-sm">
-        <h4 className="text-lg font-bold text-slate-900 mb-4">Performance Insights</h4>
-        <div className="space-y-6">
-          <div>
-            <div className="flex justify-between text-sm mb-2">
-              <span className="font-medium text-slate-600">Order Fulfillment Rate</span>
-              <span className="font-bold text-slate-900">98%</span>
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {/* Line Chart Card */}
+        <div className="bg-[#122b2f] border border-[#2a4d53] rounded-xl p-6 flex flex-col gap-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h4 className="text-white font-bold text-lg">
+                Monthly Sales Revenue
+              </h4>
+              <p className="text-[#9fb3b7] text-sm">
+                Performance tracking across the current fiscal year
+              </p>
             </div>
-            <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-              <div className="bg-[#146976] h-full" style={{ width: '98%' }}></div>
+            <div className="flex gap-2">
+              <button className="px-3 py-1 bg-[#146976] text-xs font-bold rounded">
+                Line
+              </button>
+              <button className="px-3 py-1 bg-[#1e3f45] text-xs font-bold rounded text-[#9fb3b7]">
+                Bar
+              </button>
             </div>
           </div>
-          <div>
-            <div className="flex justify-between text-sm mb-2">
-              <span className="font-medium text-slate-600">Customer Satisfaction</span>
-              <span className="font-bold text-slate-900">4.8/5.0</span>
+          <div className="relative h-[240px] w-full mt-4">
+            <svg
+              className="w-full h-full"
+              preserveAspectRatio="none"
+              viewBox="0 0 500 200"
+            >
+              <defs>
+                <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                  <stop
+                    offset="0%"
+                    stopColor="#146976"
+                    stopOpacity="0.3"
+                  ></stop>
+                  <stop
+                    offset="100%"
+                    stopColor="#146976"
+                    stopOpacity="0"
+                  ></stop>
+                </linearGradient>
+              </defs>
+              <path
+                d="M0,150 Q50,140 100,100 T200,80 T300,120 T400,40 T500,60 V200 H0 Z"
+                fill="url(#chartGradient)"
+              ></path>
+              <path
+                d="M0,150 Q50,140 100,100 T200,80 T300,120 T400,40 T500,60"
+                fill="none"
+                stroke="#146976"
+                strokeLinecap="round"
+                strokeWidth="4"
+              ></path>
+              {/* Points */}
+              <circle
+                cx="100"
+                cy="100"
+                fill="white"
+                r="4"
+                stroke="#146976"
+                strokeWidth="2"
+              ></circle>
+              <circle
+                cx="200"
+                cy="80"
+                fill="white"
+                r="4"
+                stroke="#146976"
+                strokeWidth="2"
+              ></circle>
+              <circle
+                cx="300"
+                cy="120"
+                fill="white"
+                r="4"
+                stroke="#146976"
+                strokeWidth="2"
+              ></circle>
+              <circle
+                cx="400"
+                cy="40"
+                fill="white"
+                r="4"
+                stroke="#146976"
+                strokeWidth="2"
+              ></circle>
+            </svg>
+            <div className="flex justify-between text-[11px] font-bold text-[#9fb3b7] uppercase tracking-widest px-2">
+              <span>May</span>
+              <span>Jun</span>
+              <span>Jul</span>
+              <span>Aug</span>
+              <span>Sep</span>
+              <span>Oct</span>
             </div>
-            <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-              <div className="bg-[#EBBA92] h-full" style={{ width: '92%' }}></div>
+          </div>
+        </div>
+
+        {/* Bar Chart Card */}
+        <div className="bg-[#122b2f] border border-[#2a4d53] rounded-xl p-6 flex flex-col gap-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h4 className="text-white font-bold text-lg">
+                Seller Performance
+              </h4>
+              <p className="text-[#9fb3b7] text-sm">
+                Growth metrics categorized by geographical zones
+              </p>
+            </div>
+            <span className="text-[#EBBA92] text-sm font-bold">+98% Peak</span>
+          </div>
+          <div className="grid grid-cols-5 items-end gap-4 h-[240px] px-4 pt-4">
+            <div className="flex flex-col items-center gap-3 w-full">
+              <div
+                className="bg-[#146976]/20 border-t-2 border-[#146976] w-full"
+                style={{ height: "45%" }}
+              ></div>
+              <span className="text-[#9fb3b7] text-[10px] font-bold uppercase">
+                North
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-3 w-full">
+              <div
+                className="bg-[#146976]/20 border-t-2 border-[#146976] w-full"
+                style={{ height: "70%" }}
+              ></div>
+              <span className="text-[#9fb3b7] text-[10px] font-bold uppercase">
+                South
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-3 w-full">
+              <div
+                className="bg-[#146976] border-t-2 border-[#EBBA92] w-full"
+                style={{ height: "95%" }}
+              ></div>
+              <span className="text-[#9fb3b7] text-[10px] font-bold uppercase">
+                East
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-3 w-full">
+              <div
+                className="bg-[#146976]/20 border-t-2 border-[#146976] w-full"
+                style={{ height: "60%" }}
+              ></div>
+              <span className="text-[#9fb3b7] text-[10px] font-bold uppercase">
+                West
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-3 w-full">
+              <div
+                className="bg-[#146976]/20 border-t-2 border-[#146976] w-full"
+                style={{ height: "80%" }}
+              ></div>
+              <span className="text-[#9fb3b7] text-[10px] font-bold uppercase">
+                Central
+              </span>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Bottom Grid: Recent Activity and Top Categories */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-8">
+        {/* Recent Activity Table */}
+        <div className="lg:col-span-2 bg-[#122b2f] border border-[#2a4d53] rounded-xl overflow-hidden">
+          <div className="p-6 border-b border-[#2a4d53] flex justify-between items-center">
+            <h4 className="text-white font-bold text-lg">
+              System-wide Transactions
+            </h4>
+            <button className="text-[#1f7380] text-xs font-bold hover:underline">
+              View All
+            </button>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead className="bg-[#1e3f45] text-[#9fb3b7] text-[11px] font-bold uppercase tracking-wider">
+                <tr>
+                  <th className="px-6 py-3">Order ID</th>
+                  <th className="px-6 py-3">Seller</th>
+                  <th className="px-6 py-3">Value</th>
+                  <th className="px-6 py-3">Status</th>
+                  <th className="px-6 py-3">Time</th>
+                </tr>
+              </thead>
+              <tbody className="text-sm divide-y divide-[#2a4d53]">
+                <tr className="hover:bg-[#146976]/5 transition-colors">
+                  <td className="px-6 py-4 font-semibold text-[#529ba6]">
+                    #MS-99234
+                  </td>
+                  <td className="px-6 py-4 font-medium text-white/80">Global Pharma Co.</td>
+                  <td className="px-6 py-4 text-white/80">$1,240.00</td>
+                  <td className="px-6 py-4">
+                    <span className="px-2 py-1 bg-emerald-900/40 text-emerald-400 text-[10px] font-bold rounded uppercase">
+                      Completed
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-[#9fb3b7]">2 mins ago</td>
+                </tr>
+                <tr className="hover:bg-[#146976]/5 transition-colors">
+                  <td className="px-6 py-4 font-semibold text-[#529ba6]">
+                    #MS-99233
+                  </td>
+                  <td className="px-6 py-4 font-medium text-white/80">LifeCare Meds</td>
+                  <td className="px-6 py-4 text-white/80">$450.50</td>
+                  <td className="px-6 py-4">
+                    <span className="px-2 py-1 bg-[#EBBA92]/20 text-[#EBBA92] text-[10px] font-bold rounded uppercase">
+                      Pending
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-[#9fb3b7]">15 mins ago</td>
+                </tr>
+                <tr className="hover:bg-[#146976]/5 transition-colors">
+                  <td className="px-6 py-4 font-semibold text-[#529ba6]">
+                    #MS-99231
+                  </td>
+                  <td className="px-6 py-4 font-medium text-white/80">Wellness Direct</td>
+                  <td className="px-6 py-4 text-white/80">$2,100.00</td>
+                  <td className="px-6 py-4">
+                    <span className="px-2 py-1 bg-emerald-900/40 text-emerald-400 text-[10px] font-bold rounded uppercase">
+                      Completed
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-[#9fb3b7]">1 hour ago</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Platform Distribution / Category Breakdown */}
+        <div className="bg-[#FCFBFA] rounded-xl p-6 shadow-xl flex flex-col gap-6">
+          <h4 className="text-[#1E3F45] font-bold text-lg">
+            Category Distribution
+          </h4>
+          <div className="flex-1 flex flex-col justify-center gap-6">
+            <div className="relative size-40 mx-auto">
+              <svg className="size-full" viewBox="0 0 36 36">
+                <path
+                  className="text-[#146976]/10"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></path>
+                <path
+                  className="text-[#146976]"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeDasharray="75, 100"
+                  strokeLinecap="round"
+                  strokeWidth="4"
+                ></path>
+                <path
+                  className="text-[#EBBA92]"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeDasharray="20, 100"
+                  strokeDashoffset="-75"
+                  strokeLinecap="round"
+                  strokeWidth="4"
+                ></path>
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-[#1E3F45] text-xl font-extrabold leading-none">
+                  84%
+                </span>
+                <span className="text-slate-400 text-[10px] font-bold uppercase tracking-tighter">
+                  In Stock
+                </span>
+              </div>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="size-2.5 rounded-full bg-[#146976]"></div>
+                  <span className="text-slate-600 font-medium">
+                    Prescription Drugs
+                  </span>
+                </div>
+                <span className="text-[#1E3F45] font-bold">75%</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="size-2.5 rounded-full bg-[#EBBA92]"></div>
+                  <span className="text-slate-600 font-medium">
+                    OTC Medicine
+                  </span>
+                </div>
+                <span className="text-[#1E3F45] font-bold">20%</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="size-2.5 rounded-full bg-slate-300"></div>
+                  <span className="text-slate-600 font-medium">
+                    Medical Supplies
+                  </span>
+                </div>
+                <span className="text-[#1E3F45] font-bold">5%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

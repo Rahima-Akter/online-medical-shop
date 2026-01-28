@@ -1,26 +1,25 @@
-"use client";
-
-import { useState } from "react";
-import { IconButton, Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import DownloadIcon from "@mui/icons-material/Download";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import CloseIcon from "@mui/icons-material/Close";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Link from "next/link";
-import { TrendingUp } from "lucide-react";
-import { PriorityHigh, Warning } from "@mui/icons-material";
+import { EraserIcon, Pill, TrendingUp } from "lucide-react";
+import {
+  Edit,
+  Medication,
+  MedicationLiquid,
+  PriorityHigh,
+  Warning,
+} from "@mui/icons-material";
 
 const MedicineInventory = () => {
   return (
     <main className="flex-1 flex flex-col overflow-y-auto">
       {/* Top Nav / Breadcrumbs */}
-      <header className="flex items-center justify-between px-8 py-4 bg-[#121e20] border-b border-[#3d4f51]">
+      <header className="flex md:flex-row flex-col justify-between space-y-4 px-8 py-4 bg-[#121e20] border-b border-[#3d4f51]">
         <div className="flex items-center gap-2 text-sm">
           <Link
             href="#"
@@ -106,146 +105,294 @@ const MedicineInventory = () => {
         </div>
       </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        {/* Main Data Table Container */}
-      <div className="p-8 max-w-7xl mx-auto w-full">
-        <div className="bg-surface-cream rounded-xl shadow-xl overflow-hidden border border-slate-200">
-          <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-white">
-            <div className="flex gap-4">
-              <button className="px-4 py-2 text-sm font-semibold text-primary bg-primary/5 border border-primary/20 rounded-lg">
-                All Categories
-              </button>
-              <button className="px-4 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 rounded-lg transition-colors">
-                Antibiotics
-              </button>
-              <button className="px-4 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50 rounded-lg transition-colors">
-                Pain Relief
-              </button>
-            </div>
-            <div className="flex items-center gap-2">
-              <IconButton className="p-2 text-slate-400 hover:text-slate-600 transition-colors">
-                <FilterListIcon />
-              </IconButton>
-              <IconButton className="p-2 text-slate-400 hover:text-slate-600 transition-colors">
-                <DownloadIcon />
-              </IconButton>
-            </div>
+      {/* Main Data Table Container */}
+      <div className="bg-[#ECE3DA] rounded-xl shadow-xl overflow-hidden border border-[#3d4f51]">
+        <div className="p-6 border-b border-[#3d4f51] flex items-center justify-between bg-[#121e20]">
+          <div className="flex gap-4">
+            <button className="px-4 py-2 text-sm font-semibold text-[#146976] bg-[#146976]/5 border border-[#146976]/20 rounded-lg">
+              All Categories
+            </button>
+            <button className="px-4 py-2 text-sm font-medium text-[#9fb3b7] hover:bg-[#2a3537] rounded-lg transition-colors">
+              Antibiotics
+            </button>
+            <button className="px-4 py-2 text-sm font-medium text-[#9fb3b7] hover:bg-[#2a3537] rounded-lg transition-colors">
+              Pain Relief
+            </button>
           </div>
-
-          {/* Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-slate-50/50 text-slate-400 uppercase text-[11px] font-bold tracking-wider">
-                  <th className="px-6 py-4">Medicine Name</th>
-                  <th className="px-6 py-4">SKU</th>
-                  <th className="px-6 py-4">Category</th>
-                  <th className="px-6 py-4">Stock Level</th>
-                  <th className="px-6 py-4">Price</th>
-                  <th className="px-6 py-4 text-center">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-700">
-                {/* Add rows here (example rows shown) */}
-                {/* Row 1 */}
-                <tr className="hover:bg-slate-50 transition-colors group">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="size-10 rounded bg-primary/10 flex items-center justify-center text-primary">
-                        <span className="material-symbols-outlined">
-                          medication
-                        </span>
-                      </div>
-                      <div>
-                        <p className="font-bold text-slate-900">
-                          Amoxicillin 500mg
-                        </p>
-                        <p className="text-xs text-slate-500">
-                          Capsules • 30 per box
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm font-mono text-slate-500">
-                    AMX-500-CP
-                  </td>
-                  <td className="px-6 py-4 text-sm font-medium">Antibiotics</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 h-1.5 w-16 bg-slate-100 rounded-full overflow-hidden">
-                        <div
-                          className="bg-emerald-500 h-full"
-                          style={{ width: "85%" }}
-                        ></div>
-                      </div>
-                      <span className="text-sm font-bold text-slate-900">
-                        240{" "}
-                        <span className="text-xs text-slate-400 font-normal">
-                          units
-                        </span>
+          <div className="flex items-center gap-2">
+            <button className="p-2 text-[#9fb3b7] hover:text-[#146976] transition-colors">
+              <span className="material-symbols-outlined">
+                <FilterListIcon />
+              </span>
+            </button>
+            <button className="p-2 text-[#9fb3b7] hover:text-[#146976] transition-colors">
+              <span className="material-symbols-outlined">
+                <DownloadIcon />
+              </span>
+            </button>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse bg-[#121e20]">
+            <thead>
+              <tr className="bg-[#2a3537] text-[#9fb3b7] uppercase text-[11px] font-bold tracking-wider">
+                <th className="px-6 py-4">Medicine Name</th>
+                <th className="px-6 py-4">SKU</th>
+                <th className="px-6 py-4">Category</th>
+                <th className="px-6 py-4">Stock Level</th>
+                <th className="px-6 py-4">Price</th>
+                <th className="px-6 py-4 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#3d4f51] text-[#9fb3b7]">
+              {/* Row 1 */}
+              <tr className="hover:bg-[#2a3537] transition-colors group">
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-3">
+                    <div className="size-10 rounded bg-[#146976]/10 lg:flex items-center justify-center text-[#146976] hidden">
+                      <span className="material-symbols-outlined">
+                        <Medication />
                       </span>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm font-bold text-slate-900">
-                    $18.50
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-center gap-2">
-                      <IconButton className="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all">
-                        <EditIcon className="text-lg" />
-                      </IconButton>
-                      <IconButton className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all">
-                        <DeleteIcon className="text-lg" />
-                      </IconButton>
+                    <div>
+                      <p className="font-bold text-white">Amoxicillin 500mg</p>
+                      <p className="text-xs text-[#9fb3b7]">
+                        Capsules • 30 per box
+                      </p>
                     </div>
-                  </td>
-                </tr>
-                {/* Additional rows */}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Pagination */}
-          <div className="px-6 py-4 bg-white border-t border-slate-100 flex items-center justify-between">
-            <p className="text-sm text-slate-500">
-              Showing <span className="font-semibold">1-4</span> of{" "}
-              <span className="font-semibold">1,240</span> medicines
-            </p>
-            <div className="flex items-center gap-1">
-              <IconButton
-                className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded disabled:opacity-30"
-                disabled
-              >
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-sm font-mono text-[#9fb3b7]">
+                  AMX-500-CP
+                </td>
+                <td className="px-6 py-4 text-sm font-medium">Antibiotics</td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-1.5 w-16 bg-[#3d4f51] rounded-full overflow-hidden">
+                      <div
+                        className="bg-emerald-500 h-full"
+                        style={{ width: "85%" }}
+                      ></div>
+                    </div>
+                    <span className="text-sm font-bold text-white">
+                      240{" "}
+                      <span className="text-xs text-[#9fb3b7] font-normal">
+                        units
+                      </span>
+                    </span>
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-sm font-bold text-white">
+                  $18.50
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center justify-center gap-2">
+                    <button className="p-2 text-[#9fb3b7] hover:text-[#146976] hover:bg-[#146976]/10 rounded-lg transition-all">
+                      <span className="material-symbols-outlined text-lg">
+                        <Edit />
+                      </span>
+                    </button>
+                    <button className="p-2 text-[#9fb3b7] hover:text-red-500 hover:bg-red-50 rounded-lg transition-all">
+                      <span className="material-symbols-outlined text-lg">
+                        <DeleteIcon />
+                      </span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              {/* Row 2 (Low Stock) */}
+              <tr className="hover:bg-[#2a3537] transition-colors group">
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-3">
+                    <div className="size-10 rounded bg-amber-50 lg:flex items-center justify-center text-amber-600 hidden">
+                      <span className="material-symbols-outlined">
+                        <MedicationLiquid />
+                      </span>
+                    </div>
+                    <div>
+                      <p className="font-bold text-white">Ibuprofen Syrup</p>
+                      <p className="text-xs text-[#9fb3b7]">
+                        100ml Bottle • Kids Formula
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-sm font-mono text-[#9fb3b7]">
+                  IBU-SYR-CH
+                </td>
+                <td className="px-6 py-4 text-sm font-medium">Pain Relief</td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-1.5 w-16 bg-[#3d4f51] rounded-full overflow-hidden">
+                      <div
+                        className="bg-amber-500 h-full"
+                        style={{ width: "8%" }}
+                      ></div>
+                    </div>
+                    <span className="text-sm font-bold text-amber-600">
+                      8{" "}
+                      <span className="text-xs text-amber-400 font-normal">
+                        units
+                      </span>
+                    </span>
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-sm font-bold text-white">
+                  $12.25
+                </td>
+                <td className="px-6 py-4 text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <button className="p-2 text-[#9fb3b7] hover:text-[#146976] hover:bg-[#146976]/10 rounded-lg transition-all">
+                      <span className="material-symbols-outlined text-lg">
+                        <EditIcon />
+                      </span>
+                    </button>
+                    <button className="p-2 text-[#9fb3b7] hover:text-red-500 hover:bg-red-50 rounded-lg transition-all">
+                      <span className="material-symbols-outlined text-lg">
+                        <DeleteIcon />
+                      </span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              {/* Row 3 */}
+              <tr className="hover:bg-[#2a3537] transition-colors group">
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-3">
+                    <div className="size-10 rounded bg-[#146976]/10 lg:flex items-center justify-center text-[#146976] hidden">
+                      <span className="material-symbols-outlined">
+                        <Pill />
+                      </span>
+                    </div>
+                    <div>
+                      <p className="font-bold text-white">Metformin 850mg</p>
+                      <p className="text-xs text-[#9fb3b7]">
+                        Tablets • 60 per pack
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-sm font-mono text-[#9fb3b7]">
+                  MET-850-TB
+                </td>
+                <td className="px-6 py-4 text-sm font-medium">Diabetes</td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-1.5 w-16 bg-[#3d4f51] rounded-full overflow-hidden">
+                      <div
+                        className="bg-emerald-500 h-full"
+                        style={{ width: "60%" }}
+                      ></div>
+                    </div>
+                    <span className="text-sm font-bold text-white">
+                      112{" "}
+                      <span className="text-xs text-[#9fb3b7] font-normal">
+                        units
+                      </span>
+                    </span>
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-sm font-bold text-white">
+                  $24.99
+                </td>
+                <td className="px-6 py-4 text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <button className="p-2 text-[#9fb3b7] hover:text-[#146976] hover:bg-[#146976]/10 rounded-lg transition-all">
+                      <span className="material-symbols-outlined text-lg">
+                        <Edit />
+                      </span>
+                    </button>
+                    <button className="p-2 text-[#9fb3b7] hover:text-red-500 hover:bg-red-50 rounded-lg transition-all">
+                      <span className="material-symbols-outlined text-lg">
+                        <DeleteIcon />
+                      </span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              {/* Row 4 (Out of Stock) */}
+              <tr className="hover:bg-[#2a3537] transition-colors group">
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-3 opacity-60">
+                    <div className="size-10 rounded bg-red-50 lg:flex items-center justify-center text-red-600 hidden">
+                      <span className="material-symbols-outlined">
+                        <EraserIcon />
+                      </span>
+                    </div>
+                    <div>
+                      <p className="font-bold text-white">Azithromycin 250mg</p>
+                      <p className="text-xs text-[#9fb3b7]">
+                        Tablets • 6 per blister
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-sm font-mono text-[#9fb3b7] opacity-60">
+                  AZI-250-BL
+                </td>
+                <td className="px-6 py-4 text-sm font-medium opacity-60">
+                  Antibiotics
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-1.5 w-16 bg-[#3d4f51] rounded-full overflow-hidden">
+                      <div
+                        className="bg-red-500 h-full"
+                        style={{ width: "0%" }}
+                      ></div>
+                    </div>
+                    <span className="text-sm font-bold text-red-600 uppercase text-[10px]">
+                      Out of Stock
+                    </span>
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-sm font-bold text-[#9fb3b7] opacity-60">
+                  $31.00
+                </td>
+                <td className="px-6 py-4 text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <button className="p-2 text-[#9fb3b7] hover:text-[#146976] hover:bg-[#146976]/10 rounded-lg transition-all">
+                      <span className="material-symbols-outlined text-lg">
+                        <Edit />
+                      </span>
+                    </button>
+                    <button className="p-2 text-[#9fb3b7] hover:text-red-500 hover:bg-red-50 rounded-lg transition-all">
+                      <span className="material-symbols-outlined text-lg">
+                        <DeleteIcon />
+                      </span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        {/* Pagination */}
+        <div className="px-6 py-4 bg-[#121e20] border-t border-[#3d4f51] flex items-center justify-between">
+          <p className="text-sm text-[#9fb3b7]">
+            Showing <span className="font-semibold">1-4</span> of{" "}
+            <span className="font-semibold">1,240</span> medicines
+          </p>
+          <div className="flex items-center gap-1">
+            <button className="p-2 text-[#9fb3b7] hover:text-[#146976] hover:bg-[#146976]/10 rounded disabled:opacity-30">
+              <span className="material-symbols-outlined">
                 <ChevronLeftIcon />
-              </IconButton>
-              <button className="size-8 text-sm font-bold bg-primary text-white rounded-lg">
-                1
-              </button>
-              <button className="size-8 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg">
-                2
-              </button>
-              <button className="size-8 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg">
-                3
-              </button>
-              <IconButton className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded">
+              </span>
+            </button>
+            <button className="size-8 text-sm font-bold bg-[#146976] text-white rounded-lg">
+              1
+            </button>
+            <button className="size-8 text-sm font-medium text-[#9fb3b7] hover:bg-[#2a3537] rounded-lg">
+              2
+            </button>
+            <button className="size-8 text-sm font-medium text-[#9fb3b7] hover:bg-[#2a3537] rounded-lg">
+              3
+            </button>
+            <button className="p-2 text-[#9fb3b7] hover:text-[#146976] hover:bg-[#146976]/10 rounded">
+              <span className="material-symbols-outlined">
                 <ChevronRightIcon />
-              </IconButton>
-            </div>
+              </span>
+            </button>
           </div>
         </div>
       </div>
