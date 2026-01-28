@@ -1,4 +1,5 @@
-import AllProducts from "@/app/components/modules/shop/allProducts";
+import AllProducts from "@/components/modules/shop/allProducts";
+
 
 export default function Shop() {
   return (
