@@ -1,28 +1,25 @@
 "use client";
 import React, { useState } from "react";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import Inventory2Icon from "@mui/icons-material/Inventory2";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import Link from "next/link";
 import {
   Cancel as CancelIcon,
   MenuOpen as MenuOpenIcon,
 } from "@mui/icons-material";
+import { UserRole, UserRoles } from "@/roles/roles";
+import RoutesNavigation from "@/routes/routes";
 
 export default function DashboardRootLayout({
   admin,
-  customer,
-  seller
+  // customer,
+  // seller,
 }: {
   admin: React.ReactNode;
   customer: React.ReactNode;
   seller: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const role: UserRole = UserRoles.ADMIN;
 
   return (
     <div className="h-screen flex overflow-y-auto">
@@ -48,52 +45,33 @@ export default function DashboardRootLayout({
           </div>
         </div>
 
-        <nav className="flex-1 px-4 space-y-1 mt-4">
-          <Link
-            href="#"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#146976] text-white font-medium"
-          >
-            <DashboardIcon />
-            <span>Dashboard</span>
-          </Link>
-
-          <Link
-            href="#"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-[#146976]/20 hover:text-white transition-colors"
-          >
-            <Inventory2Icon />
-            <span>Inventory</span>
-          </Link>
-
-          <Link
-            href="#"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-[#146976]/20 hover:text-white transition-colors"
-          >
-            <ShoppingCartIcon />
-            <span>Orders</span>
-          </Link>
-
-          <Link
-            href="#"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-[#146976]/20 hover:text-white transition-colors"
-          >
-            <BarChartIcon />
-            <span>Reports</span>
-          </Link>
-
-          <Link
-            href="#"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-[#146976]/20 hover:text-white transition-colors"
-          >
-            <SettingsIcon />
-            <span>Settings</span>
-          </Link>
+        <nav className="flex-1 space-y-1 mt-4">
+          <RoutesNavigation role={role} />
         </nav>
 
         <div className="p-4 border-t border-[#146976]/20">
           <div className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-red-500/10 hover:text-red-400 cursor-pointer transition-colors">
             <ExitToAppIcon />
             <span className="font-medium">Logout</span>
+          </div>
+        </div>
+        {/* user logo and name */}
+        <div className="flex items-center gap-3 px-3 py-2">
+          <div className="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center overflow-hidden border border-white/20">
+            <img
+              alt="Admin Profile Avatar"
+              className="w-full h-full object-cover"
+              data-alt="Portrait of an administrator user profile"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKi2lBmNRB282Xvgvm8D7lFLB-5gtRGQCLoMfwlnltjWn0gUXvJjDYTjYm-Jb9fuN6DXJiEX3palhO_YcF6Zr-maIAwj0w4uAolvBd2P6BEY-fRRN0uessGcVSlgeCJsjyrM_fTvknFu89tCf7EH5UKtgYMyhkXMDX5OZeJVgNCZX3MJ35wosTLQSKysGxPQBlek0L5_U9qD3fj6sY0BqS6-gFxZvYUcaGpnTHakv_fwOn5sumMirsKOiO9KvzazCuoqwzv7JM-A"
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs text-white font-medium truncate">
+              Dr. Sarah Smith
+            </p>
+            <p className="text-[10px] text-white/40 truncate">
+              Lead Pharmacist
+            </p>
           </div>
         </div>
       </aside>

@@ -10,7 +10,8 @@ import TodayIcon from "@mui/icons-material/Today";
 const Dashboard = () => {
   return (
     <div className="bg-[#1E3F45] h-full overflow-y-auto px-8 py-6 space-y-8">
-      <header className="sticky top-0 z-10 flex items-center justify-between bg-[#1e3f45]/80 backdrop-blur-md border-b border-[#416a71] pb-6">
+      <header className="flex items-center justify-between border-b border-[#416a71] pb-6">
+      {/* <header className="sticky top-0 z-10 flex items-center justify-between bg-[#1e3f45]/80 backdrop-blur-md border-b border-[#416a71] pb-6"> */}
         <h2 className="md:text-2xl text-xl font-bold tracking-tight text-white">
           Admin Dashboard
         </h2>
