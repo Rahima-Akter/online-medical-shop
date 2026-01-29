@@ -1,4 +1,5 @@
 import {
+  ArrowBack,
   Assignment,
   EditNote,
   EventRepeat,
@@ -12,19 +13,27 @@ import {
   TodayOutlined,
   Verified,
 } from "@mui/icons-material";
+import Link from "next/link";
 
 export default function Profile() {
   return (
     <div className="min-h-screen flex flex-col bg-[#101521] text-[#F5F1E9] font-display">
       <div className="p-6 md:p-10 max-w-6xl mx-auto w-full space-y-10">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-[#F5F1E9] text-4xl font-extrabold leading-tight tracking-tight">
-            Profile Settings
-          </h1>
-          <p className="text-[#F5F1E9]/50 text-base max-w-2xl font-light">
-            Experience premium healthcare management. Securely update your
-            personal details and account preferences.
-          </p>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+          <div className="flex flex-col gap-2">
+            <h1 className="text-[#F5F1E9] text-4xl font-extrabold leading-tight tracking-tight">
+              Profile Settings
+            </h1>
+            <p className="text-[#F5F1E9]/50 text-base max-w-2xl font-light">
+              Experience premium healthcare management. Securely update your
+              personal details and account preferences.
+            </p>
+          </div>
+
+          <Link href='/' className="flex items-center justify-center p-3 rounded-lg bg-[#146976] text-white font-bold text-sm gap-1 hover:bg-[#146976]/90 transition-colors">
+            <ArrowBack className="text-sm " />
+            <span>Go Back Home</span>
+          </Link>
         </div>
 
         <div className="bg-[#161d2b] rounded-2xl p-5 sm:p-6 md:p-8 shadow-2xl overflow-hidden group relative z-10 border border-white/10">
@@ -338,7 +347,8 @@ export default function Profile() {
 
       <footer className="mt-auto py-8 text-center border-t border-white/5 bg-black/20">
         <p className="text-[10px] text-[#F5F1E9]/20 uppercase tracking-[0.2em]">
-          © {new Date().getFullYear()} MediStore Premium Healthcare • Your Trust, Our Privacy
+          © {new Date().getFullYear()} MediStore Premium Healthcare • Your
+          Trust, Our Privacy
         </p>
       </footer>
     </div>

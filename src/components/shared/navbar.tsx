@@ -9,9 +9,11 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar({ isLoggedIn = false }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#146976]/20 bg-[#1E3F45] px-4 md:px-10 lg:px-20 py-4">
@@ -33,11 +35,11 @@ export default function Navbar({ isLoggedIn = false }) {
             <MenuIcon />
           </button>
 
-          {/* Mobile Menu (absolute, covers below the navbar) */}
+          {/* Mobile Menu */}
           {mobileMenuOpen && (
             <div className="absolute top-full right-0 mt-2 w-64 bg-[#1E3F45] border-2 border-[#EBBA92]/20 rounded-lg flex flex-col gap-3 p-4 z-50">
-              <Link className="text-sm font-semibold text-white hover:text-[#EBBA92] transition-colors" href="/home">Home</Link>
-              <Link className="text-sm font-semibold text-white hover:text-[#EBBA92] transition-colors" href="/shop">Shop</Link>
+              <Link className={`text-sm font-semibold hover:text-[#EBBA92] transition-colors ${pathname === '/home' ? 'text-[#EBBA92] underline' : 'text-white'}`} href="/home">Home</Link>
+              <Link className={`text-sm font-semibold hover:text-[#EBBA92] transition-colors ${pathname === '/shop' ? 'text-[#EBBA92] underline' : 'text-white'}`} href="/shop">Shop</Link>
 
               {/* Favorite */}
               <button className="flex items-center justify-center w-full h-10 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors">
@@ -53,20 +55,20 @@ export default function Navbar({ isLoggedIn = false }) {
 
               {/* Auth Buttons */}
               {isLoggedIn ? (
-                <button className="flex items-center justify-center w-full h-10 rounded-lg bg-white/10 text-white font-bold text-sm hover:bg-white/20 transition-colors border border-white/10 gap-1">
+                <Link href="/dashboard" className="flex items-center justify-center w-full h-10 rounded-lg bg-white/10 text-white font-bold text-sm hover:bg-white/20 transition-colors border border-white/10 gap-1">
                   <DashboardIcon className="text-sm" />
                   <span>Dashboard</span>
-                </button>
+                </Link>
               ) : (
                 <>
-                  <button className="flex items-center justify-center w-full h-10 rounded-lg bg-white/10 text-white font-bold text-sm hover:bg-white/20 transition-colors border border-white/10 gap-1">
+                  <Link href="/login" className="flex items-center justify-center w-full h-10 rounded-lg bg-white/10 text-white font-bold text-sm hover:bg-white/20 transition-colors border border-white/10 gap-1">
                     <LoginIcon className="text-sm" />
                     <span>Login</span>
-                  </button>
-                  <button className="flex items-center justify-center w-full h-10 rounded-lg bg-[#EBBA92] text-[#1E3F45] font-bold text-sm hover:brightness-110 transition-colors gap-1">
+                  </Link>
+                  <Link href="/register" className="flex items-center justify-center w-full h-10 rounded-lg bg-[#EBBA92] text-[#1E3F45] font-bold text-sm hover:brightness-110 transition-colors gap-1">
                     <AppRegistrationIcon className="text-sm" />
                     <span>Register</span>
-                  </button>
+                  </Link>
                 </>
               )}
             </div>
@@ -77,8 +79,8 @@ export default function Navbar({ isLoggedIn = false }) {
         <div className="hidden md:flex items-center gap-8">
           {/* Desktop Navigation */}
           <nav className="flex items-center gap-8">
-            <Link className="text-white/90 text-sm font-semibold hover:text-[#EBBA92] transition-colors" href="/home">Home</Link>
-            <Link className="text-white/90 text-sm font-semibold hover:text-[#EBBA92] transition-colors" href="/shop">Shop</Link>
+            <Link className={`text-sm font-semibold hover:text-[#EBBA92] transition-colors ${pathname === '/home' ? 'text-[#EBBA92] underline' : 'text-white'}`} href="/">Home</Link>
+            <Link className={`text-sm font-semibold hover:text-[#EBBA92] transition-colors ${pathname === '/shop' ? 'text-[#EBBA92] underline' : 'text-white'}`} href="/shop">Shop</Link>
           </nav>
 
           {/* Right Actions */}
@@ -97,20 +99,20 @@ export default function Navbar({ isLoggedIn = false }) {
 
             {/* Auth Buttons */}
             {isLoggedIn ? (
-              <button className="flex items-center justify-center px-3 h-10 rounded-lg bg-white/10 text-white font-bold text-sm hover:bg-white/20 transition-colors border border-white/10 gap-1">
+              <Link href="/dashboard" className="flex items-center justify-center px-3 h-10 rounded-lg bg-white/10 text-white font-bold text-sm hover:bg-white/20 transition-colors border border-white/10 gap-1">
                 <DashboardIcon className="text-sm" />
                 <span className="hidden sm:inline">Dashboard</span>
-              </button>
+              </Link>
             ) : (
               <>
-                <button className="flex items-center justify-center px-3 h-10 rounded-lg bg-white/10 text-white font-bold text-sm hover:bg-white/20 transition-colors border border-white/10 gap-1">
+                <Link href="/login" className="flex items-center justify-center px-3 h-10 rounded-lg bg-white/10 text-white font-bold text-sm hover:bg-white/20 transition-colors border border-white/10 gap-1">
                   <LoginIcon className="text-sm" />
                   <span className="hidden sm:inline">Login</span>
-                </button>
-                <button className="flex items-center justify-center px-3 h-10 rounded-lg bg-[#EBBA92] text-[#1E3F45] font-bold text-sm hover:brightness-110 transition-colors gap-1">
+                </Link>
+                <Link href="/register" className="flex items-center justify-center px-3 h-10 rounded-lg bg-[#EBBA92] text-[#1E3F45] font-bold text-sm hover:brightness-110 transition-colors gap-1">
                   <AppRegistrationIcon className="text-sm" />
                   <span className="hidden sm:inline">Register</span>
-                </button>
+                </Link>
               </>
             )}
           </div>

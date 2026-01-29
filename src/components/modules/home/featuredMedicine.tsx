@@ -1,4 +1,5 @@
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import Link from 'next/link';
 
 export default function FeaturedMedicines() {
   const products = [
@@ -35,59 +36,63 @@ export default function FeaturedMedicines() {
   ];
 
   return (
-    <section className="bg-white dark:bg-[#1E3F45] py-24">
-      <div className="max-w-[1440px] mx-auto px-4 md:px-10 lg:px-20">
-        <div className="mb-12">
-          <h2 className="text-[#1E3F45] dark:text-white text-3xl md:text-4xl font-black tracking-tight mb-4">
-            Featured Medicines
-          </h2>
-          <div className="w-20 h-1.5 bg-[#EBBA92] rounded-full"></div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products.map((prod, i) => (
-            <div key={i} className="group bg-[#F9FAFB] dark:bg-[#111827] rounded-2xl overflow-hidden border border-[#146976]/10 flex flex-col">
-              <div className="relative aspect-[4/3] overflow-hidden bg-white p-6">
-                <img
-                  className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
-                  src={prod.img}
-                  alt={prod.name}
-                />
-                {prod.badge && (
-                  <div className="absolute top-4 left-4 bg-[#146976] text-white text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded">
-                    {prod.badge}
-                  </div>
-                )}
+<section className="bg-[#1E3F45] py-24">
+  <div className="max-w-[1440px] mx-auto px-4 md:px-10 lg:px-20">
+    <div className="mb-12">
+      <h2 className="text-white text-3xl md:text-4xl font-black tracking-tight mb-4">
+        Featured Medicines
+      </h2>
+      <div className="w-20 h-1.5 bg-[#EBBA92] rounded-full"></div>
+    </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      {products.map((prod, i) => (
+        <div
+          key={i}
+          className="group bg-[#1F2937] rounded-2xl overflow-hidden border border-[#146976]/10 flex flex-col"
+        >
+          <div className="relative aspect-[4/3] overflow-hidden bg-white p-6">
+            <img
+              className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
+              src={prod.img}
+              alt={prod.name}
+            />
+            {prod.badge && (
+              <div className="absolute top-4 left-4 bg-[#146976] text-white text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded">
+                {prod.badge}
               </div>
-              <div className="p-6 flex flex-col flex-1">
-                <div className="flex-1">
-                  <p className="text-[10px] font-bold text-[#146976] dark:text-[#EBBA92] uppercase tracking-widest mb-1">
-                    {prod.category}
-                  </p>
-                  <h3 className="text-lg font-black text-[#1E3F45] dark:text-white leading-tight mb-2">
-                    {prod.name}
-                  </h3>
-                  <p className="text-sm text-slate-500 dark:text-white/50 mb-4 line-clamp-2">
-                    {prod.desc}
-                  </p>
-                </div>
-                <div className="flex items-center justify-between mt-4">
-                  <span className="text-2xl font-black text-[#146976] dark:text-[#EBBA92]">
-                    {prod.price}
-                  </span>
-                  <button className="w-10 h-10 rounded-lg bg-[#146976] text-white flex items-center justify-center hover:bg-[#146976]/90 transition-colors">
-                    <AddShoppingCartIcon fontSize="small" />
-                  </button>
-                </div>
-              </div>
+            )}
+          </div>
+          <div className="p-6 flex flex-col flex-1">
+            <div className="flex-1">
+              <p className="text-[10px] font-bold text-[#EBBA92] uppercase tracking-widest mb-1">
+                {prod.category}
+              </p>
+              <h3 className="text-lg font-black text-white leading-tight mb-2">
+                {prod.name}
+              </h3>
+              <p className="text-sm text-[#A1A1AA] mb-4 line-clamp-2">
+                {prod.desc}
+              </p>
             </div>
-          ))}
+            <div className="flex items-center justify-between mt-4">
+              <span className="text-2xl font-black text-[#EBBA92]">
+                {prod.price}
+              </span>
+              <button className="w-10 h-10 rounded-lg bg-[#146976] text-white flex items-center justify-center hover:bg-[#146976]/90 transition-colors">
+                <AddShoppingCartIcon fontSize="small" />
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="mt-16 flex justify-center">
-          <button className="px-10 h-12 rounded-lg bg-[#146976]/10 text-[#146976] dark:text-[#EBBA92] font-black border-2 border-[#146976]/20 hover:bg-[#146976] hover:text-white transition-all">
-            Discover More Products
-          </button>
-        </div>
-      </div>
-    </section>
+      ))}
+    </div>
+    <div className="mt-16 flex justify-center">
+      <Link href="/shop" className="px-10 h-12 pt-3 rounded-lg bg-[#146976]/10 text-[#EBBA92] font-black border-2 border-[#146976]/20 hover:bg-[#146976] hover:text-white transition-all">
+        Discover More Products
+      </Link>
+    </div>
+  </div>
+</section>
+
   );
 }

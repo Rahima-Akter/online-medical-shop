@@ -6,7 +6,7 @@ import TrustFeatures from "@/components/modules/home/trustedFeatures";
 
 export default function Home() {
   return (
-    <div>
+    <div className="bg-[#1E3F45]">
       <HeroSection/>
       <CategorySection/>
       <FeaturedMedicines/>

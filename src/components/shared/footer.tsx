@@ -6,9 +6,9 @@ import { RssFeed, Share } from '@mui/icons-material';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1E3F45] text-white pt-20 pb-10">
+    <footer className="bg-[#1E3F45] text-white pt-16 pb-5">
       <div className="max-w-[1440px] mx-auto px-4 md:px-10 lg:px-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-8">
           <div className="col-span-1 lg:col-span-1">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-8 bg-[#EBBA92] rounded-lg flex items-center justify-center text-[#1E3F45]">
@@ -51,7 +51,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="border-t border-white/10 pt-5 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-white/40 text-xs font-medium">© 2024 MediStore Pharmacy. All rights reserved.</p>
           <div className="flex gap-6 text-white/40">
             <span className="material-symbols-outlined"><ContactlessIcon/></span>

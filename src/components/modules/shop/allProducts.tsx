@@ -7,9 +7,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import GridViewIcon from "@mui/icons-material/GridView";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import StarIcon from "@mui/icons-material/Star";
-import ViewSidebarIcon from '@mui/icons-material/ViewSidebar';
-import CancelIcon from '@mui/icons-material/Cancel';
+import ViewSidebarIcon from "@mui/icons-material/ViewSidebar";
+import CancelIcon from "@mui/icons-material/Cancel";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function AllProducts() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -114,14 +115,14 @@ export default function AllProducts() {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="px-2 py-1 bg-[#146976] text-white rounded-md"
         >
-          {sidebarOpen ? <CancelIcon/> : <ViewSidebarIcon/>}
+          {sidebarOpen ? <CancelIcon /> : <ViewSidebarIcon />}
         </button>
       </div>
 
       {/* Sidebar */}
       <aside
-        className={`w-64 shrink-0 lg:block fixed lg:relative bottom-0 left-0 h-[95%] lg:h-auto z-20 transition-transform bg-[#FCFBFA] dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-800
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
+        className={`w-64 shrink-0 lg:block fixed lg:relative bottom-0 left-0 h-[95%] lg:h-auto z-20 transition-transform bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-800
+    ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
       >
         <div className="sticky top-24">
           <div className="flex items-center justify-between mb-6">
@@ -133,7 +134,7 @@ export default function AllProducts() {
 
           {/* Categories */}
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">
+            <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">
               Categories
             </p>
             <div className="space-y-3">
@@ -149,9 +150,9 @@ export default function AllProducts() {
                 >
                   <input
                     type="checkbox"
-                    className="rounded border-gray-300 text-[#146976] focus:ring-[#146976] w-4 h-4"
+                    className="rounded border-gray-600 text-[#146976] focus:ring-[#146976] w-4 h-4"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-[#146976] transition-colors">
+                  <span className="text-sm text-gray-300 group-hover:text-[#146976] transition-colors">
                     {cat}
                   </span>
                 </label>
@@ -161,29 +162,25 @@ export default function AllProducts() {
 
           {/* Price Range */}
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">
+            <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">
               Price Range
             </p>
             <div className="px-2">
-              <div className="h-1 w-full bg-gray-200 dark:bg-gray-700 rounded-full relative">
+              <div className="h-1 w-full bg-gray-700 rounded-full relative">
                 <div className="absolute h-1 bg-[#146976] left-0 right-1/4 rounded-full"></div>
-                <div className="absolute w-4 h-4 bg-white border-2 border-[#146976] rounded-full -top-1.5 left-0"></div>
-                <div className="absolute w-4 h-4 bg-white border-2 border-[#146976] rounded-full -top-1.5 right-1/4"></div>
+                <div className="absolute w-4 h-4 bg-gray-800 border-2 border-[#146976] rounded-full -top-1.5 left-0"></div>
+                <div className="absolute w-4 h-4 bg-gray-800 border-2 border-[#146976] rounded-full -top-1.5 right-1/4"></div>
               </div>
               <div className="flex justify-between mt-4">
-                <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
-                  $0
-                </span>
-                <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
-                  $450
-                </span>
+                <span className="text-xs font-medium text-gray-400">$0</span>
+                <span className="text-xs font-medium text-gray-400">$450</span>
               </div>
             </div>
           </div>
 
           {/* Manufacturers */}
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">
+            <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">
               Manufacturers
             </p>
             <div className="space-y-3">
@@ -194,19 +191,17 @@ export default function AllProducts() {
                 >
                   <input
                     type="checkbox"
-                    className="rounded border-gray-300 text-[#146976] focus:ring-[#146976] w-4 h-4"
+                    className="rounded border-gray-600 text-[#146976] focus:ring-[#146976] w-4 h-4"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
-                    {m}
-                  </span>
+                  <span className="text-sm text-gray-300">{m}</span>
                 </label>
               ))}
             </div>
           </div>
 
           {/* Rating */}
-          <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
-            <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">
+          <div className="pt-4 border-t border-gray-800">
+            <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">
               Rating
             </p>
             <div className="space-y-2">
@@ -214,8 +209,8 @@ export default function AllProducts() {
                 {Array.from({ length: 4 }).map((_, i) => (
                   <StarIcon key={i} className="text-xs" />
                 ))}
-                <StarIcon className="text-xs text-gray-300" />
-                <span className="text-xs text-gray-500 ml-1">& Up</span>
+                <StarIcon className="text-xs text-gray-600" />
+                <span className="text-xs text-gray-400 ml-1">& Up</span>
               </div>
             </div>
           </div>
@@ -223,16 +218,16 @@ export default function AllProducts() {
       </aside>
 
       {/* Main Content Area */}
-      <section className="flex-1 ">
+      <section className="flex-1">
         {/* Breadcrumbs */}
         <div className="flex items-center gap-2 mb-6">
-          <a
-            className="text-xs font-medium text-gray-500 hover:text-[#146976]"
-            href="#"
+          <Link
+            className="text-xs font-medium text-gray-400 hover:text-[#146976]"
+            href="/"
           >
             Home
-          </a>
-          <span className="text-xs text-gray-400">›</span>
+          </Link>
+          <span className="text-xs text-gray-600">›</span>
           <span className="text-xs font-bold text-[#146976]">
             Medicine Shop
           </span>
@@ -241,28 +236,25 @@ export default function AllProducts() {
         {/* Toolbar */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl font-bold text-gray-300">
               Medicines &amp; Supplements
             </h1>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-400 mt-1">
               Showing 1-12 of 148 products
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-3">
             <div className="relative">
-              <select className="appearance-none bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-[0.5rem] py-2 pl-4 pr-10 text-sm focus:ring-[#146976] focus:border-[#146976]">
+              <select className="appearance-none bg-gray-800 border border-gray-600 rounded-[0.5rem] py-2 pl-4 pr-10 text-sm focus:ring-[#146976] focus:border-[#146976] text-white">
                 <option>Sort by: Newest</option>
                 <option>Price: Low to High</option>
                 <option>Price: High to Low</option>
                 <option>Best Rating</option>
               </select>
             </div>
-            <div className="flex border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+            <div className="flex border border-gray-600 rounded-lg">
               <button className="p-2 bg-[#146976] text-white">
                 <GridViewIcon className="text-[20px]" />
-              </button>
-              <button className="p-2 bg-white dark:bg-gray-800 text-gray-500 hover:text-[#146976]">
-                <FormatListBulletedIcon className="text-[20px]" />
               </button>
             </div>
           </div>
@@ -270,39 +262,37 @@ export default function AllProducts() {
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {/* PRODUCT CARDS (All 8) */}
-          {/* Card 1 Example */}
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all group border border-gray-100 dark:border-gray-800"
+              className="bg-gray-900 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all group border border-gray-800"
             >
-              <div className="aspect-square relative overflow-hidden bg-gray-50 dark:bg-gray-800">
+              <div className="aspect-square relative overflow-hidden bg-gray-800">
                 <img
                   className="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform"
                   src={product.image}
                   alt={product.name}
                 />
                 {product.rxRequired && (
-                  <div className="absolute top-3 left-3 bg-red-100 text-red-600 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-tighter">
+                  <div className="absolute top-3 left-3 bg-red-700 text-red-200 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-tighter">
                     Rx Required
                   </div>
                 )}
-                <button className="absolute top-3 right-3 w-8 h-8 bg-white/80 dark:bg-gray-700/80 backdrop-blur rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-500">
+                <button className="absolute top-3 right-3 w-8 h-8 bg-gray-700/80 backdrop-blur rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-500">
                   <FavoriteIcon className="text-sm" />
                 </button>
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-1 mb-2 text-[#EBBA92]">
                   <StarIcon className="text-xs" />
-                  <span className="text-xs font-bold text-gray-600 dark:text-gray-400">
+                  <span className="text-xs font-bold text-gray-400">
                     {product.rating} ({product.reviews})
                   </span>
                 </div>
-                <h3 className="font-bold text-gray-900 dark:text-white mb-1 line-clamp-1 group-hover:text-[#146976] transition-colors">
+                <h3 className="font-bold text-gray-300 mb-1 line-clamp-1 group-hover:text-[#146976] transition-colors">
                   {product.name}
                 </h3>
-                <p className="text-xs text-gray-500 mb-4 italic">
+                <p className="text-xs text-gray-400 mb-4 italic">
                   {product.description}
                 </p>
                 <div className="flex items-center justify-between mt-auto">
@@ -320,10 +310,7 @@ export default function AllProducts() {
 
         {/* Pagination */}
         <div className="flex items-center gap-2 justify-center mt-10">
-          <button
-            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            className="w-10 h-10 flex items-center justify-center rounded-lg bg-white dark:bg-gray-800 text-yellow-200 hover:text-[#146976] border border-gray-100 dark:border-gray-800"
-          >
+          <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-800 text-yellow-200 hover:text-[#146976] border border-gray-800">
             <span className="material-symbols-outlined">
               <ArrowBackIosNewIcon />
             </span>
@@ -343,7 +330,7 @@ export default function AllProducts() {
                   className={`w-10 h-10 flex items-center justify-center rounded-lg ${
                     page === currentPage
                       ? "bg-[#146976] text-white font-bold"
-                      : "bg-white dark:bg-gray-800 text-gray-600 hover:text-[#146976] border border-gray-100 dark:border-gray-800"
+                      : "bg-gray-800 text-gray-400 hover:text-[#146976] border border-gray-800"
                   }`}
                 >
                   {page}
@@ -361,10 +348,7 @@ export default function AllProducts() {
             } else return null;
           })}
 
-          <button
-            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-            className="w-10 h-10 flex items-center justify-center rounded-lg bg-white dark:bg-gray-800 text-yellow-200 hover:text-[#146976] border border-gray-100 dark:border-gray-800"
-          >
+          <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-800 text-yellow-200 hover:text-[#146976] border border-gray-800">
             <span className="material-symbols-outlined">
               <ArrowForwardIosIcon />
             </span>

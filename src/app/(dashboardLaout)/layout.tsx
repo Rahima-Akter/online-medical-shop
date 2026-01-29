@@ -13,12 +13,10 @@ export default function DashboardRootLayout({
   admin,
   customer,
   seller,
-  children,
 }: {
   admin: React.ReactNode;
   customer: React.ReactNode;
   seller: React.ReactNode;
-  children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const role: UserRole = UserRoles.CUSTOMER;
@@ -94,16 +92,13 @@ export default function DashboardRootLayout({
             : customer}
       </div> */}
       <div className="flex-1 bg-[#121e20] overflow-y-auto">
-        {/* Role-specific dashboard content */}
         {role === UserRoles.CUSTOMER && customer}
         {role === UserRoles.SELLER && seller}
         {role === UserRoles.ADMIN && admin}
-
-        {/* Shared routes like /dashboard/profile */}
-        {/* {children} */}
+        
       </div>
 
-      {/* Sidebar Toggle Button for Small Screens */}
+      {/* Sidebar Toggle Button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
         className="fixed top-4 right-4 lg:hidden p-2 bg-[#146976] rounded-full text-white z-50"
