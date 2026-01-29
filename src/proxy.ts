@@ -59,7 +59,7 @@ export function proxy(request: NextRequest) {
 
   // ===== Dummy session =====
   const data = {
-    role: "CUSTOMER", // ADMIN | SELLER | CUSTOMER
+    role: "SELLER", // ADMIN | SELLER | CUSTOMER
     loggedIn: true, // Simulate logged in
   };
 

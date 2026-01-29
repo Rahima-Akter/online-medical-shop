@@ -11,7 +11,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-export default function Navbar({ isLoggedIn = false }) {
+export default function Navbar({ isLoggedIn = true }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
