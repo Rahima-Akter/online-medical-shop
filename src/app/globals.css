@@ -75,6 +75,12 @@
   color: #EBBA92;
 }
 
+.glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
