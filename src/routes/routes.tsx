@@ -6,9 +6,12 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { UserRoles, UserRole } from "@/roles/roles";
 import { usePathname } from "next/navigation";
+import FolderSharedIcon from "@mui/icons-material/FolderShared";
+import { ShoppingBag } from "@mui/icons-material";
 
 export default function RoutesNavigation({ role }: { role: UserRole }) {
   const pathname = usePathname();
+
   const adminRoutes = (
     <>
       <Link
@@ -60,25 +63,58 @@ export default function RoutesNavigation({ role }: { role: UserRole }) {
         <SettingsIcon />
         <span>Category Mangement</span>
       </Link>
+      <Link
+        href="/profile"
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+          pathname === "/profile" ? "bg-[#146976]" : "text-white/70"
+        } hover:bg-[#146976]/20 hover:text-white transition-colors`}
+      >
+        <FolderSharedIcon />
+        <span>Profile</span>
+      </Link>
     </>
   );
 
   const customerRoutes = (
     <>
       <Link
-        href="#"
-        className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#146976] text-white font-medium"
+        href="/dashboard"
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+          pathname === "/dashboard" ? "bg-[#146976]" : "text-white/70"
+        } hover:bg-[#146976]/20 hover:text-white transition-colors`}
       >
         <DashboardIcon />
         <span>Dashboard</span>
       </Link>
 
       <Link
-        href="#"
-        className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-[#146976]/20 hover:text-white transition-colors"
+        href="/my-orders"
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+          pathname === "/my-orders" ? "bg-[#146976]" : "text-white/70"
+        } hover:bg-[#146976]/20 hover:text-white transition-colors`}
+      >
+        <ShoppingBag />
+        <span>My Orders</span>
+      </Link>
+
+      <Link
+        href="/cart"
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+          pathname === "/cart" ? "bg-[#146976]" : "text-white/70"
+        } hover:bg-[#146976]/20 hover:text-white transition-colors`}
       >
         <ShoppingCartIcon />
-        <span>Orders</span>
+        <span>Cart Items</span>
+      </Link>
+
+      <Link
+        href="/profile"
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+          pathname === "/profile" ? "bg-[#146976]" : "text-white/70"
+        } hover:bg-[#146976]/20 hover:text-white transition-colors`}
+      >
+        <FolderSharedIcon />
+        <span>Profile</span>
       </Link>
     </>
   );
@@ -111,6 +147,15 @@ export default function RoutesNavigation({ role }: { role: UserRole }) {
       >
         <ShoppingCartIcon />
         <span>Order Management</span>
+      </Link>
+      <Link
+        href="/profile"
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+          pathname === "/profile" ? "bg-[#146976]" : "text-white/70"
+        } hover:bg-[#146976]/20 hover:text-white transition-colors`}
+      >
+        <FolderSharedIcon />
+        <span>Profile</span>
       </Link>
     </>
   );

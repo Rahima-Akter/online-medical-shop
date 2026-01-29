@@ -113,7 +113,7 @@ export default function Profile() {
                     <input
                       className="w-full bg-white/5 border-white/10 rounded-xl px-4 py-3 text-[#F5F1E9] focus:ring-[#146875] focus:border-[#146875] transition-all"
                       type="text"
-                      value="John Doe"
+                      placeholder="John Doe"
                     />
                   </div>
 
@@ -124,7 +124,7 @@ export default function Profile() {
                     <input
                       className="w-full bg-white/5 border-white/10 rounded-xl px-4 py-3 text-[#F5F1E9] focus:ring-[#146875] focus:border-[#146875] transition-all"
                       type="email"
-                      value="john.doe@example.com"
+                      placeholder="john.doe@example.com"
                     />
                   </div>
 
@@ -135,7 +135,7 @@ export default function Profile() {
                     <input
                       className="w-full bg-white/5 border-white/10 rounded-xl px-4 py-3 text-[#F5F1E9] focus:ring-[#146875] focus:border-[#146875] transition-all"
                       type="tel"
-                      value="+1 (555) 000-0000"
+                      placeholder="+1 (555) 000-0000"
                     />
                   </div>
 
@@ -146,7 +146,7 @@ export default function Profile() {
                     <input
                       className="w-full bg-white/5 border-white/10 rounded-xl px-4 py-3 text-[#F5F1E9] focus:ring-[#146875] focus:border-[#146875] transition-all"
                       type="date"
-                      value="1990-05-15"
+                      placeholder="1990-05-15"
                     />
                   </div>
                 </div>
