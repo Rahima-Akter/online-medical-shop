@@ -5,7 +5,6 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import GridViewIcon from "@mui/icons-material/GridView";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import StarIcon from "@mui/icons-material/Star";
 import ViewSidebarIcon from "@mui/icons-material/ViewSidebar";
 import CancelIcon from "@mui/icons-material/Cancel";

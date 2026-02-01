@@ -19,7 +19,7 @@ export default function DashboardRootLayout({
   seller: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const role: UserRole = UserRoles.SELLER;
+  const role: UserRole = UserRoles.CUSTOMER;
 
   return (
     <div className="h-screen flex overflow-y-auto">
