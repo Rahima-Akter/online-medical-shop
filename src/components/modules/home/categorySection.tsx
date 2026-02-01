@@ -19,7 +19,6 @@ export default async function CategorySection() {
     <MedicationIcon fontSize="large" />,
     <MonitorHeart fontSize="large" />,
   ];
-  // const randomIcon = icons[Math.floor(Math.random() * icons.length)];
 
   return (
     <section className="bg-[#121e20] py-20">

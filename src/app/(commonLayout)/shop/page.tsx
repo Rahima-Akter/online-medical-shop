@@ -1,10 +1,9 @@
-import AllProducts from "@/components/modules/shop/allProducts";
-
+import AllProductsPage from "@/components/modules/shop/allProductsServer";
 
 export default function Shop() {
   return (
     <div className="bg-[#121e20]">
-      <AllProducts />
+      <AllProductsPage />
     </div>
   );
 }
