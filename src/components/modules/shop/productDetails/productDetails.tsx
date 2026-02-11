@@ -1,14 +1,45 @@
+"use client";
 import InfoIcon from "@mui/icons-material/Info";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import DescriptionIcon from "@mui/icons-material/Description";
 import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import SideEffects from "./sideEffects";
 import Reviews from "./Reviews";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { LocalMall } from "@mui/icons-material";
+import { Medicine } from "@/types/medicine";
+import { Spinner } from "@/components/ui/spinner";
+import Link from "next/link";
+import addToCartAction from "@/components/actions/cartAction";
+import { toast } from "sonner";
+import { useState } from "react";
+interface IMedicine {
+  medDetails: Medicine;
+  currentUserId: string;
+}
 
-export default function ProductDetails() {
+export default function ProductDetails({
+  medDetails,
+  currentUserId,
+}: IMedicine) {
+  const [loading, setLoading] = useState(false);
+  const [quantity, setQuantity] = useState<number>(1);
+
+  const handleAddToCart = async (id: string, quantity: number) => {
+    setLoading(true);
+    try {
+      await addToCartAction(id, quantity);
+      toast.success("Added to cart");
+      setQuantity(1);
+    } catch (err) {
+      toast.error("Could not add to cart!");
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="max-w-7xl mx-auto w-full px-6 py-8 font-[Inter,sans-serif]">
       {/* Breadcrumbs */}
@@ -24,11 +55,11 @@ export default function ProductDetails() {
           className="text-[#146976] text-sm font-medium hover:text-[#146976]"
           href="#"
         >
-          Pain Relief
+          {medDetails?.category.name}
         </a>
         <span className="text-[#146976]">/</span>
         <span className="text-[#5f878e] text-sm font-bold">
-          Amoxicillin Capsule
+          {medDetails?.name}
         </span>
       </nav>
 
@@ -39,8 +70,7 @@ export default function ProductDetails() {
             <div
               className="w-full h-full bg-center bg-no-repeat bg-contain"
               style={{
-                backgroundImage:
-                  'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAvkeGuvXSTK91QGRxcZXQlXeJkFYbT27oMriHCZglQDlHznju7Eq4KZMOzz16CztlsmQAU4iXgEWPqekCNp_deI-g9O_knuJdFNJr9OoeJeRnS9w6ZPGzM32HkixL3JTGpWa0V67LnLDmyOjDI39STkfesBLFg5UpufA9zr-IEvhqJih3hjgQdTvwtefF_RHamPbxxOPdp0FK4gIJpQamGnZVA2sr8N0vyPjCRKqgGL6-_b3p3q6M1JbOCM1fgA2bhRxDhXL1YDA")',
+                backgroundImage: `url(${medDetails?.img})`,
               }}
             />
           </div>
@@ -72,22 +102,31 @@ export default function ProductDetails() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="md:text-4xl text-3xl font-black text-white">
-                Amoxicillin 500mg Capsules
+                {medDetails?.name}
               </h1>
               <p className="text-[#146976]/90 font-semibold mt-1">
                 Manufacturer:{" "}
                 <span className="text-[#146976] hover:underline">
-                  PharmaHealth Global
+                  {medDetails?.manufacturer}
                 </span>
               </p>
             </div>
-            <span className="bg-[#EBBA92]/20 text-[#EBBA92] text-xs font-bold px-3 py-1.5 rounded-lg border border-[#EBBA92]/30 flex items-center justify-center">
-              In Stock
+            <span
+              className={`text-xs font-bold px-3 py-1.5 rounded-lg border flex items-center justify-center
+    ${
+      medDetails?.stock > 0
+        ? "bg-[#0e6d7b]/20 text-[#0e6d7b] border-[#0e6d7b]/30"
+        : "bg-[#ef4444]/20 text-[#ef4444] border-[#ef4444]/30"
+    }`}
+            >
+              {medDetails?.stock > 0 ? "In Stock" : "Out Of Stock"}
             </span>
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-3xl font-bold text-[#267481]">$24.99</span>
+            <span className="text-3xl font-bold text-[#267481]">
+              ৳{medDetails?.price}
+            </span>
             <span className="text-[#146976]/90 line-through">$35.00</span>
             <span className="bg-[#EBBA92]/30 text-white/70 text-xs font-bold px-2 py-1 rounded">
               Save 30%
@@ -100,25 +139,59 @@ export default function ProductDetails() {
               <span className="text-sm">Standard Dosage Instructions</span>
             </div>
             <p className="text-sm text-white/40">
-              Take one capsule every 8 hours, preferably after meals.
+              {medDetails?.dosage_instructions}
             </p>
           </div>
 
           {/* add to cart */}
-          <div className="flex gap-4 p-6 rounded-xl border border-[#146976]/50 md:flex-row flex-col">
+          <div className="flex md:flex-row flex-col gap-4 p-6 rounded-xl border border-[#146976]/50">
+            {/* Quantity Adjuster */}
             {/* Quantity Adjuster */}
             <div className="flex items-center justify-center border border-[#146976]/50 rounded-lg">
-              <button className="px-4 py-3 text-white">-</button>
-              <span className="px-4 font-bold text-white">1</span>
-              <button className="px-4 py-3 text-white">+</button>
+              <button
+                disabled={loading}
+                onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                className="px-4 py-3 text-white cursor-pointer"
+              >
+                -
+              </button>
+
+              <span className="px-4 font-bold text-white">{quantity}</span>
+
+              <button
+                disabled={loading}
+                onClick={() => setQuantity((prev) => prev + 1)}
+                className="px-4 py-3 text-white cursor-pointer"
+              >
+                +
+              </button>
             </div>
 
             {/* Add to Cart Button */}
-            <button className="w-full sm:w-auto bg-[#146976] text-white font-bold py-4 rounded-lg flex items-center justify-center gap-2 sm:flex-1">
-              <AddShoppingCartIcon />
-              Add to Cart
+            <button
+              disabled={loading}
+              onClick={() => handleAddToCart(`${medDetails?.id}`, quantity)}
+              className="w-full sm:w-auto bg-[#146976] text-white font-bold py-4 rounded-lg flex items-center justify-center gap-2 sm:flex-1 cursor-pointer hover:bg-[#248493]"
+            >
+              {loading ? (
+                <Spinner />
+              ) : (
+                <>
+                  {" "}
+                  <AddShoppingCartIcon />
+                  Add to Cart
+                </>
+              )}
             </button>
-
+            {/* CheckOut Button */}
+            <Link
+              href="/shop/checkout"
+              onClick={() => handleAddToCart(`${medDetails?.id}`, quantity)}
+              className="w-full sm:w-auto bg-[#146976] text-white font-bold py-4 rounded-lg flex items-center justify-center gap-2 sm:flex-1 cursor-pointer hover:bg-[#248493]"
+            >
+              <LocalMall />
+              CheckOut
+            </Link>
             {/* Favorite Button */}
             <button className="p-4 group hover:bg-[#e2d1c3] ease-in border border-[#146976]/50 rounded-lg text-[#146976]">
               <FavoriteBorderIcon className="group-hover:text-red-500 group-hover:scale-125 delay-100" />
@@ -132,7 +205,7 @@ export default function ProductDetails() {
                 Description
               </h3>
               <p className="text-sm text-[#1E3F45] mt-2">
-                Broad-spectrum penicillin antibiotic for bacterial infections.
+                {medDetails?.dosage_instructions}
               </p>
             </div>
 
@@ -153,15 +226,15 @@ export default function ProductDetails() {
           <div className="flex justify-between items-center bg-[#decfc1] p-4 rounded-xl border border-[#146976]/10">
             <div>
               <p className="text-xs font-extrabold text-[#146976] uppercase">
-                PharmaHealth Global
+                {medDetails?.manufacturer}
               </p>
               <p className="text-sm font-semibold text-[#1E3F45]">
                 GMP Certified Laboratory
               </p>
             </div>
-            <button className="text-xs font-bold text-[#146976] flex items-center gap-1">
+            {/* <button className="text-xs font-bold text-[#146976] flex items-center gap-1">
               View Brand Profile <ArrowForwardIcon fontSize="small" />
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
@@ -184,7 +257,7 @@ export default function ProductDetails() {
           transition-all
         "
             >
-              Customer Reviews (128)
+              Customer Reviews ({medDetails?.reviews.length})
             </TabsTrigger>
             <TabsTrigger
               value="side-effects"
@@ -202,50 +275,20 @@ export default function ProductDetails() {
             >
               Side Effects
             </TabsTrigger>
-            <TabsTrigger
-              value="customer-reviews"
-              className="
-          font-bold text-lg
-          text-[#146976] /* default text color */
-          data-[state=active]:text-[#146976] /* active text color */
-          data-[state=active]:bg-transparent /* remove background on active tab */
-          data-[state=inactive]:text-[#146976]/60 /* inactive text */
-          data-[state=inactive]:bg-transparent /* remove background on inactive tab */
-          hover:text-[#146976] /* hover color */
-          transition-all
-          data-[state=active]:font-extrabold
-        "
-            >
-              Product Details
-            </TabsTrigger>
           </TabsList>
         </div>
 
         {/* Tab Contents */}
         <div className="border-b border-[#146976]/70 -mt-10 mb-4"></div>
         <TabsContent value="product-details">
-          <Reviews />
+          <Reviews reviews={medDetails?.reviews} medicineId={medDetails.id} currentUserId={currentUserId} />
         </TabsContent>
 
         <TabsContent value="side-effects">
-          <SideEffects />
-        </TabsContent>
-
-        <TabsContent value="customer-reviews">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
-            <div className="flex flex-col gap-2">
-              <span className="font-extrabold text-white">Generic Name</span>
-              <p className="text-white font-medium">Amoxicillin Trihydrate</p>
-            </div>
-            <div className="flex flex-col gap-2">
-              <span className="font-extrabold text-white">SKU Number</span>
-              <p className="text-white font-medium">MS-AMOX-500-CAP-01</p>
-            </div>
-            <div className="flex flex-col gap-2">
-              <span className="font-extrabold text-white">Regulatory Body</span>
-              <p className="text-white font-medium">FDA Approved</p>
-            </div>
-          </div>
+          <SideEffects
+            sideEffects={medDetails?.side_effects}
+            seriousSideEffects={medDetails?.serious_side_effects}
+          />
         </TabsContent>
       </Tabs>
     </main>

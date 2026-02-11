@@ -1,9 +1,17 @@
-import ProductDetails from "@/components/modules/shop/productDetails/productDetails";
+import ProductDetailsServer from "@/components/modules/shop/productDetails/producDetailServer";
 
-export default function Details() {
+interface Iparams {
+  params: {
+    id: string;
+  };
+}
+
+export default async function Details({ params }: Iparams) {
+  const { id } = await params;
+
   return (
     <div className="bg-[#121e20]">
-      <ProductDetails />
+      <ProductDetailsServer id={id} />
     </div>
   );
 }

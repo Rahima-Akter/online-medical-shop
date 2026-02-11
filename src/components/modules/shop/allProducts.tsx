@@ -1,5 +1,4 @@
 "use client";
-
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -13,6 +12,9 @@ import Link from "next/link";
 import { Medicine } from "@/types/medicine";
 import { Category } from "@/types/category";
 import ItemNotFound from "@/components/shared/itemNotFound";
+import addToCartAction from "@/components/actions/cartAction";
+import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 interface IMedicine {
   medicines: Medicine[];
@@ -37,15 +39,15 @@ export default function AllProducts({
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortOrder, setSortOrder] = useState<"low" | "high" | "none">("none");
   const [medicineSearch, setMedicineSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [quantity, setQuantity] = useState<number>(1);
 
   const start = (currentPage - 1) * limit + 1;
   const end = Math.min(currentPage * limit, total);
 
-  // filtering function
   const filteredMedicines = useMemo(() => {
     let filtered = medicines;
 
-    // Manufacturer search
     if (manufacturerSearch.trim() !== "") {
       filtered = filtered.filter((m) =>
         m.manufacturer
@@ -54,21 +56,18 @@ export default function AllProducts({
       );
     }
 
-    // Medicine name search
     if (medicineSearch.trim() !== "") {
       filtered = filtered.filter((m) =>
         m.name.toLowerCase().includes(medicineSearch.trim().toLowerCase()),
       );
     }
 
-    // Category filter
     if (selectedCategories.length > 0) {
       filtered = filtered.filter((m) =>
         selectedCategories.includes(String(m.categoryId)),
       );
     }
 
-    // Price sort
     if (sortOrder === "low") {
       filtered = [...filtered].sort((a, b) => a.price - b.price);
     } else if (sortOrder === "high") {
@@ -83,6 +82,20 @@ export default function AllProducts({
     selectedCategories,
     sortOrder,
   ]);
+
+  const handleAddToCart = async (id: string, quantity: number) => {
+    setLoading(true);
+    try {
+      await addToCartAction(id, quantity);
+      toast.success("Added to cart");
+      setQuantity(1);
+    } catch (err) {
+      toast.error("Could not add to cart!");
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="max-w-360 mx-auto px-6 py-8 lg:flex gap-8 font-[Inter,sans-serif]">
@@ -261,19 +274,27 @@ export default function AllProducts({
                   </button>
                 </div>
                 <div className="p-5">
-                  <div className="flex items-center gap-1 mb-2 text-[#EBBA92]">
-                    <StarIcon className="text-xs" />
-                    <span className="text-xs font-bold text-gray-400">
-                      {product.reviews.length > 0
-                        ? (
-                            product.reviews.reduce(
-                              (acc, review) => acc + review.rating,
-                              0,
-                            ) / product.reviews.length
-                          ).toFixed(1)
-                        : "0"}{" "}
-                      ({product.reviews.length})
-                    </span>
+                  <div className="flex items-center justify-between mb-2 text-[#EBBA92]">
+                    <div className="flex items-center gap-1 mb-2 text-[#EBBA92]">
+                      <StarIcon className="text-xs" />
+                      <span className="text-xs font-bold text-gray-400">
+                        {product.reviews.length > 0
+                          ? (
+                              product.reviews.reduce(
+                                (acc, review) => acc + review.rating,
+                                0,
+                              ) / product.reviews.length
+                            ).toFixed(1)
+                          : "0"}{" "}
+                        ({product.reviews.length})
+                      </span>
+                    </div>
+                    <Link
+                      href={`/shop/${product.id}`}
+                      className="text-white -mt-1 bg-[#146976]/70 rounded-lg py-1 px-3 text-xs hover:font-bold hover:bg-[#146976]"
+                    >
+                      Details
+                    </Link>
                   </div>
                   <h3 className="font-bold text-gray-300 mb-1 line-clamp-1 group-hover:text-[#146976] transition-colors">
                     {product.name}
@@ -281,12 +302,23 @@ export default function AllProducts({
                   <p className="text-xs text-gray-400 mb-4 italic">
                     -{product.category.name}
                   </p>
+                  {/*  */}
                   <div className="flex items-center justify-between mt-auto">
                     <span className="text-xl font-bold text-[#EBBA92]">
                       ৳{product.price}
                     </span>
-                    <button className="w-10 h-10 bg-[#146976]/10 text-[#146976] rounded-[0.5rem] flex items-center justify-center hover:bg-[#146976] hover:text-white transition-all">
-                      <AddShoppingCartIcon className="text-sm" />
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToCart(`${product.id}`, quantity);
+                      }}
+                      className="w-10 h-10 bg-[#146976]/10 text-[#146976] rounded-xl flex items-center justify-center hover:bg-[#146976] hover:text-white transition-all cursor-pointer"
+                    >
+                      {loading ? (
+                        <Spinner />
+                      ) : (
+                        <AddShoppingCartIcon className="text-sm" />
+                      )}
                     </button>
                   </div>
                 </div>

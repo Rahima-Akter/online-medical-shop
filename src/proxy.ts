@@ -52,40 +52,149 @@
 //   ],
 // };
 
-import { NextRequest, NextResponse } from "next/server";
+// import { NextRequest, NextResponse } from "next/server";
 
-export function proxy(request: NextRequest) {
+// export function proxy(request: NextRequest) {
+//   const pathname = request.nextUrl.pathname;
+
+//   // ===== Dummy session =====
+//   const data = {
+//     role: "CUSTOMER", // ADMIN | SELLER | CUSTOMER
+//     loggedIn: true, // Simulate logged in
+//   };
+
+//   const { role, loggedIn } = data;
+
+//   // ===== Not logged in? go to login =====
+//   if (!loggedIn) {
+//     return NextResponse.redirect(new URL("/login", request.url));
+//   }
+
+//   // ===== Admin routes =====
+//   if (role === "ADMIN") {
+//     // If admin tries to access seller or customer dashboards
+//     if (
+//       pathname.startsWith("/seller-dashboard") ||
+//       pathname.startsWith("/dashboard")
+//     ) {
+//       return NextResponse.redirect(new URL("/admin-dashboard", request.url));
+//     }
+//     // Otherwise allow access (admin can go anywhere allowed)
+//     return NextResponse.next();
+//   }
+
+//   // ===== Seller routes =====
+//   if (role === "SELLER") {
+//     // If seller tries to access admin or customer dashboards
+//     if (
+//       pathname.startsWith("/admin-dashboard") ||
+//       pathname.startsWith("/dashboard")
+//     ) {
+//       return NextResponse.redirect(new URL("/seller-dashboard", request.url));
+//     }
+//     return NextResponse.next();
+//   }
+
+//   // ===== Customer routes =====
+//   if (role === "CUSTOMER") {
+//     // If customer tries to access admin or seller dashboards
+//     if (
+//       pathname.startsWith("/admin-dashboard") ||
+//       pathname.startsWith("/seller-dashboard")
+//     ) {
+//       return NextResponse.redirect(new URL("/dashboard", request.url));
+//     }
+
+//     return NextResponse.next();
+//   }
+
+//   return NextResponse.next();
+// }
+
+// export const config = {
+//   matcher: [
+//     "/profile",
+//     "/profile/:path*",
+//     "/dashboard",
+//     "/dashboard/:path*",
+//     "/admin-dashboard",
+//     "/admin-dashboard/:path*",
+//     "/seller-dashboard",
+//     "/seller-dashboard/:path*",
+//   ],
+// };
+
+import { NextRequest, NextResponse } from "next/server";
+import { authClient } from "./lib/auth-client";
+
+export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // ===== Dummy session =====
-  const data = {
-    role: "CUSTOMER", // ADMIN | SELLER | CUSTOMER
-    loggedIn: true, // Simulate logged in
-  };
+  // Get the session token from cookie
+  const sessionToken = request.cookies.get("better-auth.session_token")?.value;
 
-  const { role, loggedIn } = data;
+  // ===== Not logged in? redirect to login =====
+  if (!sessionToken) {
+    const loginUrl = new URL("/login", request.url);
 
-  // ===== Not logged in? go to login =====
+    // Save the page the user was trying to visit
+    loginUrl.searchParams.set(
+      "redirect",
+      request.nextUrl.pathname + request.nextUrl.search
+    );
+
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // ===== Fetch real session from auth backend =====
+  const { data: session, error } = await authClient.getSession({
+    fetchOptions: {
+      headers: {
+        Cookie: `better-auth.session_token=${sessionToken}`,
+      },
+    },
+  });
+
+  if (error || !session) {
+    // If session is invalid/expired, redirect to login
+    const loginUrl = new URL("/login", request.url);
+
+    // Save the page the user was trying to visit
+    loginUrl.searchParams.set(
+      "redirect",
+      request.nextUrl.pathname + request.nextUrl.search
+    );
+
+    return NextResponse.redirect(loginUrl);
+  }
+
+  const role = session.user?.role; // assume your session.user.role exists
+  const loggedIn = true; // session exists so user is logged in
+
   if (!loggedIn) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    const loginUrl = new URL("/login", request.url);
+
+    loginUrl.searchParams.set(
+      "redirect",
+      request.nextUrl.pathname + request.nextUrl.search
+    );
+
+    return NextResponse.redirect(loginUrl);
   }
 
   // ===== Admin routes =====
   if (role === "ADMIN") {
-    // If admin tries to access seller or customer dashboards
     if (
       pathname.startsWith("/seller-dashboard") ||
       pathname.startsWith("/dashboard")
     ) {
       return NextResponse.redirect(new URL("/admin-dashboard", request.url));
     }
-    // Otherwise allow access (admin can go anywhere allowed)
     return NextResponse.next();
   }
 
   // ===== Seller routes =====
   if (role === "SELLER") {
-    // If seller tries to access admin or customer dashboards
     if (
       pathname.startsWith("/admin-dashboard") ||
       pathname.startsWith("/dashboard")
@@ -97,17 +206,16 @@ export function proxy(request: NextRequest) {
 
   // ===== Customer routes =====
   if (role === "CUSTOMER") {
-    // If customer tries to access admin or seller dashboards
     if (
       pathname.startsWith("/admin-dashboard") ||
       pathname.startsWith("/seller-dashboard")
     ) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
-
     return NextResponse.next();
   }
 
+  // ===== fallback: allow access =====
   return NextResponse.next();
 }
 
@@ -115,6 +223,8 @@ export const config = {
   matcher: [
     "/profile",
     "/profile/:path*",
+    "/shop/checkout",
+    "/shop/checkout/:path*",
     "/dashboard",
     "/dashboard/:path*",
     "/admin-dashboard",
@@ -123,3 +233,4 @@ export const config = {
     "/seller-dashboard/:path*",
   ],
 };
+

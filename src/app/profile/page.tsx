@@ -1,9 +1,9 @@
-import Profile from "@/components/dashboard/shared/profile";
+import ProfileServerComponent from "@/components/dashboard/shared/profileServerCom";
 
 export default function UserProfile() {
   return (
     <div className="">
-        <Profile />
+        <ProfileServerComponent />
     </div>
   )
 }

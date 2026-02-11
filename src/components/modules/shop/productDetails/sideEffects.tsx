@@ -1,12 +1,16 @@
 import WarningIcon from "@mui/icons-material/Warning";
 import SickIcon from "@mui/icons-material/Sick";
-import CoronavirusIcon from "@mui/icons-material/Coronavirus";
-import WaterDropIcon from "@mui/icons-material/WaterDrop";
 import EmergencyIcon from "@mui/icons-material/Emergency";
-import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 
-export default function SideEffects() {
+interface IsideEffects {
+  sideEffects: string[];
+  seriousSideEffects: string[];
+}
+
+export default function SideEffects({
+  sideEffects,
+  seriousSideEffects,
+}: IsideEffects) {
   return (
     <section className="bg-[#1E3F45] p-10 rounded-[0.75rem] shadow-2xl">
       <div className="mb-8">
@@ -29,35 +33,19 @@ export default function SideEffects() {
           </h3>
 
           <div className="grid grid-cols-1 gap-4">
-            <div className="flex items-start gap-4 p-4 rounded-lg bg-[#146976]/5 border border-[#146976]/10">
-              <SickIcon className="text-[#146976]" />
-              <div>
-                <p className="font-bold text-[#1E3F45]">Nausea &amp; Vomiting</p>
-                <p className="text-sm text-[#1E3F45]/60">
-                  Milder stomach upset often occurring within first 2 days.
-                </p>
+            {sideEffects.map((e) => (
+              <div
+                key={e}
+                className="flex items-start gap-4 p-4 rounded-lg bg-[#146976]/5 border border-[#146976]/10"
+              >
+                <SickIcon className="text-[#146976]" />
+                <div>
+                  <p key={e} className="font-bold text-[#1E3F45]">
+                    {e}
+                  </p>
+                </div>
               </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-4 rounded-lg bg-[#146976]/5 border border-[#146976]/10">
-              <CoronavirusIcon className="text-[#146976]" />
-              <div>
-                <p className="font-bold text-[#1E3F45]">Mild Skin Rash</p>
-                <p className="text-sm text-[#1E3F45]/60">
-                  Non-itchy, pink or red spots on the body.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-4 rounded-lg bg-[#146976]/5 border border-[#146976]/10">
-              <WaterDropIcon className="text-[#146976]" />
-              <div>
-                <p className="font-bold text-[#1E3F45]">Diarrhea</p>
-                <p className="text-sm text-[#1E3F45]/60">
-                  Loose stools, typically resolve after course completion.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
@@ -69,38 +57,20 @@ export default function SideEffects() {
           </h3>
 
           <div className="grid grid-cols-1 gap-4">
-            <div className="flex items-start gap-4 p-4 rounded-lg bg-[#EBBA92]/10 border border-[#EBBA92]/30">
-              <EmergencyIcon className="text-[#1E3F45]" />
-              <div>
-                <p className="font-bold text-[#1E3F45]">Anaphylaxis</p>
-                <p className="text-sm text-[#1E3F45]/60">
-                  Severe allergic reaction. Seek immediate medical attention.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-4 rounded-lg bg-[#EBBA92]/10 border border-[#EBBA92]/30">
-              <MonitorHeartIcon className="text-[#1E3F45]" />
-              <div>
-                <p className="font-bold text-[#1E3F45]">
-                  Severe Abdominal Pain
-                </p>
-                <p className="text-sm text-[#1E3F45]/60">
-                  Could indicate a serious intestinal condition (C. diff).
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-4 rounded-lg bg-[#EBBA92]/10 border border-[#EBBA92]/30">
-              <VisibilityIcon className="text-[#1E3F45]" />
-              <div>
-                <p className="font-bold text-[#1E3F45]">
-                  Yellowing of Eyes/Skin
-                </p>
-                <p className="text-sm text-[#1E3F45]/60">
-                  Signs of liver problems. Contact physician immediately.
-                </p>
-              </div>
+            <div className="grid grid-cols-1 gap-4">
+              {seriousSideEffects.map((e) => (
+                <div
+                  key={e}
+                  className="flex items-start gap-4 p-4 rounded-lg bg-[#146976]/5 border border-[#146976]/10"
+                >
+                  <EmergencyIcon className="text-[#146976]" />
+                  <div>
+                    <p key={e} className="font-bold text-[#1E3F45]">
+                      {e}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

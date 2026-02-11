@@ -1,8 +1,10 @@
 import { env } from "@/env";
 
+const url = env.BACKEND_URL;
+
 export const getAllMedicine = async () => {
   try {
-    const res = await fetch(`${env.BACKEND_URL}/api/medicine`, {
+    const res = await fetch(`${url}/api/medicine`, {
       headers: {
         "content-type": "application/json",
       },
@@ -13,7 +15,6 @@ export const getAllMedicine = async () => {
     }
 
     const medicines = await res.json();
-    // console.log(medicines)
 
     return {
       medicines: medicines.data.data,
@@ -25,5 +26,15 @@ export const getAllMedicine = async () => {
   } catch (err) {
     console.error(err);
     return { medicines: [], total: 0, currentPage: 1, limit: 10 };
+  }
+};
+
+export const medcineById = async (id: string) => {
+  try {
+    const res = await fetch(`${url}/api/medicine/${id}`);
+    const medDetails = res.json();
+    return medDetails;
+  } catch (err) {
+    console.error(err);
   }
 };
