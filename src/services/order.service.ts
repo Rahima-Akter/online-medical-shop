@@ -1,5 +1,5 @@
+import { GetOrdersResponse } from "@/types/order";
 import { cookies } from "next/headers";
-// import { toast } from "sonner";
 
 interface CartItem {
   medicineId: string;
@@ -15,64 +15,71 @@ interface OrderPayload {
 }
 
 export const placeOrder = async (order: OrderPayload) => {
+  const cookieStore = await cookies();
+  const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+
+  if (!sessionToken) {
+    console.error("No session token found");
+    throw new Error("User is not authenticated");
+  }
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/order`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `better-auth.session_token=${sessionToken}`,
+      },
+      credentials: "include",
+      body: JSON.stringify(order),
+    }
+  );
+
+  if (!res.ok) {
+    const text = res.statusText;
+    console.error("Order request failed:", text);
+    throw new Error(`Checkout failed: ${res.status} ${res.statusText}`);
+  }
+
+  const data = await res.json();
+
+  return data;
+};
+
+
+export const allOrders = async (
+  page: number,
+  limit: number,
+): Promise<GetOrdersResponse | null> => {
   try {
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get("better-auth.session_token")?.value;
 
-    if (!sessionToken) return [];
+    if (!sessionToken) return null;
+
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/order`,
+      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/order?page=${page}&limit=${limit}`,
       {
-        method: "POST",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Cookie: `better-auth.session_token=${sessionToken}`,
         },
         credentials: "include",
-        next: { revalidate: 5 },
-        body: JSON.stringify(order),
-      },
-    );
-
-    console.log(res);
-    if (!res.ok) {
-      throw new Error(`Checkout failed: ${res.statusText}`);
-    }
-    const data = await res.json();
-    // toast.success("Order placed successfully");
-
-    return data;
-  } catch (err) {
-    // toast.error("Could not place order");
-    console.error(err);
-  }
-};
-
-export const allOrders = async () => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/order`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        next: { revalidate: 5 },
+        cache: "no-store",
       },
     );
 
     if (!res.ok) {
-      throw new Error(`fetching orders failed: ${res.status}`);
+      throw new Error(`Fetching orders failed: ${res.statusText}`);
     }
 
-    const data = await res.json();
-    // toast.success("Order fetched successfully");
-
+    const data: GetOrdersResponse = await res.json();
     return data;
   } catch (err) {
-    // toast.error("Could not fetch order");
     console.error(err);
+    return null;
   }
 };
 
@@ -107,29 +114,28 @@ export const updateOrder = async (status: string) => {
 
 export const getSingleOrder = async (id: string) => {
   try {
+    const cookieStore = await cookies();
+    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+
+    if (!sessionToken) return [];
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/order`,
+      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/order/${id}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Cookie: `better-auth.session_token=${sessionToken}`,
         },
-        credentials: "include",
         next: { revalidate: 5 },
-        body: JSON.stringify({ id }),
       },
     );
 
     if (!res.ok) {
       throw new Error(`Error: ${res.status}`);
     }
-
     const data = await res.json();
-    // toast.success("Order Fetched");
-
     return data;
   } catch (err) {
-    // toast.error("Something Went Wrong!");
     console.error(err);
   }
 };

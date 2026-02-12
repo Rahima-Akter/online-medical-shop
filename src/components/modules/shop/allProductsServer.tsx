@@ -1,19 +1,16 @@
-import { getAllMedicine } from "@/services/medicine.service";
-import AllProducts from "./allProducts";
 import { getAllCategory } from "@/services/category.service";
+import AllProducts from "./allProducts";
 
-export default async function AllProductsPage() {
-  const { medicines, total, currentPage, limit,totalPages } = await getAllMedicine();
-  const allCategory = await getAllCategory()
+export default async function AllProductsPage({
+  searchParams,
+}: {
+  searchParams: { page?: string; limit?: string };
+}) {
+  
+  const allCategory = await getAllCategory();
 
-  return (
-    <AllProducts
-      medicines={medicines}
-      total={total}
-      currentPage={currentPage}
-      limit={limit}
-      totalPages={totalPages}
-      allCategory={allCategory}
-    />
-  );
+  const page = Number(searchParams?.page) || 1;
+  const limit = Number(searchParams?.limit) || 10;
+
+  return <AllProducts allCategory={allCategory} initialPage={page} limit={limit} />;
 }

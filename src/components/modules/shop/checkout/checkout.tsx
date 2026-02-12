@@ -54,17 +54,19 @@ export default function CheckOutPage({
         shippingAddress,
         phoneNumber,
         items: cartItems.map((item) => ({
+          cartItemId: item.id,
           medicineId: item.medicineId,
           sellerId: item.sellerId,
           quantity: item.quantity,
           price: item.price,
         })),
       });
+
       toast.success("Order placed successfully!");
       setCartItems([]);
       router.push("/shop");
     } catch (err) {
-      console.error(err);
+      console.error("Place order error:", err);
       toast.error("Failed to place order");
     } finally {
       setLoading(false);
@@ -164,17 +166,21 @@ export default function CheckOutPage({
             <div className="flex justify-between text-sm text-[#55a0ab]">
               <span>Subtotal</span>
               <span className="font-bold text-white">
-                ${subtotal.toFixed(2)}
+                <span className="text-xl">৳</span>
+                {subtotal.toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between text-sm text-[#55a0ab]">
-              <span>Shipping</span>
-              <span className="text-green-500 font-bold">{shipping}</span>
+              <span>Delivery Charge</span>
+              <span className="text-green-500 font-bold">
+                <span className="text-xl">৳</span>
+                {shipping}
+              </span>
             </div>
             <div className="pt-3 border-t border-[#146976]/20 flex justify-between items-center">
               <span className="text-lg font-bold text-white">Total Amount</span>
               <span className="text-2xl font-black text-[#EBBA92]">
-                ${totalAmount.toFixed(2)}
+                ৳{totalAmount.toFixed(2)}
               </span>
             </div>
           </div>

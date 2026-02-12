@@ -156,7 +156,6 @@ export async function proxy(request: NextRequest) {
   });
 
   if (error || !session) {
-    // If session is invalid/expired, redirect to login
     const loginUrl = new URL("/login", request.url);
 
     // Save the page the user was trying to visit
@@ -215,7 +214,6 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // ===== fallback: allow access =====
   return NextResponse.next();
 }
 
@@ -226,6 +224,8 @@ export const config = {
     "/shop/checkout",
     "/shop/checkout/:path*",
     "/dashboard",
+    "/my-orders",
+    "/my-orders/:path",
     "/dashboard/:path*",
     "/admin-dashboard",
     "/admin-dashboard/:path*",

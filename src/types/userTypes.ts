@@ -1,8 +1,4 @@
-export interface UserTypes {
-  admin: string;
-  customer: string;
-  seller: string;
-}
+import { UserRole } from "@/roles/roles";
 
 export interface User {
   id: string;
@@ -15,7 +11,7 @@ export interface User {
   date_of_birth?: string;
   blood_type?: string;
   phone_number?: string;
-  role?: string;
+  role?: UserRole;
   default_shipping_address?: string;
 }
 

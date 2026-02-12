@@ -1,13 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import {
   Cancel as CancelIcon,
   MenuOpen as MenuOpenIcon,
 } from "@mui/icons-material";
-import { UserRole, UserRoles } from "@/roles/roles";
 import RoutesNavigation from "@/routes/routes";
+import UserAction from "@/components/actions/userAction";
+import { UserRole, UserRoles } from "@/roles/roles";
 
 export default function DashboardRootLayout({
   admin,
@@ -19,7 +20,16 @@ export default function DashboardRootLayout({
   seller: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const role: UserRole = UserRoles.CUSTOMER;
+  const [role, setRole] = useState<UserRole | null>(null);
+
+  useEffect(() => {
+    async function fetchRole() {
+      const result = await UserAction();
+      setRole(result);
+    }
+
+    fetchRole();
+  }, []);
 
   return (
     <div className="h-screen flex overflow-y-auto">
@@ -52,9 +62,11 @@ export default function DashboardRootLayout({
           </div>
         </div>
 
-        <nav className="flex-1 space-y-1 mt-4">
-          <RoutesNavigation role={role} />
-        </nav>
+        {role && (
+          <nav className="flex-1 space-y-1 mt-4">
+            <RoutesNavigation role={role} />
+          </nav>
+        )}
 
         <div className="p-4 border-t border-[#146976]/20">
           <div className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-red-500/10 hover:text-red-400 cursor-pointer transition-colors">
@@ -95,7 +107,6 @@ export default function DashboardRootLayout({
         {role === UserRoles.CUSTOMER && customer}
         {role === UserRoles.SELLER && seller}
         {role === UserRoles.ADMIN && admin}
-        
       </div>
 
       {/* Sidebar Toggle Button */}

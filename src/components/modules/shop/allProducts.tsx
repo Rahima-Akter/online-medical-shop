@@ -7,7 +7,7 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import StarIcon from "@mui/icons-material/Star";
 import ViewSidebarIcon from "@mui/icons-material/ViewSidebar";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { Medicine } from "@/types/medicine";
 import { Category } from "@/types/category";
@@ -15,56 +15,80 @@ import ItemNotFound from "@/components/shared/itemNotFound";
 import addToCartAction from "@/components/actions/cartAction";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
+import { useRouter, useSearchParams } from "next/navigation";
+import { getAllMedicine } from "@/services/medicine.service";
 
-interface IMedicine {
-  medicines: Medicine[];
-  total: number;
-  currentPage: number;
-  limit: number;
-  totalPages: number;
+interface IMedicineProps {
   allCategory: Category[];
+  initialPage: number;
+  limit: number;
 }
 
-export default function AllProducts({
-  medicines,
-  total,
-  currentPage: pageCurrent,
-  limit,
-  totalPages,
-  allCategory,
-}: IMedicine) {
+export default function AllProducts({ allCategory, initialPage, limit }: IMedicineProps) {
+  const [medicines, setMedicines] = useState<Medicine[]>([]);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(pageCurrent);
   const [manufacturerSearch, setManufacturerSearch] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortOrder, setSortOrder] = useState<"low" | "high" | "none">("none");
   const [medicineSearch, setMedicineSearch] = useState("");
-  const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState<number>(1);
 
-  const start = (currentPage - 1) * limit + 1;
-  const end = Math.min(currentPage * limit, total);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get("page")) || initialPage;
 
+  // Fetch medicines from API
+  const fetchMedicines = async (page: number) => {
+    setLoading(true);
+    try {
+      const res = await getAllMedicine(page, limit);
+      setMedicines(res.medicines);
+      setTotal(res.total);
+      setTotalPages(res.totalPages);
+    } catch (err) {
+      console.error(err);
+      setMedicines([]);
+      setTotal(0);
+      setTotalPages(1);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Trigger fetch on page change
+  useEffect(() => {
+    fetchMedicines(currentPage);
+  }, [currentPage]);
+
+  // Pagination handler
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", page.toString());
+    router.push(`?${params.toString()}`);
+  };
+
+  // Filtered & Sorted Medicines
   const filteredMedicines = useMemo(() => {
     let filtered = medicines;
 
-    if (manufacturerSearch.trim() !== "") {
+    if (manufacturerSearch.trim()) {
       filtered = filtered.filter((m) =>
-        m.manufacturer
-          .toLowerCase()
-          .includes(manufacturerSearch.trim().toLowerCase()),
+        m.manufacturer.toLowerCase().includes(manufacturerSearch.toLowerCase())
       );
     }
 
-    if (medicineSearch.trim() !== "") {
+    if (medicineSearch.trim()) {
       filtered = filtered.filter((m) =>
-        m.name.toLowerCase().includes(medicineSearch.trim().toLowerCase()),
+        m.name.toLowerCase().includes(medicineSearch.toLowerCase())
       );
     }
 
-    if (selectedCategories.length > 0) {
+    if (selectedCategories.length) {
       filtered = filtered.filter((m) =>
-        selectedCategories.includes(String(m.categoryId)),
+        selectedCategories.includes(String(m.categoryId))
       );
     }
 
@@ -75,13 +99,7 @@ export default function AllProducts({
     }
 
     return filtered;
-  }, [
-    medicines,
-    manufacturerSearch,
-    medicineSearch,
-    selectedCategories,
-    sortOrder,
-  ]);
+  }, [medicines, manufacturerSearch, medicineSearch, selectedCategories, sortOrder]);
 
   const handleAddToCart = async (id: string, quantity: number) => {
     setLoading(true);
@@ -97,6 +115,9 @@ export default function AllProducts({
     }
   };
 
+  const start = (currentPage - 1) * limit + 1;
+  const end = Math.min(currentPage * limit, total);
+
   return (
     <main className="max-w-360 mx-auto px-6 py-8 lg:flex gap-8 font-[Inter,sans-serif]">
       {/* Sidebar Toggle */}
@@ -111,7 +132,7 @@ export default function AllProducts({
 
       {/* Sidebar */}
       <aside
-        className={`w-64 shrink-0 lg:block fixed lg:relative bottom-0 left-0 h-[95%] lg:h-auto z-20 transition-transform bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-800
+        className={`w-64 shrink-0 lg:block fixed lg:relative bottom-0 left-0 h-[95%] lg:h-auto z-20 transition-transform bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-800 scroll-auto
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
       >
         <div className="sticky top-24">
@@ -145,9 +166,7 @@ export default function AllProducts({
                     checked={selectedCategories.includes(cat.id)}
                     onChange={() => {
                       if (selectedCategories.includes(cat.id)) {
-                        setSelectedCategories(
-                          selectedCategories.filter((c) => c !== cat.id),
-                        );
+                        setSelectedCategories(selectedCategories.filter((c) => c !== cat.id));
                       } else {
                         setSelectedCategories([...selectedCategories, cat.id]);
                       }
@@ -162,7 +181,7 @@ export default function AllProducts({
             </div>
           </div>
 
-          {/* Search Medicine by Name */}
+          {/* Medicine Search */}
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
               Search Medicine
@@ -196,16 +215,11 @@ export default function AllProducts({
       <section className="flex-1">
         {/* Breadcrumbs */}
         <div className="flex items-center gap-2 mb-6">
-          <Link
-            className="text-xs font-medium text-gray-400 hover:text-[#146976]"
-            href="/"
-          >
+          <Link className="text-xs font-medium text-gray-400 hover:text-[#146976]" href="/">
             Home
           </Link>
           <span className="text-xs text-gray-600">›</span>
-          <span className="text-xs font-bold text-[#146976]">
-            Medicine Shop
-          </span>
+          <span className="text-xs font-bold text-[#146976]">Medicine Shop</span>
         </div>
 
         {/* Toolbar */}
@@ -215,7 +229,7 @@ export default function AllProducts({
               Medicines &amp; Supplements
             </h1>
             <p className="text-sm text-gray-400 mt-1">
-              Showing {start}-{end} of {filteredMedicines.length} products
+              Showing {start}-{end} of {total} products
             </p>
           </div>
 
@@ -228,7 +242,7 @@ export default function AllProducts({
                     ? "low"
                     : e.target.value === "high"
                       ? "high"
-                      : "none",
+                      : "none"
                 )
               }
               className="appearance-none bg-gray-800 border border-gray-600 rounded-[0.5rem] py-2 pl-4 pr-10 text-sm focus:ring-[#146976] focus:border-[#146976] text-white"
@@ -246,7 +260,11 @@ export default function AllProducts({
         </div>
 
         {/* Product Grid */}
-        {filteredMedicines.length === 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center min-h-[50vh] text-white">
+            <Spinner />
+          </div>
+        ) : filteredMedicines.length === 0 ? (
           <ItemNotFound />
         ) : (
           <div
@@ -273,17 +291,15 @@ export default function AllProducts({
                     <FavoriteIcon className="text-sm" />
                   </button>
                 </div>
-                <div className="p-5">
+                <div className="p-5 flex flex-col flex-1">
                   <div className="flex items-center justify-between mb-2 text-[#EBBA92]">
                     <div className="flex items-center gap-1 mb-2 text-[#EBBA92]">
                       <StarIcon className="text-xs" />
                       <span className="text-xs font-bold text-gray-400">
                         {product.reviews.length > 0
                           ? (
-                              product.reviews.reduce(
-                                (acc, review) => acc + review.rating,
-                                0,
-                              ) / product.reviews.length
+                              product.reviews.reduce((acc, r) => acc + r.rating, 0) /
+                              product.reviews.length
                             ).toFixed(1)
                           : "0"}{" "}
                         ({product.reviews.length})
@@ -302,7 +318,6 @@ export default function AllProducts({
                   <p className="text-xs text-gray-400 mb-4 italic">
                     -{product.category.name}
                   </p>
-                  {/*  */}
                   <div className="flex items-center justify-between mt-auto">
                     <span className="text-xl font-bold text-[#EBBA92]">
                       ৳{product.price}
@@ -314,11 +329,7 @@ export default function AllProducts({
                       }}
                       className="w-10 h-10 bg-[#146976]/10 text-[#146976] rounded-xl flex items-center justify-center hover:bg-[#146976] hover:text-white transition-all cursor-pointer"
                     >
-                      {loading ? (
-                        <Spinner />
-                      ) : (
-                        <AddShoppingCartIcon className="text-sm" />
-                      )}
+                      {loading ? <Spinner /> : <AddShoppingCartIcon className="text-sm" />}
                     </button>
                   </div>
                 </div>
@@ -329,62 +340,32 @@ export default function AllProducts({
 
         {/* Pagination */}
         <div className="flex items-center gap-2 justify-center mt-10">
-          {/* Prev Button */}
           <button
-            onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
-            className="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-800 text-yellow-200 hover:text-[#146976] border border-gray-800"
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
           >
-            <ArrowBackIosNewIcon />
+            <ArrowBackIosNewIcon/>
           </button>
 
-          {/* Page Buttons */}
-          {Array.from({ length: totalPages }).map((_, i) => {
-            const page = i + 1;
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={`px-4 py-2 rounded ${
+                currentPage === index + 1 ? "bg-blue-600 text-white" : "bg-gray-200"
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
 
-            // Show first page, last page, or current ±1
-            if (
-              page === 1 ||
-              page === totalPages ||
-              Math.abs(currentPage - page) <= 1
-            ) {
-              return (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={`w-10 h-10 flex items-center justify-center rounded-lg ${
-                    page === currentPage
-                      ? "bg-[#146976] text-white font-bold"
-                      : "bg-gray-800 text-gray-400 hover:text-[#146976] border border-gray-800"
-                  }`}
-                >
-                  {page}
-                </button>
-              );
-            }
-
-            // Show dots if skipping pages
-            if (
-              (page === 2 && currentPage > 3) ||
-              (page === totalPages - 1 && currentPage < totalPages - 2)
-            ) {
-              return (
-                <span key={page} className="text-gray-400 px-2">
-                  ...
-                </span>
-              );
-            }
-
-            return null;
-          })}
-
-          {/* Next Button */}
           <button
-            onClick={() =>
-              setCurrentPage(Math.min(currentPage + 1, totalPages))
-            }
-            className="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-800 text-yellow-200 hover:text-[#146976] border border-gray-800"
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(currentPage + 1)}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
           >
-            <ArrowForwardIosIcon />
+            <ArrowForwardIosIcon/>
           </button>
         </div>
       </section>

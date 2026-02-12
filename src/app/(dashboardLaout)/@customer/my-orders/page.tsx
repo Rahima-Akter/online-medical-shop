@@ -1,9 +1,5 @@
-import MyOrders from "@/components/dashboard/customer/myOrders";
+import MyOrders from "@/components/dashboard/customer/orders/myOrders";
 
-export default function Orders() {
-  return (
-    <div>
-      <MyOrders/>
-    </div>
-  )
+export default function OrdersPage({ searchParams }: { searchParams?: { page?: string; limit?: string } }) {
+  return <MyOrders searchParams={searchParams} />;
 }

@@ -1,15 +1,17 @@
-import { env } from "@/env";
+// import { env } from "@/env";
 
-const url = env.BACKEND_URL;
+// const url = env.BACKEND_URL;
+const url = process.env.NEXT_PUBLIC_BETTER_AUTH_URL;
 
-export const getAllMedicine = async () => {
+export const getAllMedicine = async (page: number, limit: number) => {
   try {
-    const res = await fetch(`${url}/api/medicine`, {
+    const res = await fetch(`${url}/api/medicine?page=${page}&limit=${limit}`, {
       headers: {
         "content-type": "application/json",
       },
-      next: { revalidate: 10 },
+      cache: "no-store",
     });
+
     if (!res.ok) {
       throw new Error("Faild to fetch data");
     }
