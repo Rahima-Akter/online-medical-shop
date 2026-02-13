@@ -1,9 +1,18 @@
 "use server";
-import { addToCart } from "@/services/cart.service";
+import {
+  addToCart,
+  getAllCartItems,
+  updateQuantity,
+} from "@/services/cart.service";
 
-export default async function addToCartAction(
-  medicineId: string,
-  quantity: number,
-) {
+export async function addToCartAction(medicineId: string, quantity: number) {
   return await addToCart(medicineId, quantity);
+}
+
+export async function updateCartAction(medicineId: string, quantity: number) {
+  return await updateQuantity(medicineId, quantity);
+}
+
+export async function allCartItemsAction() {
+  return await getAllCartItems();
 }

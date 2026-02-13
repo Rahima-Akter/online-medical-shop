@@ -11,7 +11,7 @@ import { LocalMall } from "@mui/icons-material";
 import { Medicine } from "@/types/medicine";
 import { Spinner } from "@/components/ui/spinner";
 import Link from "next/link";
-import addToCartAction from "@/components/actions/cartAction";
+import {addToCartAction} from "@/components/actions/cartAction";
 import { toast } from "sonner";
 import { useState } from "react";
 interface IMedicine {
@@ -145,7 +145,6 @@ export default function ProductDetails({
 
           {/* add to cart */}
           <div className="flex md:flex-row flex-col gap-4 p-6 rounded-xl border border-[#146976]/50">
-            {/* Quantity Adjuster */}
             {/* Quantity Adjuster */}
             <div className="flex items-center justify-center border border-[#146976]/50 rounded-lg">
               <button

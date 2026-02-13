@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-// import { toast } from "sonner";
 
 export const addToCart = async (medicineId: string, quantity: number) => {
   try {
@@ -19,18 +18,15 @@ export const addToCart = async (medicineId: string, quantity: number) => {
         body: JSON.stringify({ medicineId, quantity }),
       },
     );
-    // console.log(res);
 
     if (!res.ok) {
       throw new Error(`Error: ${res.status}`);
     }
 
     const data = await res.json();
-    // toast.success("Added to cart 🛒");
 
     return data;
   } catch (err) {
-    // toast.error("Could not add to cart");
     console.error(err);
   }
 };
@@ -49,7 +45,8 @@ export const getAllCartItems = async () => {
           "Content-Type": "application/json",
           Cookie: `better-auth.session_token=${sessionToken}`,
         },
-        next: { revalidate: 5 },
+        credentials: "include",
+        cache: "no-store",
       },
     );
 
@@ -60,7 +57,6 @@ export const getAllCartItems = async () => {
     const data = await res.json();
     return data.data;
   } catch (err) {
-    // toast.error("Could not fetch cart");
     console.error(err);
     return [];
   }
@@ -85,23 +81,26 @@ export const deleteCartItem = async (medicineId: string) => {
     }
 
     const data = await res.json();
-    // toast.success("Item Deleted");
 
     return data;
   } catch (err) {
-    // toast.error("Faild To Delete");
     console.error(err);
   }
 };
 
 export const updateQuantity = async (medicineId: string, quantity: number) => {
   try {
+    const cookieStore = await cookies();
+    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+
+    if (!sessionToken) return [];
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/cart/update-quantity`,
       {
-        method: "PATCH",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Cookie: `better-auth.session_token=${sessionToken}`,
         },
         credentials: "include",
         body: JSON.stringify({ medicineId, quantity }),
@@ -116,7 +115,6 @@ export const updateQuantity = async (medicineId: string, quantity: number) => {
 
     return data;
   } catch (err) {
-    // toast.error("Something went wrong! Please try again");
     console.error(err);
   }
 };
