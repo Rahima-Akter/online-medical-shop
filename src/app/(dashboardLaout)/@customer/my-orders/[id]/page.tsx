@@ -1,8 +1,14 @@
-import OrderDetails from "@/components/dashboard/customer/singleOrderDetails";
-export default function OrderDetail() {
+import OrderDetails from "@/components/dashboard/customer/orders/singleOrderDetails";
+
+export default async function OrderDetail({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   return (
     <div>
-        <OrderDetails/>
+      <OrderDetails id={id} />
     </div>
-  )
+  );
 }

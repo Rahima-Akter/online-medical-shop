@@ -29,9 +29,6 @@ export default async function MyOrders({ searchParams }: MyOrdersProps) {
             Customer Dashboard
           </h2>
         </div>
-        <div className="h-8 w-8 rounded-full bg-[#146875]/30 border border-[#146875]/50 flex items-center justify-center text-[#146875] font-bold text-xs ring-1 ring-white/10">
-          JD
-        </div>
       </header>
 
       <div className="p-6 md:p-10 max-w-6xl mx-auto w-full space-y-8">
@@ -102,9 +99,11 @@ export default async function MyOrders({ searchParams }: MyOrdersProps) {
                 </div>
 
                 <div className="flex items-center">
-                  <button className="w-full md:w-auto h-11 px-8 bg-[#146875]/20 hover:bg-[#146875] border border-[#146875]/50 text-white text-xs font-black uppercase tracking-widest rounded-lg transition-all active:scale-95 shadow-lg">
-                    View Details
-                  </button>
+                  <Link href={`/my-orders/${order.id}`}>
+                    <button className="w-full md:w-auto h-11 px-8 bg-[#146875]/20 hover:bg-[#146875] border border-[#146875]/50 text-white text-xs font-black uppercase tracking-widest rounded-lg transition-all active:scale-95 shadow-lg cursor-pointer">
+                      View Details
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>

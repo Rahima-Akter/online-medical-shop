@@ -278,16 +278,16 @@ export default function CustomerDashboard() {
                 <div className="flex gap-4">
                   <div className="mt-1 w-1.5 h-1.5 rounded-full bg-[#EBBA92] shrink-0"></div>
                   <p className="text-sm text-gray-300 leading-relaxed italic">
-                    "Stay hydrated: Drink at least 8 glasses of water daily to
-                    help your kidneys flush medications efficiently."
+                    &quot;Stay hydrated: Drink at least 8 glasses of water daily to
+                    help your kidneys flush medications efficiently.&quot;
                   </p>
                 </div>
 
                 <div className="flex gap-4">
                   <div className="mt-1 w-1.5 h-1.5 rounded-full bg-[#EBBA92] shrink-0"></div>
                   <p className="text-sm text-gray-300 leading-relaxed italic">
-                    "Always finish your antibiotic course even if you feel
-                    better to prevent bacterial resistance."
+                    &quot;Always finish your antibiotic course even if you feel
+                    better to prevent bacterial resistance.&quot;
                   </p>
                 </div>
               </div>

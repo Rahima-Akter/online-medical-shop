@@ -126,7 +126,7 @@ export const getSingleOrder = async (id: string) => {
           "Content-Type": "application/json",
           Cookie: `better-auth.session_token=${sessionToken}`,
         },
-        next: { revalidate: 5 },
+        cache: "no-store",
       },
     );
 

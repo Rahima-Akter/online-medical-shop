@@ -1,4 +1,4 @@
-export type OrderStatus = "PLACED" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+export type OrderStatus = "PLACED" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
 
 export type OrderItem = {
   id: string;
@@ -7,6 +7,12 @@ export type OrderItem = {
   sellerId: string;
   quantity: number;
   price: number;
+   medicine: {
+    name: string;
+    category: {
+      name: string;
+    };
+  };
 };
 
 export type PlaceOrderPayload = {
