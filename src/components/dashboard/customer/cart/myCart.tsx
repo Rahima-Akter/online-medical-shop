@@ -1,19 +1,34 @@
 "use client";
 import {
   allCartItemsAction,
+  deleteCartAction,
   updateCartAction,
 } from "@/components/actions/cartAction";
 import { Spinner } from "@/components/ui/spinner";
 import { CartItem } from "@/types/cart";
 import { Add, ArrowForward, Delete, Info, Remove } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 // export default function MyCart({ cartItems }: { cartItems: CartItem[] }) {
 export default function MyCart() {
   const [items, setItems] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [buttonLoading, setButtonLoading] = useState(false);
+
+  const subtotal = items.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
+  const delivery = 100;
+  const total = subtotal + delivery;
+
   useEffect(() => {
     const fetchCartItems = async () => {
+      setLoading(true);
       try {
         const cart = await allCartItemsAction();
         setItems(cart || []);
@@ -43,6 +58,16 @@ export default function MyCart() {
       );
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleDelete = async (medicineId: string) => {
+    try {
+      await deleteCartAction(medicineId);
+      toast.success("Item Deleted");
+    } catch (err) {
+      toast.error("Faild To Delete!");
+      console.log(err);
     }
   };
 
@@ -211,15 +236,33 @@ export default function MyCart() {
                           <Add />
                         </button>
                       </div>
+
                       {/* delete button */}
                       <button
+                        onClick={async () => {
+                          setLoadingId(item.id);
+                          await handleDelete(item.medicineId);
+                          setLoadingId(null);
+                        }}
                         style={{ color: "#f87171" }}
-                        className="flex items-center -mr-3 cursor-pointer text-sm font-bold px-4 py-2 rounded-lg hover:bg-red-400/10 transition-all"
+                        disabled={loadingId === item.id}
+                        className={`flex items-center -mr-3 text-sm font-bold px-4 py-2 rounded-lg 
+                        transition-all ${
+                          loadingId === item.id
+                            ? "opacity-50 cursor-not-allowed"
+                            : "hover:bg-red-400/10"
+                        }`}
                       >
-                        <span className="material-symbols-outlined">
-                          <Delete />
-                        </span>
-                        Remove
+                        {loadingId === item.id ? (
+                          <Spinner />
+                        ) : (
+                          <>
+                            <span className="material-symbols-outlined">
+                              <Delete />
+                            </span>
+                            Remove
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>
@@ -289,7 +332,8 @@ export default function MyCart() {
                     style={{ color: colors.lightCream }}
                     className="font-bold"
                   >
-                    $49.99
+                    <span className="font-extrabold">৳</span>
+                    {subtotal.toFixed(2)}
                   </span>
                 </div>
                 <div
@@ -301,7 +345,8 @@ export default function MyCart() {
                     style={{ color: colors.lightCream }}
                     className="font-bold"
                   >
-                    $5.00
+                    <span className="font-extrabold">৳</span>
+                    {delivery}
                   </span>
                 </div>
                 <div
@@ -316,30 +361,33 @@ export default function MyCart() {
                   </span>
                   <span
                     style={{ color: colors.accentPeach }}
-                    className="text-3xl font-black"
+                    className="text-xl font-black"
                   >
-                    $57.49
+                    <span className="font-extrabold">৳</span>
+                    {total}
                   </span>
                 </div>
                 <div className="pt-6">
                   <button
+                    onClick={() => {
+                      setButtonLoading(true);
+                      router.push("/shop/checkout");
+                    }}
                     style={{
                       backgroundColor: colors.primary,
                       color: colors.lightCream,
                     }}
-                    className="w-full py-3 rounded-xl font-bold text-lxsg hover:brightness-110 transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-3 active:scale-[0.98]"
+                    className="w-full py-3 rounded-xl font-bold hover:brightness-110 transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-3 active:scale-[0.98] cursor-pointer"
                   >
-                    Proceed to Checkout
-                    <span className="material-symbols-outlined">
-                      <ArrowForward />
-                    </span>
+                    {buttonLoading ? <Spinner /> : "Proceed to Checkout"}
+                    <ArrowForward />
                   </button>
                 </div>
               </div>
             </div>
 
             {/* Promo Code */}
-            <div
+            {/* <div
               style={{
                 backgroundColor: colors.surfaceDark,
                 border: `1px solid ${colors.lightCream}0D`,
@@ -373,7 +421,7 @@ export default function MyCart() {
                   Apply
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

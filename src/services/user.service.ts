@@ -12,7 +12,6 @@ export async function getSession() {
     const { data: session, error } = await authClient.getSession({
       fetchOptions: {
         headers: {
-          // Send the cookie to backend
           Cookie: `better-auth.session_token=${sessionToken}`,
         },
       },
@@ -26,4 +25,9 @@ export async function getSession() {
     console.error("Failed to get session:", err);
     return null;
   }
+}
+
+export const logout = async() => {
+  const cookieStore =  await cookies();
+  cookieStore.delete("better-auth.session_token")
 }

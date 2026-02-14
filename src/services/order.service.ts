@@ -47,7 +47,6 @@ export const placeOrder = async (order: OrderPayload) => {
   return data;
 };
 
-
 export const allOrders = async (
   page: number,
   limit: number,

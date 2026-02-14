@@ -1,4 +1,9 @@
-export type OrderStatus = "PLACED" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+export type OrderStatus =
+  | "PLACED"
+  | "PROCESSING"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "CANCELLED";
 
 export type OrderItem = {
   id: string;
@@ -7,7 +12,7 @@ export type OrderItem = {
   sellerId: string;
   quantity: number;
   price: number;
-   medicine: {
+  medicine: {
     name: string;
     category: {
       name: string;
@@ -24,6 +29,9 @@ export type PlaceOrderPayload = {
   deliveryCharge: number;
   createdAt: string;
   items: OrderItem[];
+  customer: {
+    name: string;
+  };
 };
 
 export interface GetOrdersResponse {
@@ -33,7 +41,6 @@ export interface GetOrdersResponse {
   currentPage: number;
   totalPages: number;
 }
-
 
 export type CreateOrderItem = {
   medicineId: string;

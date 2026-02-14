@@ -17,7 +17,7 @@ import {
 import { Pill } from "lucide-react";
 import Link from "next/link";
 
-export default async function OrderDetails({ id }: { id: string }) {
+export default async function AdminOrderDetails({ id }: { id: string }) {
   const session = await getSession();
   if (!session) return null;
   const user: User = session?.user;

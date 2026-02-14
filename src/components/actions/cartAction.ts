@@ -1,6 +1,7 @@
 "use server";
 import {
   addToCart,
+  deleteCartItem,
   getAllCartItems,
   updateQuantity,
 } from "@/services/cart.service";
@@ -15,4 +16,8 @@ export async function updateCartAction(medicineId: string, quantity: number) {
 
 export async function allCartItemsAction() {
   return await getAllCartItems();
+}
+
+export async function deleteCartAction(medicineId: string) {
+  return await deleteCartItem(medicineId);
 }

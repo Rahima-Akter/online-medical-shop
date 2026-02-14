@@ -64,12 +64,18 @@ export const getAllCartItems = async () => {
 
 export const deleteCartItem = async (medicineId: string) => {
   try {
+    const cookieStore = await cookies();
+    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+    console.log(sessionToken)
+
+    if (!sessionToken) return [];
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/cart/remove`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          Cookie: `better-auth.session_token=${sessionToken}`,
         },
         credentials: "include",
         body: JSON.stringify({ medicineId }),

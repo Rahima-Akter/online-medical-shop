@@ -7,8 +7,15 @@ import {
   MenuOpen as MenuOpenIcon,
 } from "@mui/icons-material";
 import RoutesNavigation from "@/routes/routes";
-import UserAction from "@/components/actions/userAction";
+import {
+  loggedInUserAction,
+  logOutAction,
+  UserAction,
+} from "@/components/actions/userAction";
 import { UserRole, UserRoles } from "@/roles/roles";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { User } from "@/types/userTypes";
 
 export default function DashboardRootLayout({
   admin,
@@ -21,15 +28,34 @@ export default function DashboardRootLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [role, setRole] = useState<UserRole | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchRole() {
-      const result = await UserAction();
+      const result = (await UserAction()) as UserRole;
       setRole(result);
     }
 
+    const fetchUser = async () => {
+      const user = await loggedInUserAction();
+      setUser(user || null);
+    };
+
+    fetchUser();
     fetchRole();
   }, []);
+
+  const handleLogOut = async () => {
+    try {
+      await logOutAction();
+      toast.success("Logout Successfull");
+      router.push("/");
+    } catch (err) {
+      console.log(err);
+      toast.error("Someting Went Wrong!");
+    }
+  };
 
   return (
     <div className="h-screen flex overflow-y-auto">
@@ -56,7 +82,7 @@ export default function DashboardRootLayout({
                 MediStore
               </h1>
               <p className="text-xs text-[#146976]/60 font-medium uppercase tracking-widest mt-1">
-                Seller Portal
+                {user?.role} Portal
               </p>
             </div>
           </div>
@@ -68,29 +94,30 @@ export default function DashboardRootLayout({
           </nav>
         )}
 
-        <div className="p-4 border-t border-[#146976]/20">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-red-500/10 hover:text-red-400 cursor-pointer transition-colors">
+        <div className="p-4 border-t border-[#146976]/20 w-full">
+          <button
+            onClick={() => handleLogOut()}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-red-500/10 hover:text-red-400 cursor-pointer transition-colors w-full"
+          >
             <ExitToAppIcon />
             <span className="font-medium">Logout</span>
-          </div>
+          </button>
         </div>
         {/* user logo and name */}
-        <div className="flex items-center gap-3 px-3 py-2">
+        <div className="flex items-center gap-3 px-8 py-2">
           <div className="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center overflow-hidden border border-white/20">
             <img
-              alt="Admin Profile Avatar"
+              alt="Profile Avatar"
               className="w-full h-full object-cover"
-              data-alt="Portrait of an administrator user profile"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKi2lBmNRB282Xvgvm8D7lFLB-5gtRGQCLoMfwlnltjWn0gUXvJjDYTjYm-Jb9fuN6DXJiEX3palhO_YcF6Zr-maIAwj0w4uAolvBd2P6BEY-fRRN0uessGcVSlgeCJsjyrM_fTvknFu89tCf7EH5UKtgYMyhkXMDX5OZeJVgNCZX3MJ35wosTLQSKysGxPQBlek0L5_U9qD3fj6sY0BqS6-gFxZvYUcaGpnTHakv_fwOn5sumMirsKOiO9KvzazCuoqwzv7JM-A"
+              data-alt="user profile"
+              src={user?.image ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_eN9ltaN4YL-7g4jrTdTXHsBUf_bWxQ_cSg&s"}
             />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-xs text-white font-medium truncate">
-              Dr. Sarah Smith
+              {user?.name}
             </p>
-            <p className="text-[10px] text-white/40 truncate">
-              Lead Pharmacist
-            </p>
+            <p className="text-[10px] text-white/40 truncate">{user?.role}</p>
           </div>
         </div>
       </aside>

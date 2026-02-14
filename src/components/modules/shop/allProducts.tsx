@@ -12,7 +12,7 @@ import Link from "next/link";
 import { Medicine } from "@/types/medicine";
 import { Category } from "@/types/category";
 import ItemNotFound from "@/components/shared/itemNotFound";
-import addToCartAction from "@/components/actions/cartAction";
+import {addToCartAction} from "@/components/actions/cartAction";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -40,7 +40,6 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get("page")) || initialPage;
 
-  // Fetch medicines from API
   const fetchMedicines = async (page: number) => {
     setLoading(true);
     try {
@@ -58,19 +57,17 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
     }
   };
 
-  // Trigger fetch on page change
   useEffect(() => {
     fetchMedicines(currentPage);
   }, [currentPage]);
 
-  // Pagination handler
+
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
     router.push(`?${params.toString()}`);
   };
 
-  // Filtered & Sorted Medicines
   const filteredMedicines = useMemo(() => {
     let filtered = medicines;
 
