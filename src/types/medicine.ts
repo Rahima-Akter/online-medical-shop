@@ -1,4 +1,3 @@
-// types/medicine.ts
 export interface Review {
   id: string;
   customerId: string;
@@ -8,8 +7,8 @@ export interface Review {
   createdAt: string;
   customer: {
     image: string;
-    name: string
-  }
+    name: string;
+  };
 }
 
 export interface Category {
@@ -34,4 +33,12 @@ export interface Medicine {
   category: Category;
   categoryId: string;
   reviews: Review[];
+}
+
+export interface MedResponse {
+  medicines: Medicine[];
+  total: number;
+  currentPage: number;
+  limit: number;
+  totalPages?: number;
 }

@@ -18,9 +18,6 @@ import { Pill } from "lucide-react";
 import Link from "next/link";
 
 export default async function AdminOrderDetails({ id }: { id: string }) {
-  const session = await getSession();
-  if (!session) return null;
-  const user: User = session?.user;
   const { data } = await getSingleOrder(id);
   const createdAt = new Date(data.createdAt).toLocaleString("en-US", {
     month: "short",
@@ -237,16 +234,16 @@ export default async function AdminOrderDetails({ id }: { id: string }) {
                     </div>
                     <div>
                       <p className="text-sm font-bold text-gray-100">
-                        {user.name}
+                        {data?.customer?.name}
                       </p>
                       <p className="text-xs text-gray-500 mt-1 leading-relaxed">
-                        {user.default_shipping_address}
+                        {data?.shippingAddress}
                       </p>
                       <div className="flex items-center gap-2 mt-2 text-xs text-[#146875]/80">
                         <span className="material-symbols-outlined text-sm">
                           <PhoneIphone />
                         </span>
-                        + {user.phone_number}
+                        + {data.customer?.phone_number}
                       </div>
                     </div>
                   </div>

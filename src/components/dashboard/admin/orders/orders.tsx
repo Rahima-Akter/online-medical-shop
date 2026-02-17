@@ -6,8 +6,6 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import WarningIcon from "@mui/icons-material/Warning";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import { allOrders } from "@/services/order.service";
 import { GetOrdersResponse } from "@/types/order";
@@ -18,7 +16,6 @@ import {
 } from "@mui/icons-material";
 import { getAllMedicine } from "@/services/medicine.service";
 import { Medicine } from "@/types/medicine";
-import { getSession } from "@/services/user.service";
 import { UserAction } from "@/components/actions/userAction";
 import { UserRoles } from "@/roles/roles";
 
@@ -28,7 +25,6 @@ interface IsearchParams {
 
 export default async function Orders({ searchParams }: IsearchParams) {
   const role = await UserAction();
-
   const params = await searchParams;
   const page = Number(params?.page ?? 1);
   const limit = Number(params?.limit ?? 10);
