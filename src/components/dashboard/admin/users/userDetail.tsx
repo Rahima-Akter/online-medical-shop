@@ -7,12 +7,17 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import PackageIcon from "@mui/icons-material/Inventory2";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { PlaceOrderPayload, GetOrdersResponse } from "@/types/order";
 import {
-  loggedInUserAction,
-  singleUserAction,
-} from "@/components/actions/userAction";
-import { allOrdersAction } from "@/components/actions/orderAction";
+  PlaceOrderPayload,
+  GetOrdersResponse,
+  orderResponseById,
+  ordersById,
+} from "@/types/order";
+import { singleUserAction } from "@/components/actions/userAction";
+import {
+  allOrdersAction,
+  allOrdersByIdAction,
+} from "@/components/actions/orderAction";
 import { User } from "@/types/userTypes";
 import { Person } from "@mui/icons-material";
 import { UserRoles } from "@/roles/roles";
@@ -20,12 +25,13 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 
 export default function UserDetails() {
-  const [orders, setOrders] = useState<PlaceOrderPayload[]>([]);
+  const [orders, setOrders] = useState<ordersById[]>([]);
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalSpent, setTotalSpent] = useState(0);
   const [user, setUser] = useState<User | null>(null);
   const params = useParams();
   const userId = params.id as string;
+  console.log({userId})
 
   useEffect(() => {
     async function fetchData() {
@@ -33,12 +39,12 @@ export default function UserDetails() {
         const userInfo = await singleUserAction(userId);
         if (userInfo) setUser(userInfo);
 
-        const response: GetOrdersResponse | null = await allOrdersAction(1, 50);
-        if (response && response.data) {
-          setOrders(response.data);
-          setTotalOrders(response.total);
+        const response = await allOrdersByIdAction(userId);
+        if (response) {
+          setOrders(response);
+          setTotalOrders(response.length);
           setTotalSpent(
-            response.data.reduce((acc, order) => acc + order.totalPrice, 0),
+            response.reduce((acc, order) => acc + order.totalPrice, 0),
           );
         }
       }
@@ -124,7 +130,8 @@ export default function UserDetails() {
             Total Life-time Spend
           </p>
           <h3 className="text-4xl font-bold text-white tabular-nums">
-            ${totalSpent.toFixed(2)}
+            <span className="font-extrabold">৳</span>
+            {totalSpent.toFixed(2)}
           </h3>
           <div className="mt-4 flex items-center text-xs text-green-400 font-medium">
             <TrendingUpIcon className="text-[14px] mr-1" /> Lifetime
@@ -233,7 +240,7 @@ export default function UserDetails() {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#146875]/5 text-sm">
-              {orders.map((order) => (
+              {orders.slice(3).map((order) => (
                 <tr
                   key={order.id}
                   className="hover:bg-[#146875]/5 transition-colors"
@@ -249,7 +256,8 @@ export default function UserDetails() {
                     })}
                   </td>
                   <td className="px-6 py-4 text-[#F5F5F0] font-medium">
-                    ${order.totalPrice}
+                    <span className="font-extrabold">৳</span>
+                    {order.totalPrice}
                   </td>
                   <td className="px-6 py-4">
                     <span

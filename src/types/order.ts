@@ -55,3 +55,16 @@ export type CreateOrderPayload = {
   phoneNumber: string;
   items: CreateOrderItem[];
 };
+
+export type ordersById = {
+  id: string;
+  customerId: string;
+  status: OrderStatus;
+  shippingAddress: string;
+  totalPrice: number;
+  deliveryCharge: number;
+  createdAt: string;
+};
+export type orderResponseById = {
+  data: ordersById[];
+};

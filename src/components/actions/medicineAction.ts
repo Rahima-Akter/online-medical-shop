@@ -1,5 +1,6 @@
 "use server";
-import { deleteMed, getAllMedicine } from "@/services/medicine.service";
+import { deleteMed } from "@/services/deleteMed.service";
+import {getAllMedicine } from "@/services/medicine.service";
 import { MedResponse } from "@/types/medicine";
 
 export async function getMedicineAction(page: number, limit: number) {

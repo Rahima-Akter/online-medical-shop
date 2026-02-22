@@ -1,9 +1,9 @@
-import Category from "@/components/dashboard/admin/category";
+import CategoryPage from "@/components/dashboard/admin/category";
 
 export default function CategoryManagement() {
   return (
     <div>
-        <Category />
+        <CategoryPage />
     </div>
   )
 }

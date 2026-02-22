@@ -52,34 +52,25 @@
     'wght' 400,
     'GRAD' 0,
     'opsz' 24;
-
-  /* color: #ECE3DA; your primary light text */
-  /* line-height: 1;
-  vertical-align: middle; */
 }
 
-/* Accent / interactive state */
 .material-symbols-outlined.accent {
   color: #EBBA92;
-  /* your peach */
 }
 
-/* Muted / secondary */
 .material-symbols-outlined.muted {
   color: #146875;
-  /* your teal */
 }
 
-/* Hover (subtle, dark-theme friendly) */
 .material-symbols-outlined:hover {
   color: #EBBA92;
 }
 
 .glass-card {
-            background: rgba(30, 41, 59, 0.4);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
 
 :root {
   --radius: 0.625rem;
@@ -150,17 +141,15 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-/* Apply styles to the active link */
 a[aria-current="page"] {
-  background-color: #146976; /* Active route styling */
+  background-color: #146976;
 }
-
-
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

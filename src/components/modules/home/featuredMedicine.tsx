@@ -5,10 +5,12 @@ import Link from "next/link";
 import StarIcon from "@mui/icons-material/Star";
 
 export default async function FeaturedMedicines() {
-  const allMed = await getAllMedicine();
+  const { medicines } = await getAllMedicine(1, 6);
+  const allMed = medicines;
+  console.log(allMed);
 
   // Filter top-rated medicines
-  const products: Medicine[] = allMed.medicines
+  const products: Medicine[] = allMed
     .filter((med: Medicine) => med.reviews.some((r) => r.rating > 4))
     .slice(0, 5);
 
@@ -29,7 +31,7 @@ export default async function FeaturedMedicines() {
                 ? (
                     product.reviews.reduce(
                       (acc, review) => acc + review.rating,
-                      0
+                      0,
                     ) / product.reviews.length
                   ).toFixed(1)
                 : "0";
@@ -64,7 +66,8 @@ export default async function FeaturedMedicines() {
                       {product.name}
                     </h3>
                     <p className="text-sm text-[#A1A1AA] mb-4 line-clamp-2">
-                      {product.dosage_instructions || "No description available"}
+                      {product.dosage_instructions ||
+                        "No description available"}
                     </p>
 
                     {/* Rating */}

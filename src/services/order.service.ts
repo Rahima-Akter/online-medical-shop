@@ -1,4 +1,4 @@
-import { GetOrdersResponse } from "@/types/order";
+import { GetOrdersResponse, orderResponseById, ordersById } from "@/types/order";
 import { cookies } from "next/headers";
 
 interface CartItem {
@@ -33,7 +33,7 @@ export const placeOrder = async (order: OrderPayload) => {
       },
       credentials: "include",
       body: JSON.stringify(order),
-    }
+    },
   );
 
   if (!res.ok) {
@@ -79,6 +79,40 @@ export const allOrders = async (
   } catch (err) {
     console.error(err);
     return null;
+  }
+};
+
+export const getAllOrdesByUserId = async (
+  userId: string
+): Promise<ordersById[]> => {
+  try {
+    const cookieStore = await cookies();
+    const sessionToken =
+      cookieStore.get("better-auth.session_token")?.value;
+
+    if (!sessionToken) return [];
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/order/all-orders/${userId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `better-auth.session_token=${sessionToken}`,
+        },
+        credentials: "include",
+        cache: "no-store",
+      }
+    );
+
+    if (!res.ok) throw new Error("Fetching failed");
+
+    const data: orderResponseById = await res.json();
+
+    return data.data ?? [];
+  } catch (err) {
+    console.error(err);
+    return [];
   }
 };
 

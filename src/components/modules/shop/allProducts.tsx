@@ -12,11 +12,12 @@ import Link from "next/link";
 import { Medicine } from "@/types/medicine";
 import { Category } from "@/types/category";
 import ItemNotFound from "@/components/shared/itemNotFound";
-import {addToCartAction} from "@/components/actions/cartAction";
+import { addToCartAction } from "@/components/actions/cartAction";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getAllMedicine } from "@/services/medicine.service";
+import { allCategoryAction } from "@/components/actions/categoryAction";
 
 interface IMedicineProps {
   allCategory: Category[];
@@ -24,7 +25,12 @@ interface IMedicineProps {
   limit: number;
 }
 
-export default function AllProducts({ allCategory, initialPage, limit }: IMedicineProps) {
+export default function AllProducts({
+  allCategory,
+  initialPage,
+  limit,
+}: IMedicineProps) {
+  // const [allCategory, setAllCategory] = useState([]);
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -44,6 +50,8 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
     setLoading(true);
     try {
       const res = await getAllMedicine(page, limit);
+      // const cat = await allCategoryAction(1, 10);
+      // setAllCategory(cat);
       setMedicines(res.medicines);
       setTotal(res.total);
       setTotalPages(res.totalPages);
@@ -61,7 +69,6 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
     fetchMedicines(currentPage);
   }, [currentPage]);
 
-
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
@@ -73,19 +80,19 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
 
     if (manufacturerSearch.trim()) {
       filtered = filtered.filter((m) =>
-        m.manufacturer.toLowerCase().includes(manufacturerSearch.toLowerCase())
+        m.manufacturer.toLowerCase().includes(manufacturerSearch.toLowerCase()),
       );
     }
 
     if (medicineSearch.trim()) {
       filtered = filtered.filter((m) =>
-        m.name.toLowerCase().includes(medicineSearch.toLowerCase())
+        m.name.toLowerCase().includes(medicineSearch.toLowerCase()),
       );
     }
 
     if (selectedCategories.length) {
       filtered = filtered.filter((m) =>
-        selectedCategories.includes(String(m.categoryId))
+        selectedCategories.includes(String(m.categoryId)),
       );
     }
 
@@ -96,7 +103,13 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
     }
 
     return filtered;
-  }, [medicines, manufacturerSearch, medicineSearch, selectedCategories, sortOrder]);
+  }, [
+    medicines,
+    manufacturerSearch,
+    medicineSearch,
+    selectedCategories,
+    sortOrder,
+  ]);
 
   const handleAddToCart = async (id: string, quantity: number) => {
     setLoading(true);
@@ -163,7 +176,9 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
                     checked={selectedCategories.includes(cat.id)}
                     onChange={() => {
                       if (selectedCategories.includes(cat.id)) {
-                        setSelectedCategories(selectedCategories.filter((c) => c !== cat.id));
+                        setSelectedCategories(
+                          selectedCategories.filter((c) => c !== cat.id),
+                        );
                       } else {
                         setSelectedCategories([...selectedCategories, cat.id]);
                       }
@@ -212,11 +227,16 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
       <section className="flex-1">
         {/* Breadcrumbs */}
         <div className="flex items-center gap-2 mb-6">
-          <Link className="text-xs font-medium text-gray-400 hover:text-[#146976]" href="/">
+          <Link
+            className="text-xs font-medium text-gray-400 hover:text-[#146976]"
+            href="/"
+          >
             Home
           </Link>
           <span className="text-xs text-gray-600">›</span>
-          <span className="text-xs font-bold text-[#146976]">Medicine Shop</span>
+          <span className="text-xs font-bold text-[#146976]">
+            Medicine Shop
+          </span>
         </div>
 
         {/* Toolbar */}
@@ -239,7 +259,7 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
                     ? "low"
                     : e.target.value === "high"
                       ? "high"
-                      : "none"
+                      : "none",
                 )
               }
               className="appearance-none bg-gray-800 border border-gray-600 rounded-[0.5rem] py-2 pl-4 pr-10 text-sm focus:ring-[#146976] focus:border-[#146976] text-white"
@@ -295,8 +315,10 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
                       <span className="text-xs font-bold text-gray-400">
                         {product.reviews.length > 0
                           ? (
-                              product.reviews.reduce((acc, r) => acc + r.rating, 0) /
-                              product.reviews.length
+                              product.reviews.reduce(
+                                (acc, r) => acc + r.rating,
+                                0,
+                              ) / product.reviews.length
                             ).toFixed(1)
                           : "0"}{" "}
                         ({product.reviews.length})
@@ -326,7 +348,11 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
                       }}
                       className="w-10 h-10 bg-[#146976]/10 text-[#146976] rounded-xl flex items-center justify-center hover:bg-[#146976] hover:text-white transition-all cursor-pointer"
                     >
-                      {loading ? <Spinner /> : <AddShoppingCartIcon className="text-sm" />}
+                      {loading ? (
+                        <Spinner />
+                      ) : (
+                        <AddShoppingCartIcon className="text-sm" />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -342,7 +368,7 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
             onClick={() => handlePageChange(currentPage - 1)}
             className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
           >
-            <ArrowBackIosNewIcon/>
+            <ArrowBackIosNewIcon />
           </button>
 
           {Array.from({ length: totalPages }, (_, index) => (
@@ -350,7 +376,9 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
               key={index}
               onClick={() => handlePageChange(index + 1)}
               className={`px-4 py-2 rounded ${
-                currentPage === index + 1 ? "bg-blue-600 text-white" : "bg-gray-200"
+                currentPage === index + 1
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200"
               }`}
             >
               {index + 1}
@@ -362,7 +390,7 @@ export default function AllProducts({ allCategory, initialPage, limit }: IMedici
             onClick={() => handlePageChange(currentPage + 1)}
             className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
           >
-            <ArrowForwardIosIcon/>
+            <ArrowForwardIosIcon />
           </button>
         </div>
       </section>
