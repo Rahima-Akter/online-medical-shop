@@ -5,7 +5,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Delete,
-  Edit,
   Face,
   Healing,
   Inventory,
@@ -17,11 +16,17 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import MedicationIcon from "@mui/icons-material/Medication";
 import { useEffect, useState } from "react";
-import { allCategoryAction } from "@/components/actions/categoryAction";
+import {
+  allCategoryAction,
+  deleteCategoryStatusAction,
+  updateCategoryStatusAction,
+} from "@/components/actions/categoryAction";
 import { Category } from "@/types/category";
 import { getMedicineAction } from "@/components/actions/medicineAction";
 import { Medicine } from "@/types/medicine";
 import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function CategoryPage() {
   const [allCat, setAllCat] = useState<Category[]>([]);
@@ -31,6 +36,8 @@ export default function CategoryPage() {
   const [totalPage, setTotalPage] = useState<number>(1);
   const [meds, setMeds] = useState<Medicine[]>([]);
   const [loading, setLoading] = useState(false);
+  const [openRow, setOpenRow] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const getCat = async () => {
@@ -68,6 +75,56 @@ export default function CategoryPage() {
 
     fetchMeds();
   }, []);
+
+  const handleActivate = async (id: string, status: boolean) => {
+    try {
+      const res = await updateCategoryStatusAction(id, status);
+
+      if (res) {
+        toast.success(`Status changed`);
+        setAllCat((prev) =>
+          prev.map((cat) =>
+            cat.id === id ? { ...cat, isActive: status } : cat,
+          ),
+        );
+      }
+    } catch (err) {
+      toast.error("Action Failed!");
+      console.log(err);
+    }
+  };
+
+  const handleDeactivate = async (id: string, status: boolean) => {
+    try {
+      const res = await updateCategoryStatusAction(id, status);
+
+      if (res) {
+        toast.success(`Status changed`);
+        setAllCat((prev) =>
+          prev.map((cat) =>
+            cat.id === id ? { ...cat, isActive: status } : cat,
+          ),
+        );
+      }
+    } catch (err) {
+      toast.error("Action Failed!");
+      console.log(err);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await deleteCategoryStatusAction(id);
+
+      if (res) {
+        toast.success(`Category Deleted`);
+        setAllCat((prev) => prev.filter((cat) => cat.id !== id));
+      }
+    } catch (err) {
+      toast.error("Action Failed!");
+      console.log(err);
+    }
+  };
 
   const iconList = [
     MedicationIcon,
@@ -205,13 +262,61 @@ export default function CategoryPage() {
                             {category.isActive ? "Active" : "DeActive"}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right">
-                          <div className="flex justify-end gap-2 ">
-                            <button className="p-2 text-white cursor-pointer hover:text-[#146976] hover:bg-[#146976]/5 rounded-lg transition-colors">
-                              <Edit className="text-xl" />
-                            </button>
-                            <button className="p-2 text-white cursor-pointer hover:text-red-600 rounded-lg transition-colors">
-                              <Delete className="text-xl" />
+                        <td className="px-6 py-4 whitespace-nowrap text-right relative">
+                          <div className="flex justify-end items-center gap-2">
+                            {/* Dropdown */}
+                            <div className="relative">
+                              <button
+                                onClick={() =>
+                                  setOpenRow(
+                                    openRow === category.id
+                                      ? null
+                                      : category.id,
+                                  )
+                                }
+                                className="h-9 w-9 flex items-center justify-center rounded-lg 
+                   text-white/60 hover:text-white 
+                   hover:bg-[#146976]/20 transition"
+                              >
+                                <span className="text-lg leading-none cursor-pointer">
+                                  ⋯
+                                </span>
+                              </button>
+
+                              {openRow === category.id && (
+                                <div className="absolute right-10 bottom-full -mb-12 w-40 bg-[#0f3b42] border border-[#146976]/20 rounded-xl shadow-2xl p-1 z-50 overflow-y-hidden">
+                                  <button
+                                    onClick={() => {
+                                      handleActivate(category.id, true);
+                                      setOpenRow(null);
+                                    }}
+                                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold text-emerald-300 hover:bg-emerald-500/10 transition"
+                                  >
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                    Activate
+                                  </button>
+
+                                  <button
+                                    onClick={() => {
+                                      handleDeactivate(category.id, false);
+                                      setOpenRow(null);
+                                    }}
+                                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold text-rose-300 hover:bg-rose-500/10 transition"
+                                  >
+                                    <span className="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+                                    Deactivate
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Delete */}
+                            <button
+                              onClick={() => handleDelete(category.id)}
+                              className="h-9 w-9 flex items-center justify-center rounded-lg 
+                       text-white/60 hover:text-red-400 hover:bg-red-500/10 transition cursor-pointer"
+                            >
+                              <Delete className="text-lg" />
                             </button>
                           </div>
                         </td>
@@ -222,7 +327,7 @@ export default function CategoryPage() {
               </table>
             </div>
 
-            {/* ✅ WORKING Pagination UI */}
+            {/* Pagination UI */}
             <div className="px-6 py-4 bg-[#092226] flex items-center justify-between">
               <p className="text-xs text-gray-400">
                 Showing{" "}

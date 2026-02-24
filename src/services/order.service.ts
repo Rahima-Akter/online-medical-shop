@@ -136,11 +136,9 @@ export const updateOrder = async (status: string) => {
     }
 
     const data = await res.json();
-    // toast.success("Order Cancelled");
 
     return data;
   } catch (err) {
-    // toast.error("Something Went Wrong!");
     console.error(err);
   }
 };
