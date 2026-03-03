@@ -11,6 +11,6 @@ export default async function AllProductsPage({
   const allCategory = await getAllCategory(page, limit);
 
   return (
-    <AllProducts allCategory={allCategory} initialPage={page} limit={limit} />
+    <AllProducts allCategory={allCategory.categories} initialPage={page} limit={limit} />
   );
 }

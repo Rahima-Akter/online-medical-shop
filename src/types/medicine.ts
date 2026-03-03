@@ -42,3 +42,16 @@ export interface MedResponse {
   limit: number;
   totalPages?: number;
 }
+
+export interface IAddMed {
+    name: string;
+    price: number;
+    stock: number;
+    manufacturer: string;
+    rx_required: boolean;
+    active_ingrdients: string;
+    dosage_instructions: string;
+    side_effects: string[];
+    serious_side_effects: string[];
+    img: string;
+}

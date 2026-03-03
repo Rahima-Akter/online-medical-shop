@@ -158,15 +158,6 @@ export default function RoutesNavigation({ role }: { role: UserRole }) {
         <span>Add Medicine</span>
       </Link>
       <Link
-        href="/edit-medicine"
-        className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
-          pathname === "/edit-medicine" ? "bg-[#146976]" : "text-white/70"
-        } hover:bg-[#146976]/20 hover:text-white transition-colors`}
-      >
-        <Edit />
-        <span>Edit Medicine</span>
-      </Link>
-      <Link
         href="/profile"
         className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
           pathname === "/profile" ? "bg-[#146976]" : "text-white/70"

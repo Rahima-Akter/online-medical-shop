@@ -7,8 +7,7 @@ import StarIcon from "@mui/icons-material/Star";
 export default async function FeaturedMedicines() {
   const { medicines } = await getAllMedicine(1, 6);
   const allMed = medicines;
-  console.log(allMed);
-
+  
   // Filter top-rated medicines
   const products: Medicine[] = allMed
     .filter((med: Medicine) => med.reviews.some((r) => r.rating > 4))

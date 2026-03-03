@@ -19,10 +19,10 @@ export default function Reviews({
   medicineId,
   currentUserId,
 }: Ireview) {
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [review, setReview] = useState<string>("");
   const [rating, setRating] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const handleOpenModal = () => {
     setIsAddModalOpen(true);

@@ -1,7 +1,5 @@
-import React from 'react'
+import SellerMedicineManagement from "@/components/dashboard/seller/medicineIntevtory/sellerMedicineInventory";
 
-export default function SellerMedicineManagement() {
-  return (
-    <div>SellerMedicineManagement</div>
-  )
+export default function SellerMedicineInventory() {
+  return <SellerMedicineManagement />;
 }

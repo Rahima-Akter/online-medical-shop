@@ -17,7 +17,6 @@ import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getAllMedicine } from "@/services/medicine.service";
-import { allCategoryAction } from "@/components/actions/categoryAction";
 
 interface IMedicineProps {
   allCategory: Category[];

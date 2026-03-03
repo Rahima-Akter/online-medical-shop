@@ -4,6 +4,7 @@ import {
   Analytics,
   ChevronLeft,
   ChevronRight,
+  Close,
   Delete,
   Face,
   Healing,
@@ -17,6 +18,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import MedicationIcon from "@mui/icons-material/Medication";
 import { useEffect, useState } from "react";
 import {
+  addCategoryAction,
   allCategoryAction,
   deleteCategoryStatusAction,
   updateCategoryStatusAction,
@@ -26,7 +28,7 @@ import { getMedicineAction } from "@/components/actions/medicineAction";
 import { Medicine } from "@/types/medicine";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import IconButton from "@mui/material/IconButton";
 
 export default function CategoryPage() {
   const [allCat, setAllCat] = useState<Category[]>([]);
@@ -37,7 +39,40 @@ export default function CategoryPage() {
   const [meds, setMeds] = useState<Medicine[]>([]);
   const [loading, setLoading] = useState(false);
   const [openRow, setOpenRow] = useState<string | null>(null);
-  const router = useRouter();
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [category, setCategory] = useState<string>("");
+
+  const handleOpenModal = () => {
+    setIsAddModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsAddModalOpen(false);
+  };
+
+  const handleSubmitCategory = async (categoryName: string) => {
+    if (!categoryName.trim()) {
+      return toast.error("Category Name cannot be empty");
+    }
+    setLoading(true);
+
+    try {
+      const newCategory = await addCategoryAction(categoryName);
+      if (newCategory) {
+        toast.success("Category Added");
+        setIsAddModalOpen(false);
+        setCategory("");
+        setAllCat((prev) => [newCategory, ...prev]);
+        setTotal((prev) => prev + 1);
+        setTotalPage(() => Math.ceil((total + 1) / limit));
+      }
+    } catch (err) {
+      toast.error("Something went wrong!");
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const getCat = async () => {
@@ -151,7 +186,7 @@ export default function CategoryPage() {
             Category Management
           </h2>
 
-          <div className="relative md:order-2 order-1">
+          {/* <div className="relative md:order-2 order-1">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9fb3b7] text-lg">
               <SearchIcon />
             </span>
@@ -160,7 +195,7 @@ export default function CategoryPage() {
               placeholder="Search medicines..."
               type="text"
             />
-          </div>
+          </div> */}
         </div>
       </header>
 
@@ -180,7 +215,10 @@ export default function CategoryPage() {
                 categories.
               </p>
             </div>
-            <button className="bg-[#146976] text-white px-5 py-2.5 rounded-lg flex items-center gap-2 font-bold text-sm shadow-lg shadow-[#146976]/20 hover:bg-[#146976]/90 transition-all active:scale-95">
+            <button
+              onClick={handleOpenModal}
+              className="bg-[#146976] text-white px-5 py-2.5 rounded-lg flex items-center gap-2 font-bold text-sm shadow-lg shadow-[#146976]/20 hover:bg-[#146976]/90 transition-all active:scale-95"
+            >
               <span className="material-symbols-outlined text-lg">
                 <AddCircle />
               </span>
@@ -447,6 +485,50 @@ export default function CategoryPage() {
           <path d="M100 0 L100 100 L0 100 Q 50 50 100 0 Z"></path>
         </svg>
       </div>
+
+      {/* category add form */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+          <div className="bg-white dark:bg-background-dark w-full max-w-lg rounded-xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
+            <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <h3 className="text-lg font-bold">Add A Category</h3>
+              <IconButton onClick={handleCloseModal}>
+                <Close className="text-slate-400 hover:text-slate-600 transition-colors" />
+              </IconButton>
+            </div>
+            <div className="p-6 space-y-4">
+              {/* Form */}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-500 dark:text-[#9fb3b7] uppercase">
+                  Category Name
+                </label>
+                <input
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full px-4 py-2 bg-slate-50 dark:bg-[#2a3537] border-slate-200 dark:border-none rounded-lg focus:ring-primary focus:border-primary"
+                  placeholder="e.g: Pain Reliver"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div className="px-6 py-4 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-3">
+              <button
+                onClick={handleCloseModal}
+                className="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-800 transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleSubmitCategory(category)}
+                disabled={loading}
+                className="px-6 py-2 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-shadow cursor-pointer"
+              >
+                Add Category
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

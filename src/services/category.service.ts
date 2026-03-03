@@ -68,6 +68,35 @@ export const updateCategoryStatus = async (id: string, status: boolean) => {
   }
 };
 
+export const addCategory = async (categoryName: string) => {
+  try {
+    const cookieStore = await cookies();
+    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+
+    if (!sessionToken) return null;
+    const res = await fetch(`${env.BACKEND_URL}/api/category`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `better-auth.session_token=${sessionToken}`,
+      },
+      body: JSON.stringify({ name: categoryName }),
+      next: { revalidate: 5 },
+    });
+
+    
+    if (!res.ok) {
+      throw new Error(`Error: ${res.statusText}`);
+    }
+    
+    const category = await res.json();
+
+    return category.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const deleteCategory = async (id: string) => {
   try {
     const cookieStore = await cookies();

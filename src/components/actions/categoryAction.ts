@@ -1,5 +1,6 @@
 "use server";
 import {
+  addCategory,
   deleteCategory,
   getAllCategory,
   updateCategoryStatus,
@@ -15,4 +16,8 @@ export async function updateCategoryStatusAction(id: string, status: boolean) {
 
 export async function deleteCategoryStatusAction(id: string) {
   return await deleteCategory(id);
+}
+
+export async function addCategoryAction(categoryName: string) {
+  return await addCategory(categoryName);
 }

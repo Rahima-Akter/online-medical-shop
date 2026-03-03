@@ -18,6 +18,12 @@ export async function UserAction() {
   return session?.user?.role;
 }
 
+export async function UserInfoAction() {
+  const session = (await getSession()) as ISession | null;
+  if (!session) return null;
+  return session?.user;
+}
+
 export async function allUserAction(page: number, limit: number) {
   const allUser = (await allUsers(page, limit)) as UserResponse | null;
   return allUser;

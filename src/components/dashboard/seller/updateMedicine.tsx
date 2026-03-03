@@ -1,8 +1,4 @@
 "use client";
-
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { addMedicineAction } from "@/components/actions/medicineAction";
 import { toast } from "sonner";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import FactoryIcon from "@mui/icons-material/Factory";
@@ -13,6 +9,15 @@ import Inventory2Icon from "@mui/icons-material/Inventory2";
 import { Pill } from "lucide-react";
 import { UserInfoAction } from "@/components/actions/userAction";
 import { Description, HealthAndSafety, Report } from "@mui/icons-material";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import {
+  medicineByIdAction,
+  updateMedicineAction,
+} from "@/components/actions/medicineAction";
+import { allCategoryAction } from "@/components/actions/categoryAction";
+import { Category } from "@/types/medicine";
 
 type FormValues = {
   name: string;
@@ -28,22 +33,76 @@ type FormValues = {
   image: string;
 };
 
-export default function AddMedicineForm() {
-  const { register, handleSubmit, reset } = useForm<FormValues>();
-  const [loading, setLoading] = useState(false);
+export default function UpdateMedicineForm() {
+  const { id } = useParams<{ id: string }>();
+  const router = useRouter();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [totalCat, setTotalCat] = useState<number>(1000);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<FormValues>({
+    defaultValues: {
+      prescription: false,
+    },
+  });
+
+  const [loadingData, setLoadingData] = useState(true);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchMedicine = async () => {
+      try {
+        setLoadingData(true);
+
+        const res = await medicineByIdAction(id);
+        const catRes = await allCategoryAction(1, totalCat);
+        const med = res?.data;
+        setCategories(catRes.categories);
+        setTotalCat(catRes.total);
+
+        if (!med) throw new Error("Invalid response");
+
+        reset({
+          name: med.name ?? "",
+          manufacturer: med.manufacturer ?? "",
+          categoryId: med.categoryId ?? "",
+          prescription: med.rx_required ?? false,
+          ingredients: med.active_ingrdients ?? "",
+          price: med.price ?? 0,
+          stock: med.stock ?? 0,
+          dosage: med.dosage_instructions ?? "",
+          sideEffects: med.side_effects?.join(", ") ?? "",
+          seriousSideEffects: med.serious_side_effects?.join(", ") ?? "",
+          image: med.img ?? "",
+        });
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to load medicine data");
+      } finally {
+        setLoadingData(false);
+      }
+    };
+
+    fetchMedicine();
+  }, [id, reset]);
 
   const onSubmit = async (data: FormValues) => {
-    const sessionData = await UserInfoAction();
     try {
-      setLoading(true);
+      const session = await UserInfoAction();
 
       const payload = {
         name: data.name,
-        price: data.price,
-        stock: data.stock,
         manufacturer: data.manufacturer,
+        categoryId: data.categoryId,
         rx_required: data.prescription,
         active_ingrdients: data.ingredients,
+        price: data.price,
+        stock: data.stock,
         dosage_instructions: data.dosage,
         side_effects: data.sideEffects
           ? data.sideEffects.split(",").map((i) => i.trim())
@@ -52,27 +111,33 @@ export default function AddMedicineForm() {
           ? data.seriousSideEffects.split(",").map((i) => i.trim())
           : [],
         img: data.image,
-        isActive: true,
-        sellerId: sessionData?.id,
-        categoryId: data.categoryId,
+        sellerId: session?.id,
       };
 
-      await addMedicineAction(payload);
-      toast.success("Medicine added successfully ✅");
-      reset();
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to add medicine ❌");
-    } finally {
-      setLoading(false);
+      const res = await updateMedicineAction(id, payload);
+      if (res) {
+        toast.success("Medicine updated successfully ✅");
+        router.push("/medicine-management");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update medicine ❌");
     }
   };
+
+  if (loadingData) {
+    return (
+      <div className="flex justify-center items-center h-64 text-white">
+        Loading medicine data...
+      </div>
+    );
+  }
 
   return (
     <div>
       <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#FFFFFF0D] px-[40px] py-6 bg-[#0A1618]">
         <h2 className="text-[#F5F1E9] text-lg font-bold leading-tight tracking-[-0.015em]">
-          Add Medicine
+          Update Medicine
         </h2>
         <MedicalServicesIcon className="text-white" />
       </header>
@@ -138,24 +203,15 @@ export default function AddMedicineForm() {
                   <option className="bg-[#0A1618]" value="">
                     Select Category
                   </option>
-                  <option
-                    className="bg-[#0A1618]"
-                    value="f43ca115-3f23-44ee-9c4e-23dc85917fa1"
-                  >
-                    Antibiotics
-                  </option>
-                  <option
-                    className="bg-[#0A1618]"
-                    value="11111111-1111-1111-1111-111111111111"
-                  >
-                    Painkillers
-                  </option>
-                  <option
-                    className="bg-[#0A1618]"
-                    value="22222222-2222-2222-2222-222222222222"
-                  >
-                    Supplements
-                  </option>
+                  {categories.map((cat) => (
+                    <option
+                      key={cat.id}
+                      className="bg-[#0A1618]"
+                      value={cat.id}
+                    >
+                      {cat.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -310,10 +366,10 @@ export default function AddMedicineForm() {
             </button>
             <button
               type="submit"
-              disabled={loading}
+              disabled={isSubmitting}
               className="px-10 py-3 rounded-xl bg-gradient-to-br from-[#146875] to-[#0e4b54] text-[#F5F1E9] text-sm font-black shadow-[0_10px_25px_-5px_rgba(20,104,117,0.5)] hover:shadow-[0_15px_30px_-5px_rgba(20,104,117,0.6)] hover:-translate-y-0.5 transition-all active:scale-95 uppercase tracking-widest"
             >
-              {loading ? "Saving..." : "Save Product"}
+              {isSubmitting ? "Saving..." : "Save Product"}
             </button>
           </div>
         </form>

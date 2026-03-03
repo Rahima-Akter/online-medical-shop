@@ -6,10 +6,10 @@ import MedicationIcon from "@mui/icons-material/Medication";
 import { ArrowForward, MonitorHeart } from "@mui/icons-material";
 import Link from "next/link";
 import { getAllCategory } from "@/services/category.service";
-import { Category, CategoryResponse } from "@/types/category";
+import { Category } from "@/types/category";
 
 export default async function CategorySection() {
-  const { categories } = (await getAllCategory(1, 6)) as CategoryResponse;
+  const { categories } = await getAllCategory(1, 6);
   const category = categories.slice(0, 5);
 
   const icons = [

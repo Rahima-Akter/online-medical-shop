@@ -1,14 +1,9 @@
-import MedicineInventory from '@/components/dashboard/admin/medicineInventory'
-import React from 'react'
+import MedicineInventory from "@/components/dashboard/admin/medicineInventory";
 
-export default function Inventory({
-  searchParams,
-}: {
-  searchParams: { page?: string; limit?: string };
-}) {
+export default function Inventory() {
   return (
     <div>
-        <MedicineInventory searchParams={searchParams} />
+      <MedicineInventory />
     </div>
-  )
+  );
 }
