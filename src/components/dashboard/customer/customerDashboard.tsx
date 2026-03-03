@@ -1,34 +1,44 @@
+import { getAllCartItems } from "@/services/cart.service";
+import { allOrders } from "@/services/order.service";
+import { getSession } from "@/services/user.service";
+import { CartItem } from "@/types/cart";
+import { GetOrdersResponse } from "@/types/order";
 import {
-  AddLocation,
   AddShoppingCart,
-  ContactSupport,
-  Description,
-  DescriptionOutlined,
-  Download,
-  Emergency,
-  Info,
   Lightbulb,
   List,
-  LocalHospital,
   LocalShipping,
-  Search,
+  Menu,
+  MonetizationOn,
   ShoppingBag,
-  TrendingUp,
-  Verified,
 } from "@mui/icons-material";
-import { HospitalIcon, Pill } from "lucide-react";
 import Link from "next/link";
 
-export default function CustomerDashboard() {
+export default async function CustomerDashboard() {
+  const user = await getSession();
+  const myAllOrders: GetOrdersResponse | null = await allOrders(1, 1000);
+  const orders = myAllOrders?.data ?? [];
+
+  const totalSpent = orders.reduce(
+    (total, order) => total + order.totalPrice,
+    0,
+  );
+
+  const cartData: CartItem[] = await getAllCartItems();
+  const cartTolalPrice = cartData.reduce(
+    (total, items) => total + items.price * items.quantity,
+    0,
+  );
+
   return (
     <div className="min-h-screen bg-[#0A1618]">
       <header className="h-16 flex items-center justify-between px-8 bg-[#0A1618]/80 backdrop-blur-md border-b border-white/5 sticky top-0 z-20">
         <div className="flex items-center gap-4">
           <span className="material-symbols-outlined lg:hidden cursor-pointer text-gray-400">
-            menu
+            <Menu />
           </span>
           <h2 className="text-lg font-semibold text-gray-100">
-            Health Dashboard Overview
+            Dashboard Overview
           </h2>
         </div>
       </header>
@@ -37,19 +47,19 @@ export default function CustomerDashboard() {
         <div className="flex flex-wrap justify-between items-end gap-3">
           <div className="flex flex-col gap-2">
             <p className="text-white text-4xl font-black leading-tight tracking-tight">
-              Welcome back, John!
-            </p>
-            <p className="text-gray-400 text-base font-normal">
-              Manage your prescriptions and health rewards today.
+              Welcome back, {user?.user.name}!
             </p>
           </div>
 
-          <button className="flex items-center gap-2 rounded-lg h-10 px-6 bg-[#146875] text-white text-sm font-bold tracking-wide hover:bg-[#146875]/90 transition-all shadow-lg shadow-black/40">
+          <Link
+            href="/shop"
+            className="flex items-center gap-2 rounded-lg h-10 px-6 bg-[#146875] text-white text-sm font-bold tracking-wide hover:bg-[#146875]/90 transition-all shadow-lg shadow-black/40"
+          >
             <span className="material-symbols-outlined text-lg">
               <AddShoppingCart />
             </span>
             New Order
-          </button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -63,29 +73,23 @@ export default function CustomerDashboard() {
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
                 Total Orders
               </p>
-              <p className="text-2xl font-bold text-white">12</p>
-              <p className="text-[10px] text-green-400 mt-1 font-bold flex items-center gap-1">
-                <span className="material-symbols-outlined text-xs">
-                  <TrendingUp />
-                </span>
-                +2 THIS MONTH
-              </p>
+              <p className="text-2xl font-bold text-white">{orders.length}</p>
             </div>
           </div>
 
           <div className="bg-[rgba(20,45,48,0.4)] p-6 rounded-2xl flex items-center gap-5 hover:bg-white/[0.05] transition-all border border-[#FFFFFF0D]">
             <div className="w-14 h-14 rounded-xl bg-[#EBBA92]/20 flex items-center justify-center text-[#EBBA92] border border-[#EBBA92]/20">
               <span className="material-symbols-outlined">
-                <Description />
+                <MonetizationOn />
               </span>
             </div>
             <div>
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
-                Active Prescriptions
+                Total Spent
               </p>
-              <p className="text-2xl font-bold text-white">3</p>
-              <p className="text-[10px] text-gray-400 mt-1 font-bold uppercase">
-                Renewal in 12 days
+              <p className="text-2xl font-bold text-white">
+                <span className="font-extrabold">৳</span>
+                {totalSpent}
               </p>
             </div>
           </div>
@@ -100,14 +104,16 @@ export default function CustomerDashboard() {
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
                 Cart Value
               </p>
-              <p className="text-2xl font-bold text-white">$84.50</p>
+              <p className="text-2xl font-bold text-white">
+                <span className="font-extrabold">৳</span>
+                {cartTolalPrice.toFixed(2)}
+              </p>
               <p className="text-[10px] text-teal-400 mt-1 font-bold uppercase tracking-wider">
-                4 items waiting
+                {cartData.length} items waiting
               </p>
             </div>
           </div>
         </div>
-
 
         {/* tables */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -116,12 +122,12 @@ export default function CustomerDashboard() {
               <div className="p-6 border-b border-white/5 flex justify-between items-center">
                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
                   <span className="material-symbols-outlined text-[#EBBA92]">
-                    <List/>
+                    <List />
                   </span>
                   Recent Orders
                 </h3>
                 <Link
-                  href="#"
+                  href="/my-orders"
                   className="text-xs font-bold text-[#EBBA92]/60 hover:text-teal-400 transition-colors uppercase tracking-widest"
                 >
                   View All
@@ -140,45 +146,44 @@ export default function CustomerDashboard() {
                   </thead>
 
                   <tbody className="divide-y divide-white/5">
-                    <tr className="hover:bg-white/[0.02] transition-colors">
-                      <td className="px-6 py-5 font-semibold text-white">
-                        #MS-90210
-                      </td>
-                      <td className="px-6 py-5">
-                        <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-green-500/10 text-green-400 border border-green-500/20">
-                          Delivered
-                        </span>
-                      </td>
-                      <td className="px-6 py-5 text-sm text-gray-400">
-                        Oct 24, 2023
-                      </td>
-                      <td className="px-6 py-5 text-sm font-bold text-right text-white">
-                        $45.00
-                      </td>
-                    </tr>
-
-                    <tr className="hover:bg-white/[0.02] transition-colors">
-                      <td className="px-6 py-5 font-semibold text-white">
-                        #MS-90215
-                      </td>
-                      <td className="px-6 py-5">
-                        <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                          In Transit
-                        </span>
-                      </td>
-                      <td className="px-6 py-5 text-sm text-gray-400">
-                        Oct 27, 2023
-                      </td>
-                      <td className="px-6 py-5 text-sm font-bold text-right text-white">
-                        $128.40
-                      </td>
-                    </tr>
+                    {orders.slice(0, 2).map((order) => (
+                      <tr
+                        key={order.id}
+                        className="hover:bg-white/[0.02] transition-colors"
+                      >
+                        <td className="px-6 py-5 font-semibold text-white">
+                          #MS-{order.id.slice(-3)}
+                        </td>
+                        <td className="px-6 py-5">
+                          <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-green-500/10 text-green-400 border border-green-500/20">
+                            {order.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-5 text-sm text-gray-400">
+                          <span>
+                            {new Date(order.createdAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              },
+                            )}
+                          </span>
+                        </td>
+                        <td className="px-6 py-5 text-sm font-bold text-right text-white">
+                          <span className="font-extrabold">৳</span>
+                          {order.totalPrice}
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
             </div>
 
-            <div className="bg-[rgba(20,45,48,0.4)] rounded-2xl p-6 border border-[#FFFFFF0D]">
+            {/* prescription */}
+            {/* <div className="bg-[rgba(20,45,48,0.4)] rounded-2xl p-6 border border-[#FFFFFF0D]">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
                   <span className="material-symbols-outlined text-[#EBBA92]">
@@ -256,7 +261,7 @@ export default function CustomerDashboard() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="space-y-8">
@@ -266,7 +271,7 @@ export default function CustomerDashboard() {
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-lg bg-[#EBBA92]/10 flex items-center justify-center">
                   <span className="material-symbols-outlined text-[#EBBA92] text-2xl">
-                    <Lightbulb/>
+                    <Lightbulb />
                   </span>
                 </div>
                 <h4 className="font-bold text-white tracking-tight">
@@ -278,8 +283,8 @@ export default function CustomerDashboard() {
                 <div className="flex gap-4">
                   <div className="mt-1 w-1.5 h-1.5 rounded-full bg-[#EBBA92] shrink-0"></div>
                   <p className="text-sm text-gray-300 leading-relaxed italic">
-                    &quot;Stay hydrated: Drink at least 8 glasses of water daily to
-                    help your kidneys flush medications efficiently.&quot;
+                    &quot;Stay hydrated: Drink at least 8 glasses of water daily
+                    to help your kidneys flush medications efficiently.&quot;
                   </p>
                 </div>
 
@@ -293,7 +298,8 @@ export default function CustomerDashboard() {
               </div>
             </div>
 
-            <div className="bg-[rgba(20,45,48,0.4)] rounded-2xl p-6 border border-[#FFFFFF0D]">
+            {/* find clinic */}
+            {/* <div className="bg-[rgba(20,45,48,0.4)] rounded-2xl p-6 border border-[#FFFFFF0D]">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-lg bg-[#146875]/10 flex items-center justify-center">
                   <span className="material-symbols-outlined text-[#146875] text-2xl">
@@ -347,7 +353,7 @@ export default function CustomerDashboard() {
                   </p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

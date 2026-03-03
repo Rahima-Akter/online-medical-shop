@@ -1,13 +1,40 @@
+import { getAllMedicine } from "@/services/medicine.service";
+import { allOrders } from "@/services/order.service";
+import { Medicine } from "@/types/medicine";
+import { GetOrdersResponse } from "@/types/order";
 import {
   Download,
-  Lightbulb,
   LocalShipping,
   Payment,
   Search,
   Warning,
 } from "@mui/icons-material";
 
-const SellerDashboard = () => {
+export default async function SellerDashboard() {
+  const medicine = await getAllMedicine(1, 1000);
+  const stock: Medicine[] = medicine.medicines;
+  const lowStock = stock.filter((m) => m.stock >= 10 && m.stock < 50);
+  const myAllOrders: GetOrdersResponse | null = await allOrders(1, 1000);
+  const orders = myAllOrders?.data;
+  const totalRevenew = orders?.reduce(
+    (total, order) => total + order.totalPrice,
+    0,
+  );
+
+  // Prepare weekly revenue data (Mon–Sun)
+  const weeklyRevenue = [0, 0, 0, 0, 0, 0, 0];
+
+  orders?.forEach((order) => {
+    const date = new Date(order.createdAt);
+    const day = date.getDay(); // 0 = Sunday, 6 = Saturday
+
+    // Convert to Mon=0 ... Sun=6
+    const adjustedDay = day === 0 ? 6 : day - 1;
+
+    weeklyRevenue[adjustedDay] += order.totalPrice;
+  });
+  const maxRevenue = Math.max(...weeklyRevenue, 1);
+
   return (
     <main className="">
       {/* Header with sticky class */}
@@ -19,18 +46,6 @@ const SellerDashboard = () => {
           <p className="text-[11px] text-white/50 uppercase tracking-wider">
             Marketplace Health Terminal
           </p>
-        </div>
-        <div className="flex items-center gap-6 md:order-2 order-1">
-          <div className="relative flex items-center">
-            <span className="material-symbols-outlined absolute left-3 text-white/40 text-lg">
-              <Search />
-            </span>
-            <input
-              className="pl-9 pr-4 py-1.5 bg-[#1E3F45]/40 border-none rounded-lg ring-1 ring-white/10 focus:ring-2 focus:ring-[#EBBA92] w-56 text-xs transition-all text-white placeholder-white/40"
-              placeholder="Search data..."
-              type="text"
-            />
-          </div>
         </div>
       </header>
 
@@ -51,10 +66,9 @@ const SellerDashboard = () => {
               <p className="text-white/50 text-[10px] font-bold uppercase tracking-widest">
                 Total Orders
               </p>
-              <h3 className="text-3xl font-bold text-[#F5F5F0] mt-1">1,284</h3>
-              <p className="text-[10px] text-white/30 mt-2 font-medium">
-                vs. 1,141 last month
-              </p>
+              <h3 className="text-3xl font-bold text-[#F5F5F0] mt-1">
+                {orders?.length}
+              </h3>
             </div>
             <div className="bg-[#264D54] p-5 rounded-xl border border-white/10 card-shadow relative overflow-hidden flex flex-col">
               <div className="flex justify-between items-start mb-3">
@@ -69,7 +83,8 @@ const SellerDashboard = () => {
                 Monthly Revenue
               </p>
               <h3 className="text-3xl font-bold text-[#F5F5F0] mt-1">
-                $12,450.00
+                <span className="font-extrabold">৳</span>
+                {totalRevenew}
               </h3>
               <div className="absolute bottom-0 left-0 w-full h-10 flex items-end opacity-20 pointer-events-none">
                 <svg
@@ -100,10 +115,12 @@ const SellerDashboard = () => {
                 Low Stock Alerts
               </p>
               <h3 className="text-3xl font-bold text-[#F5F5F0] mt-1">
-                8 Items
+                {lowStock.length} Items
               </h3>
               <p className="text-[10px] text-white/30 mt-2 font-medium truncate">
-                Paracetamol, Amoxicillin...
+                {lowStock.map((med) => (
+                  <span key={med.id}>{med.name},</span>
+                ))}
               </p>
             </div>
           </div>
@@ -115,12 +132,8 @@ const SellerDashboard = () => {
                 <h3 className="text-xl font-bold text-[#F5F5F0]">
                   Weekly Sales Performance
                 </h3>
-                <p className="text-xs text-white/50 mt-1 uppercase tracking-tight">
-                  Daily Average:{" "}
-                  <span className="text-[#EBBA92] font-bold">$488.57</span>
-                </p>
               </div>
-              <div className="flex gap-2">
+              {/* <div className="flex gap-2">
                 <select className="bg-[#146875] border-white/10 rounded-lg text-xs font-bold text-white/70 focus:ring-[#EBBA92] py-2 px-4 transition-all">
                   <option>Last 7 Days</option>
                   <option>Last 30 Days</option>
@@ -133,7 +146,7 @@ const SellerDashboard = () => {
                     Export
                   </span>
                 </button>
-              </div>
+              </div> */}
             </div>
 
             {/* Sales Data Chart */}
@@ -150,10 +163,10 @@ const SellerDashboard = () => {
                           index % 2 === 0 ? "bg-[#146875]/30" : "bg-[#146875]"
                         } w-full rounded-t-lg group-hover:bg-[#146875] transition-all duration-300`}
                         style={{
-                          // eslint-disable-next-line react-hooks/purity
-                          height: `${(Math.random() * 100).toFixed(0)}%`,
+                          height: `${(weeklyRevenue[index] / maxRevenue) * 100}%`,
                         }}
                       ></div>
+
                       <div className="mt-3 text-[10px] font-bold text-white/30 group-hover:text-[#EBBA92] uppercase tracking-tighter">
                         {day}
                       </div>
@@ -165,7 +178,7 @@ const SellerDashboard = () => {
           </div>
 
           {/* Recent Orders Section */}
-          <div className="flex md:flex-row flex-col gap-2">
+          {/* <div className="flex md:flex-row flex-col gap-2">
             <div className="lg:col-span-2 bg-[#264D54] rounded-xl border border-white/10 card-shadow overflow-x-auto flex flex-col lg:w-8/12 w-full">
               <div className="px-6 py-5 border-b border-white/5 flex justify-between items-center">
                 <h3 className="font-bold text-[#F5F5F0] text-base">
@@ -251,7 +264,7 @@ const SellerDashboard = () => {
               </div>
             </div>
 
-            {/* Inventory Health Section */}
+            
             <div className="flex flex-col lg:w-4/12 w-full h-full gap-2">
               <div className="bg-[#264D54] text-[#F5F5F0] rounded-xl p-6 border border-white/10 shadow-lg flex flex-col min-h-full">
                 <div>
@@ -297,7 +310,7 @@ const SellerDashboard = () => {
                 </div>
               </div>
 
-              {/* Optimization Tip Section */}
+              
               <div className="">
                 <div className="flex items-start gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
                   <span className="material-symbols-outlined text-[#EBBA92] text-2xl">
@@ -315,16 +328,15 @@ const SellerDashboard = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Footer */}
           <footer className="py-8 text-center text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">
-            © 2024 MediStore 💊 Global Seller Central • Encrypted Connection
+            © {new Date().getFullYear()} MediStore 💊 Global Seller Central •
+            Encrypted Connection
           </footer>
         </div>
       </main>
     </main>
   );
-};
-
-export default SellerDashboard;
+}

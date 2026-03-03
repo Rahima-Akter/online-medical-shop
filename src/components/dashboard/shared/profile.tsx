@@ -9,8 +9,6 @@ import {
   Lightbulb,
   Lock,
   PhotoCamera,
-  Redeem,
-  Stars,
   TodayOutlined,
   Verified,
 } from "@mui/icons-material";
@@ -18,6 +16,8 @@ import Link from "next/link";
 import { User } from "@/types/userTypes";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { updateUserAction } from "@/components/actions/userAction";
+import { toast } from "sonner";
 
 type FormValues = {
   image: string;
@@ -52,33 +52,34 @@ export default function Profile({ user: userInfo }: { user: User }) {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      // Read token from cookies
-      const sessionToken = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("better-auth.session_token="))
-        ?.split("=")[1];
+      const payload: Partial<User> = { ...user, ...data };
+      for (const key in payload) {
+        if (payload[key as keyof User] === "") {
+          payload[key as keyof User] = undefined;
+        }
+      }
 
-      if (!sessionToken) throw new Error("Not authenticated");
+      if (payload.date_of_birth) {
+        payload.date_of_birth = new Date(payload.date_of_birth).toISOString();
+      }
+      const updatedUser = await updateUserAction(payload);
 
-      const response = await fetch("http://localhost:5000/api/user/me", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionToken}`,
-        },
-        body: JSON.stringify(data),
+      if (!updatedUser) {
+        throw new Error("Failed to update profile");
+      }
+      setUser(updatedUser);
+      reset({
+        ...updatedUser,
+        date_of_birth: updatedUser.date_of_birth
+          ? new Date(updatedUser.date_of_birth).toISOString().split("T")[0]
+          : "",
       });
 
-      if (!response.ok) throw new Error("Failed to update profile");
-
-      const updatedUser = await response.json();
-      setUser(updatedUser);
-      reset(updatedUser);
       setEditMode(false);
-      alert("Profile updated successfully!");
+      toast.success("Profile updated successfully!");
     } catch (err) {
       console.error(err);
-      alert("Failed to update profile");
+      toast.error("Failed to update profile");
     }
   };
 
@@ -158,9 +159,9 @@ export default function Profile({ user: userInfo }: { user: User }) {
                 >
                   {editMode ? "Cancel Edit" : "Edit Profile"}
                 </button>
-                <button className="flex w-full md:w-auto min-w-[140px] cursor-pointer items-center justify-center rounded-xl h-10 bg-[#146875] text-white text-xs font-bold tracking-wide hover:brightness-110 transition-all shadow-lg shadow-primary/30">
+                {/* <button className="flex w-full md:w-auto min-w-[140px] cursor-pointer items-center justify-center rounded-xl h-10 bg-[#146875] text-white text-xs font-bold tracking-wide hover:brightness-110 transition-all shadow-lg shadow-primary/30">
                   Edit Password
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -172,6 +173,7 @@ export default function Profile({ user: userInfo }: { user: User }) {
           className="flex md:flex-row flex-col gap-5"
         >
           <div className="space-y-8 flex-1 lg:flex-2 md:flex-4">
+            {/* Personal Info Card */}
             <div className="overflow-hidden bg-[rgba(30,41,59,0.5)] rounded-2xl shadow-xl border border-[#EBBA92]/20">
               <div className="px-8 py-6 border-b border-white/5 flex items-center justify-between">
                 <h3 className="text-lg font-bold text-[#F5F1E9] flex items-center gap-3">
@@ -266,13 +268,13 @@ export default function Profile({ user: userInfo }: { user: User }) {
                           reset();
                           setEditMode(false);
                         }}
-                        className="px-8 py-3 rounded-xl text-sm font-bold text-[#F5F1E9]/60 hover:text-[#F5F1E9] hover:bg-white/5 transition-all"
+                        className="px-8 py-3 rounded-xl text-sm font-bold text-[#F5F1E9]/60 hover:text-[#F5F1E9] hover:bg-white/5 transition-all cursor-pointer"
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
-                        className="px-8 py-3 rounded-xl text-sm font-bold bg-[#146875] text-white hover:brightness-110 transition-all shadow-xl shadow-[#146875]/20"
+                        className="px-8 py-3 rounded-xl text-sm font-bold bg-[#146875] text-white hover:brightness-110 transition-all shadow-xl shadow-[#146875]/20 cursor-pointer"
                       >
                         Save Changes
                       </button>
@@ -318,67 +320,7 @@ export default function Profile({ user: userInfo }: { user: User }) {
           </div>
 
           {/* Right Side Cards */}
-
-          {/* Right Side Cards */}
           <div className="space-y-8 flex-1">
-            {/* Rewards Card */}
-            <div className="bg-[rgba(30,41,59,0.5)] rounded-2xl shadow-xl p-8 border border-[#EBBA92]/20 relative group overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#EBBA92]/5 rounded-full -mr-16 -mt-16 blur-xl"></div>
-
-              <div className="flex items-center justify-between mb-8 relative z-10">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 bg-[#EBBA92]/15 rounded-xl text-[#EBBA92] border border-[#EBBA92]/20">
-                    <Stars />
-                  </div>
-
-                  <div className="flex flex-col">
-                    <span className="font-bold text-[#F5F1E9] text-lg leading-none">
-                      Pharmacy Rewards
-                    </span>
-                    <span className="text-[10px] text-[#EBBA92] font-bold uppercase tracking-widest mt-1">
-                      Gold Tier Member
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-6 relative z-10">
-                <div className="flex justify-between items-end">
-                  <div>
-                    <p className="text-[10px] text-[#D1D5DB] uppercase font-bold tracking-widest mb-1 opacity-60">
-                      Loyalty Points
-                    </p>
-                    <p className="text-4xl font-black text-[#F5F1E9]">2,450</p>
-                  </div>
-
-                  <p className="text-xs font-bold text-[#EBBA92] bg-[#EBBA92]/10 px-2 py-1 rounded">
-                    75% Complete
-                  </p>
-                </div>
-
-                <div className="relative w-full h-3 bg-[rgba(0,0,0,0.3)] rounded-full overflow-hidden border border-white/5">
-                  <div
-                    className="absolute top-0 left-0 h-full bg-[#EBBA92] rounded-full shadow-[0_0_12px_rgba(235,186,146,0.5)] transition-all duration-1000"
-                    style={{ width: "75%" }}
-                  ></div>
-                </div>
-
-                <div className="flex justify-between text-[10px] font-bold text-[#D1D5DB] uppercase tracking-tight opacity-60">
-                  <span>2,000 pts reached</span>
-                  <span className="text-[#EBBA92] opacity-100 font-black">
-                    $10 Discount (3,000 pts)
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-8 pt-6 border-t border-white/5 relative z-10">
-                <button className="w-full py-4 bg-[#146875] text-white rounded-xl text-xs font-bold hover:brightness-110 transition-all flex items-center justify-center gap-2 border border-white/10 shadow-lg">
-                  <Redeem />
-                  Redeem Points
-                </button>
-              </div>
-            </div>
-
             {/* Daily Tips Card */}
             <div className="bg-[rgba(30,41,59,0.5)] rounded-2xl shadow-xl p-8 border border-white/5">
               <h4 className="text-sm font-bold text-[#F5F1E9] flex items-center gap-3 mb-6">

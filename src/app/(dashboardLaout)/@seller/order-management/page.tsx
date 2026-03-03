@@ -1,7 +1,5 @@
-import React from 'react'
+import SellerOrders from "@/components/dashboard/seller/orders/orders";
 
-export default function SellerOrder() {
-  return (
-    <div>SellerOrder</div>
-  )
+export default function SellerOrderPage() {
+  return <SellerOrders />;
 }

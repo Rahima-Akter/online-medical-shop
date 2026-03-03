@@ -68,3 +68,34 @@ export type ordersById = {
 export type orderResponseById = {
   data: ordersById[];
 };
+
+
+// for admin dashboard
+export type AdminOrderDashboardItem = {
+  seller: {
+    name: string;
+  };
+  orderItems?: OrderItem[];
+};
+
+export type AdminOrderDashboard = {
+  id: string;
+  customerId: string;
+  status: OrderStatus;
+  shippingAddress: string;
+  totalPrice: number;
+  deliveryCharge: number;
+  createdAt: string;
+  items: AdminOrderDashboardItem[];
+  customer: {
+    name: string;
+  };
+};
+
+export interface GetOrdersResponseAdmin {
+  data: AdminOrderDashboard[];
+  total: number;
+  limit: number;
+  currentPage: number;
+  totalPages: number;
+}

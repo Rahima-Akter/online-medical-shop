@@ -103,8 +103,12 @@ export default function MedicineInventory() {
 
   const handleDelete = async (id: string) => {
     try {
-      await deleteMedicineAction(id);
-      toast.success("medicine deleted");
+      const res = await deleteMedicineAction(id);
+      if (res) {
+        setMeds((prev) => prev.filter((med) => med.id !== id));
+        toast.success("medicine deleted");
+        router.refresh();
+      }
     } catch (err) {
       toast.error("Faild to delete!");
       console.log("Something went Wrong!\n", err);

@@ -5,6 +5,7 @@ import {
   getSession,
   logout,
   singleUser,
+  updateUser,
 } from "@/services/user.service";
 import { User, UserResponse } from "@/types/userTypes";
 
@@ -31,6 +32,10 @@ export async function allUserAction(page: number, limit: number) {
 
 export async function deleteUserAction(userId: string) {
   return await deleteUser(userId);
+}
+
+export async function updateUserAction(payLoad: Partial<User>) {
+  return await updateUser(payLoad);
 }
 
 export async function singleUserAction(userId: string) {
