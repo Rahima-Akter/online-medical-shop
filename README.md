@@ -134,7 +134,7 @@ npm start
 
 ## 🧩 Tech Stack
 
-* **Frontend:** Next.js 16, React 19, Tailwind CSS, MUI
+* **Frontend:** Next.js 16, TypeScript ,React 19, Tailwind CSS, MUI
 * **Authentication:** better-auth
 * **Form Handling:** React Hook Form
 
