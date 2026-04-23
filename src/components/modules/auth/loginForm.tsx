@@ -67,7 +67,7 @@ export default function UserLoginForm() {
 
   return (
     <div className="">
-      <div className="flex flex-col lg:flex-row w-full max-w-6xl h-full lg:h-[720px] bg-[#ECE3DA] rounded-xl overflow-hidden shadow-lg">
+      <div className="flex flex-col lg:flex-row w-full max-w-6xl h-full lg:h-180 bg-[#ECE3DA] rounded-xl overflow-hidden shadow-lg">
         {/* Left Pane */}
         <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-[#146976]">
           <div className="absolute inset-0 bg-[#146976]/40 z-10"></div>

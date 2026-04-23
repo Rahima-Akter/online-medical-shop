@@ -3,7 +3,7 @@ import { deleteMed } from "@/services/deleteMed.service";
 import {
   addMedicine,
   getAllMedicine,
-  medcineById,
+  medicineById,
   updateMedicine,
 } from "@/services/medicine.service";
 import { IAddMed, MedResponse } from "@/types/medicine";
@@ -22,7 +22,7 @@ export async function updateMedicineAction(id: string, payLoad: IAddMed) {
 }
 
 export async function medicineByIdAction(medId: string) {
-  return await medcineById(medId);
+  return await medicineById(medId);
 }
 
 export async function deleteMedicineAction(medId: string) {

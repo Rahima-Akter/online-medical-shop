@@ -12,6 +12,7 @@ export interface Review {
 }
 
 export interface Category {
+  id: string;
   name: string;
 }
 
@@ -44,14 +45,14 @@ export interface MedResponse {
 }
 
 export interface IAddMed {
-    name: string;
-    price: number;
-    stock: number;
-    manufacturer: string;
-    rx_required: boolean;
-    active_ingrdients: string;
-    dosage_instructions: string;
-    side_effects: string[];
-    serious_side_effects: string[];
-    img: string;
+  name: string;
+  price: number;
+  stock: number;
+  manufacturer: string;
+  rx_required: boolean;
+  active_ingrdients: string;
+  dosage_instructions: string;
+  side_effects: string[];
+  serious_side_effects: string[];
+  img: string;
 }

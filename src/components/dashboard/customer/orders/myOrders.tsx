@@ -2,6 +2,7 @@ import { allOrders } from "@/services/order.service";
 import { GetOrdersResponse } from "@/types/order";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { RemoveShoppingCart } from "@mui/icons-material";
 
 interface MyOrdersProps {
   searchParams?: { page?: string; limit?: string };
@@ -15,7 +16,34 @@ export default async function MyOrders({ searchParams }: MyOrdersProps) {
   const myAllOrders: GetOrdersResponse | null = await allOrders(page, limit);
 
   if (!myAllOrders || myAllOrders.data.length === 0)
-    return <p>No orders found.</p>;
+    return (
+      <div className="flex items-center justify-center min-h-[70vh] px-4 py-28 md:py-20">
+        <div className="text-center max-w-md p-10 shadow-xl">
+          {/* Icon */}
+          <div className="mx-auto w-20 h-20 rounded-full bg-[#EBBA92]/10 flex items-center justify-center mb-6">
+            <span className="material-symbols-outlined text-[#EBBA92] text-4xl">
+              <RemoveShoppingCart />
+            </span>
+          </div>
+
+          {/* Title */}
+          <h2 className="text-2xl font-bold text-white mb-2">Empty!</h2>
+
+          {/* Subtitle */}
+          <p className="text-gray-400 text-sm leading-relaxed mb-6">
+            Looks like you have not orderd anything yet.
+          </p>
+
+          {/* CTA Button */}
+          <Link
+            href="/shop"
+            className="inline-flex items-center justify-center px-6 h-12 rounded-lg bg-[#EBBA92] text-[#1E3F45] font-bold hover:brightness-110 transition shadow-lg"
+          >
+            Start Shopping
+          </Link>
+        </div>
+      </div>
+    );
 
   const { data: myOrders, currentPage, totalPages, total } = myAllOrders;
   const start = (currentPage - 1) * limit + 1;
@@ -32,57 +60,61 @@ export default async function MyOrders({ searchParams }: MyOrdersProps) {
       </header>
 
       <div className="p-6 md:p-10 max-w-6xl mx-auto w-full space-y-8">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-white text-4xl font-black leading-tight tracking-tight">
-            Order History
-          </h1>
-          <p className="text-gray-400 text-base max-w-xl">
-            Review and track your medication history. Access detailed summaries
-            for all past transactions.
-          </p>
-        </div>
+        {myAllOrders && (
+          <div className="flex flex-col gap-2">
+            <h1 className="text-white text-4xl font-black leading-tight tracking-tight">
+              Order History
+            </h1>
+            <p className="text-gray-400 text-base max-w-xl">
+              Review and track your medication history. Access detailed
+              summaries for all past transactions.
+            </p>
+          </div>
+        )}
 
-        <div className="space-y-4">
-          {myOrders.map((order) => (
-            <div
-              key={order.id}
-              className="rounded-xl shadow-2xl border border-[#1F363A] p-6 transition-all hover:border-[#146875]/50 group bg-[#16282B]"
-            >
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div className="grid grid-cols-2 md:flex md:flex-wrap items-center gap-6 md:gap-16">
-                  <div>
-                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                      Order ID
-                    </p>
-                    <p className="text-sm font-black text-white group-hover:text-[#EBBA92] transition-colors">
-                      #MS-{order.id.slice(-3)}
-                    </p>
-                  </div>
+        {myOrders && myOrders.length > 0 ? (
+          <>
+            <div className="space-y-4">
+              {myOrders.map((order) => (
+                <div
+                  key={order.id}
+                  className="rounded-xl shadow-2xl border border-[#1F363A] p-6 transition-all hover:border-[#146875]/50 group bg-[#16282B]"
+                >
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div className="grid grid-cols-2 md:flex md:flex-wrap items-center gap-6 md:gap-16">
+                      <div>
+                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                          Order ID
+                        </p>
+                        <p className="text-sm font-black text-white group-hover:text-[#EBBA92] transition-colors">
+                          #MS-{order.id.slice(-3)}
+                        </p>
+                      </div>
 
-                  <div>
-                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                      Order Date
-                    </p>
-                    <p className="text-sm font-semibold text-gray-300">
-                      {new Date(order.createdAt).toLocaleString()}
-                    </p>
-                  </div>
+                      <div>
+                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                          Order Date
+                        </p>
+                        <p className="text-sm font-semibold text-gray-300">
+                          {new Date(order.createdAt).toLocaleString()}
+                        </p>
+                      </div>
 
-                  <div>
-                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                      Total Price
-                    </p>
-                    <p className="text-sm font-black text-[#EBBA92]">
-                      {order.totalPrice}
-                    </p>
-                  </div>
+                      <div>
+                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                          Total Price
+                        </p>
+                        <p className="text-sm font-black text-[#EBBA92]">
+                          {order.totalPrice}
+                        </p>
+                      </div>
 
-                  <div>
-                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                      Status
-                    </p>
-                    <span
-                      className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border
+                      <div>
+                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                          Status
+                        </p>
+                        <span
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border
                         ${
                           order.status === "DELIVERED"
                             ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
@@ -92,68 +124,100 @@ export default async function MyOrders({ searchParams }: MyOrdersProps) {
                                 ? "bg-yellow-500/10 text-yellow-400 border-yellow-500/20"
                                 : "bg-pink-500/10 text-pink-400 border-pink-500/20"
                         }`}
-                    >
-                      {order.status}
-                    </span>
+                        >
+                          {order.status}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center">
+                      <Link href={`/my-orders/${order.id}`}>
+                        <button className="w-full md:w-auto h-11 px-8 bg-[#146875]/20 hover:bg-[#146875] border border-[#146875]/50 text-white text-xs font-black uppercase tracking-widest rounded-lg transition-all active:scale-95 shadow-lg cursor-pointer">
+                          View Details
+                        </button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
+              ))}
+            </div>
 
-                <div className="flex items-center">
-                  <Link href={`/my-orders/${order.id}`}>
-                    <button className="w-full md:w-auto h-11 px-8 bg-[#146875]/20 hover:bg-[#146875] border border-[#146875]/50 text-white text-xs font-black uppercase tracking-widest rounded-lg transition-all active:scale-95 shadow-lg cursor-pointer">
-                      View Details
-                    </button>
+            {/* Pagination */}
+            <div className="flex items-center justify-between border-t border-[#1F363A] pt-6 mt-4">
+              <p className="text-sm font-medium text-gray-500">
+                Showing{" "}
+                <span className="text-gray-300">
+                  {start}-{end}
+                </span>{" "}
+                of <span className="text-gray-300">{total}</span> orders
+              </p>
+
+              <div className="flex gap-2">
+                {currentPage > 1 && (
+                  <Link
+                    href={`/my-orders?page=${currentPage - 1}&limit=${limit}`}
+                    className="w-10 h-10 flex items-center justify-center rounded-lg border border-[#1F363A] bg-[#16282B] text-gray-400 hover:text-white hover:border-[#146875] transition-all"
+                  >
+                    <ChevronLeft />
                   </Link>
-                </div>
+                )}
+
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <Link
+                    key={i}
+                    href={`/my-orders?page=${i + 1}&limit=${limit}`}
+                    className={`w-10 h-10 flex items-center justify-center rounded-lg ${
+                      currentPage === i + 1
+                        ? "bg-[#146875] text-white font-black shadow-lg shadow-[#146875]/20"
+                        : "border border-[#1F363A] bg-[#16282B] text-gray-400 hover:text-white hover:border-[#146875] transition-all font-bold"
+                    }`}
+                  >
+                    {i + 1}
+                  </Link>
+                ))}
+
+                {currentPage < totalPages && (
+                  <Link
+                    href={`/my-orders?page=${currentPage + 1}&limit=${limit}`}
+                    className="w-10 h-10 flex items-center justify-center rounded-lg border border-[#1F363A] bg-[#16282B] text-gray-400 hover:text-white hover:border-[#146875] transition-all"
+                  >
+                    <ChevronRight />
+                  </Link>
+                )}
               </div>
             </div>
-          ))}
-        </div>
+          </>
+        ) : (
+          <div className="flex items-center justify-center min-h-[70vh] px-4 py-28 md:py-20">
+            <div className="text-center max-w-md p-10 shadow-xl">
+              {/* Icon */}
+              <div className="mx-auto w-20 h-20 rounded-full bg-[#EBBA92]/10 flex items-center justify-center mb-6">
+                <span className="material-symbols-outlined text-[#EBBA92] text-4xl">
+                  <RemoveShoppingCart />
+                </span>
+              </div>
 
-        {/* Pagination */}
-        <div className="flex items-center justify-between border-t border-[#1F363A] pt-6 mt-4">
-          <p className="text-sm font-medium text-gray-500">
-            Showing{" "}
-            <span className="text-gray-300">
-              {start}-{end}
-            </span>{" "}
-            of <span className="text-gray-300">{total}</span> orders
-          </p>
+              {/* Title */}
+              <h2 className="text-2xl font-bold text-white mb-2">
+                Your order is empty
+              </h2>
 
-          <div className="flex gap-2">
-            {currentPage > 1 && (
+              {/* Subtitle */}
+              <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                Looks like you haven’t orderd anything yet. Explore our pharmacy
+                and find the medicines you need with trusted quality.
+              </p>
+
+              {/* CTA Button */}
               <Link
-                href={`/my-orders?page=${currentPage - 1}&limit=${limit}`}
-                className="w-10 h-10 flex items-center justify-center rounded-lg border border-[#1F363A] bg-[#16282B] text-gray-400 hover:text-white hover:border-[#146875] transition-all"
+                href="/shop"
+                className="inline-flex items-center justify-center px-6 h-12 rounded-lg bg-[#EBBA92] text-[#1E3F45] font-bold hover:brightness-110 transition shadow-lg"
               >
-                <ChevronLeft />
+                Start Shopping
               </Link>
-            )}
-
-            {Array.from({ length: totalPages }, (_, i) => (
-              <Link
-                key={i}
-                href={`/my-orders?page=${i + 1}&limit=${limit}`}
-                className={`w-10 h-10 flex items-center justify-center rounded-lg ${
-                  currentPage === i + 1
-                    ? "bg-[#146875] text-white font-black shadow-lg shadow-[#146875]/20"
-                    : "border border-[#1F363A] bg-[#16282B] text-gray-400 hover:text-white hover:border-[#146875] transition-all font-bold"
-                }`}
-              >
-                {i + 1}
-              </Link>
-            ))}
-
-            {currentPage < totalPages && (
-              <Link
-                href={`/my-orders?page=${currentPage + 1}&limit=${limit}`}
-                className="w-10 h-10 flex items-center justify-center rounded-lg border border-[#1F363A] bg-[#16282B] text-gray-400 hover:text-white hover:border-[#146875] transition-all"
-              >
-                <ChevronRight />
-              </Link>
-            )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

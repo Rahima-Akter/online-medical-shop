@@ -4,11 +4,11 @@ import SendIcon from "@mui/icons-material/Send";
 
 export default function ReviewSubmissionForm() {
   return (
-    <main className="flex-grow flex items-center justify-center py-20 px-6 bg-[#1E3F45]">
+    <main className="grow flex items-center justify-center py-20 px-6 bg-[#1E3F45]">
       <div className="w-full max-w-xl">
         {/* Product Header */}
-        <div className="flex items-center gap-5 mb-10 bg-white/5 p-5 rounded-[0.75rem] border border-white/10 backdrop-blur-sm">
-          <div className="size-20 bg-[#ECE3DA] rounded-[0.75rem] overflow-hidden flex-shrink-0 shadow-inner">
+        <div className="flex items-center gap-5 mb-10 bg-white/5 p-5 rounded-2xl border border-white/10 backdrop-blur-sm">
+          <div className="size-20 bg-[#ECE3DA] rounded-2xl overflow-hidden shrink-0 shadow-inner">
             <div
               className="w-full h-full bg-center bg-no-repeat bg-contain p-2"
               style={{
@@ -31,9 +31,9 @@ export default function ReviewSubmissionForm() {
         </div>
 
         {/* Form Card */}
-        <div className="bg-[#ECE3DA] rounded-[0.75rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] overflow-hidden">
+        <div className="bg-[#ECE3DA] rounded-2xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#D8CFC4]/20 to-transparent px-10 py-10">
+          <div className="bg-linear-to-r from-[#D8CFC4]/20 to-transparent px-10 py-10">
             <h1 className="text-4xl font-black text-[#1E3F45] mb-3 tracking-tight">
               Premium Review
             </h1>
@@ -64,7 +64,7 @@ export default function ReviewSubmissionForm() {
                   id="title"
                   type="text"
                   placeholder="Title"
-                  className="w-full px-4 rounded-[0.75rem] border-2 border-[#D8CFC4] bg-transparent text-[#1E3F45] focus:ring-0 focus:border-[#146976] placeholder-transparent font-semibold"
+                  className="w-full px-4 rounded-2xl border-2 border-[#D8CFC4] bg-transparent text-[#1E3F45] focus:ring-0 focus:border-[#146976] placeholder-transparent font-semibold"
                 />
                 <label htmlFor="title">Review Headline</label>
               </div>
@@ -74,14 +74,14 @@ export default function ReviewSubmissionForm() {
                   id="feedback"
                   rows={4}
                   placeholder="Feedback"
-                  className="w-full px-4 rounded-[0.75rem] border-2 border-[#D8CFC4] bg-transparent text-[#1E3F45] focus:ring-0 focus:border-[#146976] placeholder-transparent font-medium"
+                  className="w-full px-4 rounded-2xl border-2 border-[#D8CFC4] bg-transparent text-[#1E3F45] focus:ring-0 focus:border-[#146976] placeholder-transparent font-medium"
                 />
                 <label htmlFor="feedback">Detailed Experience</label>
               </div>
             </div>
 
             {/* Recommend Toggle */}
-            <div className="bg-white border border-[#D8CFC4] rounded-[0.75rem] p-6 shadow-sm flex items-center justify-between">
+            <div className="bg-white border border-[#D8CFC4] rounded-2xl p-6 shadow-sm flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="size-10 rounded-full bg-[#146976]/5 flex items-center justify-center text-[#146976]">
                   <VerifiedIcon fontSize="small" />
@@ -98,7 +98,7 @@ export default function ReviewSubmissionForm() {
 
               <label className="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" defaultChecked className="sr-only peer" />
-                <div className="w-14 h-7 bg-gray-200 rounded-full peer peer-checked:bg-[#146976] after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-6 after:transition-all peer-checked:after:translate-x-full" />
+                <div className="w-14 h-7 bg-gray-200 rounded-full peer peer-checked:bg-[#146976] after:content-[''] after:absolute after:top-1 after:left-1after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-6 after:transition-all peer-checked:after:translate-x-full" />
               </label>
             </div>
 
@@ -106,7 +106,7 @@ export default function ReviewSubmissionForm() {
             <div className="pt-4 flex flex-col gap-6">
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-[#146976] to-[#0E4F59] hover:brightness-110 text-white font-black py-5 px-8 rounded-[0.75rem] shadow-[0_10px_20px_-5px_rgba(20,104,117,0.4)] transition-all flex items-center justify-center gap-3 text-sm uppercase tracking-widest"
+                className="w-full bg-linear-to-r from-[#146976] to-[#0E4F59] hover:brightness-110 text-white font-black py-5 px-8 rounded-2xl shadow-[0_10px_20px_-5px_rgba(20,104,117,0.4)] transition-all flex items-center justify-center gap-3 text-sm uppercase tracking-widest"
               >
                 Submit Review
                 <SendIcon fontSize="small" />

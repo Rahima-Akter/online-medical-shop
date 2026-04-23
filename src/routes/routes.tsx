@@ -7,7 +7,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { UserRoles, UserRole } from "@/roles/roles";
 import { usePathname } from "next/navigation";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
-import { AddCircle, Edit, ShoppingBag } from "@mui/icons-material";
+import { AddCircle, ShoppingBag } from "@mui/icons-material";
 
 export default function RoutesNavigation({ role }: { role: UserRole }) {
   const pathname = usePathname();

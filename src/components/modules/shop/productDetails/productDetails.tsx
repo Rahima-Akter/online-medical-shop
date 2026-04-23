@@ -1,19 +1,11 @@
-"use client";
 import InfoIcon from "@mui/icons-material/Info";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import DescriptionIcon from "@mui/icons-material/Description";
 import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 import SideEffects from "./sideEffects";
 import Reviews from "./Reviews";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LocalMall } from "@mui/icons-material";
 import { Medicine } from "@/types/medicine";
-import { Spinner } from "@/components/ui/spinner";
-import Link from "next/link";
-import {addToCartAction} from "@/components/actions/cartAction";
-import { toast } from "sonner";
-import { useState } from "react";
+import CartAndCheckoutClient from "./client/cartAndCheckout";
 interface IMedicine {
   medDetails: Medicine;
   currentUserId: string;
@@ -23,23 +15,6 @@ export default function ProductDetails({
   medDetails,
   currentUserId,
 }: IMedicine) {
-  const [loading, setLoading] = useState(false);
-  const [quantity, setQuantity] = useState<number>(1);
-
-  const handleAddToCart = async (id: string, quantity: number) => {
-    setLoading(true);
-    try {
-      await addToCartAction(id, quantity);
-      toast.success("Added to cart");
-      setQuantity(1);
-    } catch (err) {
-      toast.error("Could not add to cart!");
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <main className="max-w-7xl mx-auto w-full px-6 py-8 font-[Inter,sans-serif]">
       {/* Breadcrumbs */}
@@ -144,58 +119,7 @@ export default function ProductDetails({
           </div>
 
           {/* add to cart */}
-          <div className="flex md:flex-row flex-col gap-4 p-6 rounded-xl border border-[#146976]/50">
-            {/* Quantity Adjuster */}
-            <div className="flex items-center justify-center border border-[#146976]/50 rounded-lg">
-              <button
-                disabled={loading}
-                onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
-                className="px-4 py-3 text-white cursor-pointer"
-              >
-                -
-              </button>
-
-              <span className="px-4 font-bold text-white">{quantity}</span>
-
-              <button
-                disabled={loading}
-                onClick={() => setQuantity((prev) => prev + 1)}
-                className="px-4 py-3 text-white cursor-pointer"
-              >
-                +
-              </button>
-            </div>
-
-            {/* Add to Cart Button */}
-            <button
-              disabled={loading}
-              onClick={() => handleAddToCart(`${medDetails?.id}`, quantity)}
-              className="w-full sm:w-auto bg-[#146976] text-white font-bold py-4 rounded-lg flex items-center justify-center gap-2 sm:flex-1 cursor-pointer hover:bg-[#248493]"
-            >
-              {loading ? (
-                <Spinner />
-              ) : (
-                <>
-                  {" "}
-                  <AddShoppingCartIcon />
-                  Add to Cart
-                </>
-              )}
-            </button>
-            {/* CheckOut Button */}
-            <Link
-              href="/shop/checkout"
-              onClick={() => handleAddToCart(`${medDetails?.id}`, quantity)}
-              className="w-full sm:w-auto bg-[#146976] text-white font-bold py-4 rounded-lg flex items-center justify-center gap-2 sm:flex-1 cursor-pointer hover:bg-[#248493]"
-            >
-              <LocalMall />
-              CheckOut
-            </Link>
-            {/* Favorite Button */}
-            <button className="p-4 group hover:bg-[#e2d1c3] ease-in border border-[#146976]/50 rounded-lg text-[#146976]">
-              <FavoriteBorderIcon className="group-hover:text-red-500 group-hover:scale-125 delay-100" />
-            </button>
-          </div>
+          <CartAndCheckoutClient medDetails={medDetails}/>
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-[#e3cab5] p-6 rounded-xl border border-[#146976]/10">
@@ -246,13 +170,13 @@ export default function ProductDetails({
               value="product-details"
               className="
           font-bold text-lg
-          text-[#146976] /* default text color */
-          data-[state=active]:text-[#146976] /* active text color */
-          data-[state=active]:font-extrabold /* active text color */
-          data-[state=active]:bg-transparent /* remove background on active tab */
-          data-[state=inactive]:text-[#146976]/60 /* inactive text */
-          data-[state=inactive]:bg-transparent /* remove background on inactive tab */
-          hover:text-[#146976] /* hover color */
+          text-[#146976]
+          data-[state=active]:text-[#146976]
+          data-[state=active]:font-extrabold
+          data-[state=active]:bg-transparent 
+          data-[state=inactive]:text-[#146976]/60
+          data-[state=inactive]:bg-transparent 
+          hover:text-[#146976]
           transition-all
         "
             >

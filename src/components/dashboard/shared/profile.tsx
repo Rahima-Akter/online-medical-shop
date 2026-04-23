@@ -155,7 +155,7 @@ export default function Profile({ user: userInfo }: { user: User }) {
               <div className="md:flex gap-3 items-center pt-3 space-y-3 md:space-y-0">
                 <button
                   onClick={() => setEditMode(!editMode)}
-                  className="flex w-full md:w-auto min-w-[140px] cursor-pointer items-center justify-center rounded-xl h-10 bg-[#146875] text-white text-xs font-bold tracking-wide hover:brightness-110 transition-all shadow-lg shadow-primary/30"
+                  className="flex w-full md:w-auto min-w-35 cursor-pointer items-center justify-center rounded-xl h-10 bg-[#146875] text-white text-xs font-bold tracking-wide hover:brightness-110 transition-all shadow-lg shadow-primary/30"
                 >
                   {editMode ? "Cancel Edit" : "Edit Profile"}
                 </button>
@@ -330,14 +330,14 @@ export default function Profile({ user: userInfo }: { user: User }) {
 
               <div className="space-y-4">
                 <div className="flex gap-4 p-4 bg-[rgba(0,0,0,0.2)] rounded-xl border border-white/5">
-                  <Lightbulb className="text-[#EBBA92] text-xl flex-shrink-0" />
+                  <Lightbulb className="text-[#EBBA92] text-xl shrink-0" />
                   <p className="text-sm text-[#D1D5DB] font-medium leading-relaxed">
                     Stay hydrated: Aim for 8 glasses of water today.
                   </p>
                 </div>
 
                 <div className="flex gap-4 p-4 bg-[rgba(0,0,0,0.2)] rounded-xl border border-white/5">
-                  <EventRepeat className="text-[#EBBA92] text-xl flex-shrink-0" />
+                  <EventRepeat className="text-[#EBBA92] text-xl shrink-0" />
                   <p className="text-sm text-[#D1D5DB] font-medium leading-relaxed">
                     Consistency is key: Take your supplements at the same time
                     daily.

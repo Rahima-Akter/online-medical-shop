@@ -6,7 +6,9 @@ import {
 } from "@/components/actions/cartAction";
 import { Spinner } from "@/components/ui/spinner";
 import { CartItem } from "@/types/cart";
-import { Add, ArrowForward, Delete, Info, Remove } from "@mui/icons-material";
+import { Add, ArrowForward, Delete, Info, Remove, RemoveShoppingCart } from "@mui/icons-material";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -81,9 +83,35 @@ export default function MyCart() {
 
   if (!items.length)
     return (
-      <p className="font-bold text-xl text-center border border-gray-700 px-8 py-20 rounded-lg">
-        No Items To Show
-      </p>
+      <div className="flex items-center justify-center min-h-[70vh] px-4 py-28 md:py-20">
+        <div className="text-center max-w-md p-10 shadow-xl">
+          {/* Icon */}
+          <div className="mx-auto w-20 h-20 rounded-full bg-[#EBBA92]/10 flex items-center justify-center mb-6">
+            <span className="material-symbols-outlined text-[#EBBA92] text-4xl">
+              <RemoveShoppingCart />
+            </span>
+          </div>
+
+          {/* Title */}
+          <h2 className="text-2xl font-bold text-white mb-2">
+            Your cart is empty
+          </h2>
+
+          {/* Subtitle */}
+          <p className="text-gray-400 text-sm leading-relaxed mb-6">
+            Looks like you haven’t added anything yet. Explore our pharmacy and
+            find the medicines you need with trusted quality.
+          </p>
+
+          {/* CTA Button */}
+          <Link
+            href="/shop"
+            className="inline-flex items-center justify-center px-6 h-12 rounded-lg bg-[#EBBA92] text-[#1E3F45] font-bold hover:brightness-110 transition shadow-lg"
+          >
+            Start Shopping
+          </Link>
+        </div>
+      </div>
     );
 
   const colors = {
@@ -161,12 +189,15 @@ export default function MyCart() {
                       backgroundColor: colors.surfaceDarkLighter,
                       border: `1px solid ${colors.lightCream}0D`,
                     }}
-                    className="w-32 h-32 rounded-xl overflow-hidden flex-shrink-0"
+                    className="w-32 h-32 rounded-xl overflow-hidden shrink-0"
                   >
-                    <img
+                    <Image
                       alt="Medicine"
-                      className="w-full h-full object-cover opacity-90 grayscale-[20%]"
+                      className="w-full h-full object-cover opacity-90 grayscale-20"
                       src={item.img}
+                      unoptimized
+                      width={100}
+                      height={100}
                     />
                   </div>
                   <div className="flex-1 flex flex-col justify-between">
@@ -271,7 +302,7 @@ export default function MyCart() {
             ))}
 
             {/* Info Box */}
-            <div
+            {/* <div
               style={{ backgroundColor: colors.primary + "10" }}
               className="border border-primary/30 p-5 rounded-2xl flex gap-4 items-center"
             >
@@ -296,7 +327,7 @@ export default function MyCart() {
                 </span>
                 . You can upload it during the next step.
               </p>
-            </div>
+            </div> */}
           </div>
 
           {/* Right Column - Order Summary & Promo */}

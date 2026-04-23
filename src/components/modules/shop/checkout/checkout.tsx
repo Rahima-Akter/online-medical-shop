@@ -6,8 +6,8 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import { User } from "@/types/userTypes";
 import { toast } from "sonner";
 import { CartItem } from "@/types/cart";
-import { serverPlaceOrder } from "./placeOrderAction";
 import { useRouter } from "next/navigation";
+import { serverPlaceOrder } from "./placeOrderAction";
 
 interface ICheckOut {
   currentUser: User;

@@ -6,11 +6,16 @@ export default async function AllProductsPage({
 }: {
   searchParams: { page?: string; limit?: string };
 }) {
-  const page = Number(searchParams?.page) || 1;
-  const limit = Number(searchParams?.limit) || 10;
-  const allCategory = await getAllCategory(page, limit);
+  const params = await searchParams;
+  const page = Number(params?.page) || 1;
+  const limit = Number(params?.limit) || 8;
+  const allCategory = await getAllCategory(page, 30);
 
   return (
-    <AllProducts allCategory={allCategory.categories} initialPage={page} limit={limit} />
+    <AllProducts
+      allCategory={allCategory.categories}
+      initialPage={page}
+      limit={limit}
+    />
   );
 }

@@ -19,6 +19,7 @@ import {
   Visibility,
 } from "@mui/icons-material";
 import { ChevronLeft } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -259,10 +260,12 @@ export default function UserManagement() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-[#146976]/20 border border-[#146976]/30 overflow-hidden">
-                          <img
+                          <Image
+                            fill
                             alt="User Avatar"
                             className="w-full h-full object-cover"
-                            src={user.image || "/avatar.png"}
+                            src={user.image || ""}
+                            unoptimized
                           />
                         </div>
                         <div>

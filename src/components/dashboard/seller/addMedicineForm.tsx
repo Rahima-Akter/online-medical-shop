@@ -70,7 +70,7 @@ export default function AddMedicineForm() {
 
   return (
     <div>
-      <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#FFFFFF0D] px-[40px] py-6 bg-[#0A1618]">
+      <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#FFFFFF0D] px-10 py-6 bg-[#0A1618]">
         <h2 className="text-[#F5F1E9] text-lg font-bold leading-tight tracking-[-0.015em]">
           Add Medicine
         </h2>
@@ -246,7 +246,7 @@ export default function AddMedicineForm() {
               </span>
               <textarea
                 {...register("dosage")}
-                className="premium-input form-textarea w-full rounded-xl text-[#F5F1E9] focus:ring-2 focus:ring-[#146875]/50 focus:border-[#146875] border border-[#FFFFFF0D] bg-[#0A1618]/60 min-h-[110px] p-4 text-base font-normal placeholder:text-[#D1D5DB]/30 pl-10"
+                className="premium-input form-textarea w-full rounded-xl text-[#F5F1E9] focus:ring-2 focus:ring-[#146875]/50 focus:border-[#146875] border border-[#FFFFFF0D] bg-[#0A1618]/60 min-h-27.5 p-4 text-base font-normal placeholder:text-[#D1D5DB]/30 pl-10"
                 placeholder="e.g. Take one tablet twice daily after meals..."
               />
             </div>
@@ -263,7 +263,7 @@ export default function AddMedicineForm() {
               </span>
               <textarea
                 {...register("sideEffects")}
-                className="premium-input form-textarea w-full rounded-xl text-[#F5F1E9] focus:ring-2 focus:ring-[#146875]/50 focus:border-[#146875] border border-[#FFFFFF0D] bg-[#0A1618]/60 min-h-[80px] p-4 text-base font-normal placeholder:text-[#D1D5DB]/30 pl-10"
+                className="premium-input form-textarea w-full rounded-xl text-[#F5F1E9] focus:ring-2 focus:ring-[#146875]/50 focus:border-[#146875] border border-[#FFFFFF0D] bg-[#0A1618]/60 min-h-20 p-4 text-base font-normal placeholder:text-[#D1D5DB]/30 pl-10"
                 placeholder="e.g. Nausea, Dizziness, Headache..."
               />
             </div>
@@ -280,7 +280,7 @@ export default function AddMedicineForm() {
               </span>
               <textarea
                 {...register("seriousSideEffects")}
-                className="premium-input form-textarea w-full rounded-xl text-[#F5F1E9] focus:ring-2 focus:ring-[#146875]/50 focus:border-[#146875] border border-[#FFFFFF0D] bg-[#0A1618]/60 min-h-[80px] p-4 text-base font-normal placeholder:text-[#D1D5DB]/30 pl-10"
+                className="premium-input form-textarea w-full rounded-xl text-[#F5F1E9] focus:ring-2 focus:ring-[#146875]/50 focus:border-[#146875] border border-[#FFFFFF0D] bg-[#0A1618]/60 min-h-20 p-4 text-base font-normal placeholder:text-[#D1D5DB]/30 pl-10"
                 placeholder="e.g. Severe allergic reaction, Difficulty breathing..."
               />
             </div>
@@ -311,7 +311,7 @@ export default function AddMedicineForm() {
             <button
               type="submit"
               disabled={loading}
-              className="px-10 py-3 rounded-xl bg-gradient-to-br from-[#146875] to-[#0e4b54] text-[#F5F1E9] text-sm font-black shadow-[0_10px_25px_-5px_rgba(20,104,117,0.5)] hover:shadow-[0_15px_30px_-5px_rgba(20,104,117,0.6)] hover:-translate-y-0.5 transition-all active:scale-95 uppercase tracking-widest"
+              className="px-10 py-3 rounded-xl bg-linear-to-br from-[#146875] to-[#0e4b54] text-[#F5F1E9] text-sm font-black shadow-[0_10px_25px_-5px_rgba(20,104,117,0.5)] hover:shadow-[0_15px_30px_-5px_rgba(20,104,117,0.6)] hover:-translate-y-0.5 transition-all active:scale-95 uppercase tracking-widest"
             >
               {loading ? "Saving..." : "Save Product"}
             </button>

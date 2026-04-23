@@ -1,27 +1,18 @@
-import { cookies } from "next/headers";
-const url = process.env.NEXT_PUBLIC_BETTER_AUTH_URL;
+import { getCookieHeader } from "@/lib/server-cookie";
 
+const BACKEND = process.env.BACKEND_URL;
 export const deleteMed = async (medId: string) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
-    if (!sessionToken) return [];
+    const cookieHeader = await getCookieHeader();
 
-    const res = await fetch(`${url}/api/medicine/${medId}`, {
+    const res = await fetch(`${BACKEND}/api/medicine/${medId}`, {
       method: "DELETE",
-      headers: {
-        "content-type": "application/json",
-        Cookie: `better-auth.session_token=${sessionToken}`,
-      },
+      headers: { "content-type": "application/json", cookie: cookieHeader },
       cache: "no-store",
     });
 
-    if (!res.ok) {
-      throw new Error("Faild to delete!");
-    }
-    const medicines = await res.json();
-
-    return medicines;
+    if (!res.ok) throw new Error("Failed to delete!");
+    return res.json();
   } catch (err) {
     console.error(err);
   }

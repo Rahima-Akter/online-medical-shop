@@ -1,22 +1,20 @@
 import { IAddMed } from "@/types/medicine";
-import { cookies } from "next/headers";
+import { getCookieHeader } from "@/lib/server-cookie";
 import { revalidatePath } from "next/cache";
 
-const url = process.env.NEXT_PUBLIC_BETTER_AUTH_URL;
+const BACKEND = process.env.BACKEND_URL;
 
 export const getAllMedicine = async (page: number, limit: number) => {
   try {
-    const res = await fetch(`${url}/api/medicine?page=${page}&limit=${limit}`, {
-      headers: {
-        "content-type": "application/json",
+    const res = await fetch(
+      `${BACKEND}/api/medicine?page=${page}&limit=${limit}`,
+      {
+        headers: { "content-type": "application/json" },
+        cache: "no-store",
       },
-      cache: "no-store",
-    });
+    );
 
-    if (!res.ok) {
-      throw new Error("Faild to fetch data");
-    }
-
+    if (!res.ok) throw new Error("Failed to fetch data");
     const medicines = await res.json();
 
     return {
@@ -32,11 +30,10 @@ export const getAllMedicine = async (page: number, limit: number) => {
   }
 };
 
-export const medcineById = async (id: string) => {
+export const medicineById = async (id: string) => {
   try {
-    const res = await fetch(`${url}/api/medicine/${id}`);
-    const medDetails = await res.json();
-    return medDetails;
+    const res = await fetch(`${BACKEND}/api/medicine/${id}`);
+    return res.json();
   } catch (err) {
     console.error(err);
   }
@@ -44,28 +41,19 @@ export const medcineById = async (id: string) => {
 
 export const addMedicine = async (payLoad: IAddMed) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
-    if (!sessionToken) return null;
+    const cookieHeader = await getCookieHeader();
 
-    const res = await fetch(`${url}/api/medicine`, {
+    const res = await fetch(`${BACKEND}/api/medicine`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `better-auth.session_token=${sessionToken}`,
-      },
+      headers: { "Content-Type": "application/json", cookie: cookieHeader },
       body: JSON.stringify(payLoad),
       cache: "no-store",
     });
 
-    if (!res.ok) {
-      throw new Error("Failed to add medicine");
-    }
-
-    const medData = await res.json();
+    if (!res.ok) throw new Error("Failed to add medicine");
+    const data = await res.json();
     revalidatePath("/shop");
-
-    return medData;
+    return data;
   } catch (err) {
     console.error(err);
     throw err;
@@ -74,35 +62,21 @@ export const addMedicine = async (payLoad: IAddMed) => {
 
 export const updateMedicine = async (id: string, payLoad: IAddMed) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken =
-      cookieStore.get("better-auth.session_token")?.value;
+    const cookieHeader = await getCookieHeader();
 
-    if (!sessionToken) {
-      throw new Error("Unauthorized");
-    }
-
-    const res = await fetch(`${url}/api/medicine/${id}`, {
+    const res = await fetch(`${BACKEND}/api/medicine/${id}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `better-auth.session_token=${sessionToken}`,
-      },
+      headers: { "Content-Type": "application/json", cookie: cookieHeader },
       body: JSON.stringify(payLoad),
       cache: "no-store",
     });
 
     const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data?.msg || "Failed to update medicine");
-    }
-
+    if (!res.ok) throw new Error(data?.msg || "Failed to update medicine");
     revalidatePath("/shop");
-
     return data.data;
   } catch (err) {
-    console.error("Update medicine error:", err);
+    console.error(err);
     throw err;
   }
 };

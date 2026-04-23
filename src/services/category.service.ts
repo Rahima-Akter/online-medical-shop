@@ -1,26 +1,24 @@
 import { env } from "@/env";
-import { cookies } from "next/headers";
+import { getCookieHeader } from "@/lib/server-cookie";
+
+const BACKEND = env.BACKEND_URL;
 
 export const getAllCategory = async (page: number, limit: number) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/category?page=${page}&limit=${limit}`,
+      `${BACKEND}/api/category?page=${page}&limit=${limit}`,
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         cache: "no-store",
       },
     );
+    console.log("API RESPONSE:", res);
 
-    if (!res.ok) {
-      throw new Error(`Error: ${res.statusText}`);
-    }
-
+    if (!res.ok) throw new Error(`Error: ${res.statusText}`);
     const response = await res.json();
 
     return {
-      categories: response.data.Data || [],
+      categories: response.data.data || [],
       total: response.data.total || 0,
       limit: response.data.limit || limit,
       currentPage: response.data.currentPage || page,
@@ -40,28 +38,18 @@ export const getAllCategory = async (page: number, limit: number) => {
 
 export const updateCategoryStatus = async (id: string, status: boolean) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+    const cookieHeader = await getCookieHeader();
 
-    if (!sessionToken) return null;
-
-    const res = await fetch(`${env.BACKEND_URL}/api/category/${id}`, {
+    const res = await fetch(`${BACKEND}/api/category/${id}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `better-auth.session_token=${sessionToken}`,
-      },
+      headers: { "Content-Type": "application/json", cookie: cookieHeader },
       body: JSON.stringify({ isActive: status }),
       cache: "no-store",
     });
 
-    if (!res.ok) {
-      throw new Error(`Error: ${res.statusText}`);
-    }
-
-    const updateStatus = await res.json();
-
-    return updateStatus.data;
+    if (!res.ok) throw new Error(`Error: ${res.statusText}`);
+    const data = await res.json();
+    return data.data;
   } catch (err) {
     console.log(err);
     throw err;
@@ -70,28 +58,17 @@ export const updateCategoryStatus = async (id: string, status: boolean) => {
 
 export const addCategory = async (categoryName: string) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+    const cookieHeader = await getCookieHeader();
 
-    if (!sessionToken) return null;
-    const res = await fetch(`${env.BACKEND_URL}/api/category`, {
+    const res = await fetch(`${BACKEND}/api/category`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `better-auth.session_token=${sessionToken}`,
-      },
+      headers: { "Content-Type": "application/json", cookie: cookieHeader },
       body: JSON.stringify({ name: categoryName }),
-      next: { revalidate: 5 },
     });
 
-    
-    if (!res.ok) {
-      throw new Error(`Error: ${res.statusText}`);
-    }
-    
-    const category = await res.json();
-
-    return category.data;
+    if (!res.ok) throw new Error(`Error: ${res.statusText}`);
+    const data = await res.json();
+    return data.data;
   } catch (err) {
     console.log(err);
   }
@@ -99,25 +76,16 @@ export const addCategory = async (categoryName: string) => {
 
 export const deleteCategory = async (id: string) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+    const cookieHeader = await getCookieHeader();
 
-    if (!sessionToken) return null;
-    const res = await fetch(`${env.BACKEND_URL}/api/category/${id}`, {
+    const res = await fetch(`${BACKEND}/api/category/${id}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `better-auth.session_token=${sessionToken}`,
-      },
+      headers: { "Content-Type": "application/json", cookie: cookieHeader },
     });
 
-    if (!res.ok) {
-      throw new Error(`Error: ${res.statusText}`);
-    }
-
-    const category = await res.json();
-
-    return category.data;
+    if (!res.ok) throw new Error(`Error: ${res.statusText}`);
+    const data = await res.json();
+    return data.data;
   } catch (err) {
     console.log(err);
   }

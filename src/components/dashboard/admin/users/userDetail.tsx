@@ -7,22 +7,15 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import PackageIcon from "@mui/icons-material/Inventory2";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import {
-  PlaceOrderPayload,
-  GetOrdersResponse,
-  orderResponseById,
-  ordersById,
-} from "@/types/order";
+import { ordersById } from "@/types/order";
 import { singleUserAction } from "@/components/actions/userAction";
-import {
-  allOrdersAction,
-  allOrdersByIdAction,
-} from "@/components/actions/orderAction";
+import { allOrdersByIdAction } from "@/components/actions/orderAction";
 import { User } from "@/types/userTypes";
 import { Person } from "@mui/icons-material";
 import { UserRoles } from "@/roles/roles";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function UserDetails() {
   const [orders, setOrders] = useState<ordersById[]>([]);
@@ -31,7 +24,6 @@ export default function UserDetails() {
   const [user, setUser] = useState<User | null>(null);
   const params = useParams();
   const userId = params.id as string;
-  console.log({userId})
 
   useEffect(() => {
     async function fetchData() {
@@ -71,10 +63,12 @@ export default function UserDetails() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="flex items-start gap-6">
           <div className="">
-            <img
-              className="size-32 rounded-[0.75rem] border-2 border-[#146875]/30 object-cover shadow-2xl shadow-[#146875]/20"
+            <Image
+              fill
+              className="size-32 rounded-2xl border-2 border-[#146875]/30 object-cover shadow-2xl shadow-[#146875]/20"
               alt="Detailed user profile portrait"
-              src={user?.image || "https://via.placeholder.com/150"}
+              src={user?.image || ""}
+              unoptimized
             />
           </div>
           <div className="flex flex-col">
@@ -122,7 +116,7 @@ export default function UserDetails() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="glass-card p-6 rounded-[0.75rem] relative overflow-hidden group">
+        <div className="glass-card p-6 rounded-2xl relative overflow-hidden group">
           <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
             <PaymentsIcon className="text-[96px]" />
           </div>
@@ -138,7 +132,7 @@ export default function UserDetails() {
           </div>
         </div>
 
-        <div className="glass-card p-6 rounded-[0.75rem] relative overflow-hidden group">
+        <div className="glass-card p-6 rounded-2xl relative overflow-hidden group">
           <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
             <PackageIcon className="text-[96px]" />
           </div>
@@ -153,7 +147,7 @@ export default function UserDetails() {
           </div>
         </div>
 
-        <div className="glass-card p-6 rounded-[0.75rem] relative overflow-hidden group">
+        <div className="glass-card p-6 rounded-2xl relative overflow-hidden group">
           <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
             <CalendarTodayIcon className="text-[96px]" />
           </div>
@@ -172,7 +166,7 @@ export default function UserDetails() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          <section className="glass-card rounded-[0.75rem] p-8">
+          <section className="glass-card rounded-2xl p-8">
             <div className="flex items-center justify-between mb-8 border-b border-[#146875]/10 pb-4">
               <h4 className="text-lg font-bold flex items-center gap-2">
                 <Person className="text-[#146875]" />
@@ -218,7 +212,7 @@ export default function UserDetails() {
       </div>
 
       {/* Recent Orders Table */}
-      <section className="glass-card rounded-[0.75rem] overflow-hidden">
+      <section className="glass-card rounded-2xl overflow-hidden">
         <div className="p-6 flex items-center justify-between border-b border-[#146875]/10">
           <h4 className="text-lg font-bold flex items-center gap-2">
             <HistoryIcon className="text-[#146875]" />

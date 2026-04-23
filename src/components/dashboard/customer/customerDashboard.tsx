@@ -63,7 +63,7 @@ export default async function CustomerDashboard() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-[rgba(20,45,48,0.4)] p-6 rounded-2xl flex items-center gap-5 hover:bg-white/[0.05] transition-all border border-[#FFFFFF0D]">
+          <div className="bg-[rgba(20,45,48,0.4)] p-6 rounded-2xl flex items-center gap-5 hover:bg-white/5 transition-all border border-[#FFFFFF0D]">
             <div className="w-14 h-14 rounded-xl bg-[#146875]/20 flex items-center justify-center text-[#146875] border border-[#146875]/20">
               <span className="material-symbols-outlined">
                 <LocalShipping />
@@ -77,7 +77,7 @@ export default async function CustomerDashboard() {
             </div>
           </div>
 
-          <div className="bg-[rgba(20,45,48,0.4)] p-6 rounded-2xl flex items-center gap-5 hover:bg-white/[0.05] transition-all border border-[#FFFFFF0D]">
+          <div className="bg-[rgba(20,45,48,0.4)] p-6 rounded-2xl flex items-center gap-5 hover:bg-white/5 transition-all border border-[#FFFFFF0D]">
             <div className="w-14 h-14 rounded-xl bg-[#EBBA92]/20 flex items-center justify-center text-[#EBBA92] border border-[#EBBA92]/20">
               <span className="material-symbols-outlined">
                 <MonetizationOn />
@@ -94,7 +94,7 @@ export default async function CustomerDashboard() {
             </div>
           </div>
 
-          <div className="bg-[rgba(20,45,48,0.4)] p-6 rounded-2xl flex items-center gap-5 hover:bg-white/[0.05] transition-all border border-[#FFFFFF0D]">
+          <div className="bg-[rgba(20,45,48,0.4)] p-6 rounded-2xl flex items-center gap-5 hover:bg-white/5 transition-all border border-[#FFFFFF0D]">
             <div className="w-14 h-14 rounded-xl bg-[#146875]/20 flex items-center justify-center text-[#146875] border border-[#146875]/20">
               <span className="material-symbols-outlined">
                 <ShoppingBag />

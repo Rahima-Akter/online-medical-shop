@@ -1,31 +1,19 @@
-import { cookies } from "next/headers";
+import { getCookieHeader } from "@/lib/server-cookie";
+
+const BACKEND = process.env.BACKEND_URL;
 
 export const addToCart = async (medicineId: string, quantity: number) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+    const cookieHeader = await getCookieHeader();
 
-    if (!sessionToken) return [];
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/cart`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `better-auth.session_token=${sessionToken}`,
-        },
-        next: { revalidate: 5 },
-        body: JSON.stringify({ medicineId, quantity }),
-      },
-    );
+    const res = await fetch(`${BACKEND}/api/cart`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", cookie: cookieHeader },
+      body: JSON.stringify({ medicineId, quantity }),
+    });
 
-    if (!res.ok) {
-      throw new Error(`Error: ${res.status}`);
-    }
-
-    const data = await res.json();
-
-    return data;
+    if (!res.ok) throw new Error(`Error: ${res.status}`);
+    return res.json();
   } catch (err) {
     console.error(err);
   }
@@ -33,27 +21,15 @@ export const addToCart = async (medicineId: string, quantity: number) => {
 
 export const getAllCartItems = async () => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+    const cookieHeader = await getCookieHeader();
 
-    if (!sessionToken) return [];
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/cart`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `better-auth.session_token=${sessionToken}`,
-        },
-        credentials: "include",
-        cache: "no-store",
-      },
-    );
+    const res = await fetch(`${BACKEND}/api/cart`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json", cookie: cookieHeader },
+      cache: "no-store",
+    });
 
-    if (!res.ok) {
-      throw new Error(`Error: ${res.statusText}`);
-    }
-
+    if (!res.ok) throw new Error(`Error: ${res.statusText}`);
     const data = await res.json();
     return data.data;
   } catch (err) {
@@ -64,31 +40,16 @@ export const getAllCartItems = async () => {
 
 export const deleteCartItem = async (medicineId: string) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
-    console.log(sessionToken)
+    const cookieHeader = await getCookieHeader();
 
-    if (!sessionToken) return [];
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/cart/remove`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `better-auth.session_token=${sessionToken}`,
-        },
-        credentials: "include",
-        body: JSON.stringify({ medicineId }),
-      },
-    );
+    const res = await fetch(`${BACKEND}/api/cart/remove`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json", cookie: cookieHeader },
+      body: JSON.stringify({ medicineId }),
+    });
 
-    if (!res.ok) {
-      throw new Error(`Error: ${res.status}`);
-    }
-
-    const data = await res.json();
-
-    return data;
+    if (!res.ok) throw new Error(`Error: ${res.status}`);
+    return res.json();
   } catch (err) {
     console.error(err);
   }
@@ -96,30 +57,16 @@ export const deleteCartItem = async (medicineId: string) => {
 
 export const updateQuantity = async (medicineId: string, quantity: number) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+    const cookieHeader = await getCookieHeader();
 
-    if (!sessionToken) return [];
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/cart/update-quantity`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `better-auth.session_token=${sessionToken}`,
-        },
-        credentials: "include",
-        body: JSON.stringify({ medicineId, quantity }),
-      },
-    );
+    const res = await fetch(`${BACKEND}/api/cart/update-quantity`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", cookie: cookieHeader },
+      body: JSON.stringify({ medicineId, quantity }),
+    });
 
-    if (!res.ok) {
-      throw new Error(`Error: ${res.status}`);
-    }
-
-    const data = await res.json();
-
-    return data;
+    if (!res.ok) throw new Error(`Error: ${res.status}`);
+    return res.json();
   } catch (err) {
     console.error(err);
   }

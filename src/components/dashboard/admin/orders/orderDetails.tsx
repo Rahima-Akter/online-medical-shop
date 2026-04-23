@@ -1,7 +1,5 @@
 import { getSingleOrder } from "@/services/order.service";
-import { getSession } from "@/services/user.service";
 import { OrderItem } from "@/types/order";
-import { User } from "@/types/userTypes";
 import {
   ArrowBack,
   Cancel,
@@ -170,7 +168,7 @@ export default async function AdminOrderDetails({ id }: { id: string }) {
                 {data.items.map((item: OrderItem, i: number) => (
                   <div
                     key={i}
-                    className="p-6 flex items-center gap-5 hover:bg-white/[0.02] transition-colors"
+                    className="p-6 flex items-center gap-5 hover:bg-white/2 transition-colors"
                   >
                     <div className="w-16 h-16 bg-[#1A292C] rounded-xl flex items-center justify-center border border-white/5">
                       <span className="material-symbols-outlined text-[#146875]">

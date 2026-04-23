@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   ChevronRight,
   HourglassDisabled,
+  RemoveShoppingCart,
 } from "@mui/icons-material";
 import { getAllMedicine } from "@/services/medicine.service";
 import { Medicine } from "@/types/medicine";
@@ -38,7 +39,26 @@ export default async function Orders({ searchParams }: IsearchParams) {
   const myAllOrders: GetOrdersResponse | null = await allOrders(page, limit);
 
   if (!myAllOrders || myAllOrders.data.length === 0)
-    return <p>No orders found.</p>;
+    return (
+      <div className="flex items-center justify-center min-h-[70vh] px-4 py-28 md:py-20">
+        <div className="text-center max-w-md p-10 shadow-xl">
+          {/* Icon */}
+          <div className="mx-auto w-20 h-20 rounded-full bg-[#EBBA92]/10 flex items-center justify-center mb-6">
+            <span className="material-symbols-outlined text-[#EBBA92] text-4xl">
+              <RemoveShoppingCart />
+            </span>
+          </div>
+
+          {/* Title */}
+          <h2 className="text-2xl font-bold text-white mb-2">Empty !</h2>
+
+          {/* Subtitle */}
+          <p className="text-gray-400 text-sm leading-relaxed mb-6">
+            Looks like no one orderd anything yet.
+          </p>
+        </div>
+      </div>
+    );
 
   const { data: orders, currentPage, totalPages, total } = myAllOrders;
   const start = (currentPage - 1) * limit + 1;

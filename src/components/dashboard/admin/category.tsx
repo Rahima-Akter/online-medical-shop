@@ -79,7 +79,6 @@ export default function CategoryPage() {
       setLoading(true);
       try {
         const catData = await allCategoryAction(currentPage, limit);
-
         setAllCat(catData.categories || []);
         setTotal(catData.total ?? 0);
         setTotalPage(

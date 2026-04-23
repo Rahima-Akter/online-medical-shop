@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Orders from "@/components/dashboard/admin/orders/orders";
 
 export default function OrderRoute({

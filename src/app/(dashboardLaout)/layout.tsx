@@ -14,8 +14,9 @@ import {
 } from "@/components/actions/userAction";
 import { UserRole, UserRoles } from "@/roles/roles";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { User } from "@/types/userTypes";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function DashboardRootLayout({
   admin,
@@ -29,33 +30,44 @@ export default function DashboardRootLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [role, setRole] = useState<UserRole | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchRole() {
-      const result = (await UserAction()) as UserRole;
-      setRole(result);
+    async function loadUserData() {
+      try {
+        const [fetchedRole, fetchedUser] = await Promise.all([
+          UserAction() as Promise<UserRole | null>,
+          loggedInUserAction(),
+        ]);
+        setRole(fetchedRole);
+        setUser(fetchedUser || null);
+      } catch (err) {
+        console.error("Failed to load user data:", err);
+      } finally {
+        setLoading(false);
+      }
     }
 
-    const fetchUser = async () => {
-      const user = await loggedInUserAction();
-      setUser(user || null);
-    };
-
-    fetchUser();
-    fetchRole();
+    loadUserData();
   }, []);
 
   const handleLogOut = async () => {
     try {
       await logOutAction();
-      toast.success("Logout Successfull");
-      router.push("/");
+      toast.success("Loged Out Successfully");
     } catch (err) {
       console.log(err);
-      toast.error("Someting Went Wrong!");
+      toast.error("Something Went Wrong!");
     }
   };
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-[#121e20]">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#146976]" />
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen flex overflow-y-auto">
@@ -64,15 +76,10 @@ export default function DashboardRootLayout({
         className={`${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } fixed inset-0 z-20 ${
-          role === UserRoles.SELLER
-            ? "bg-[#1e4147]"
-            : role === UserRoles.ADMIN
-              ? "bg-[#121e20]"
-              : "bg-[#121e20]"
-        }
- text-white flex flex-col border-r border-[#146976]/20 transition-transform lg:relative lg:translate-x-0 lg:w-64 md:w-96 lg:shrink-0`}
+          role === UserRoles.SELLER ? "bg-[#1e4147]" : "bg-[#121e20]"
+        } text-white flex flex-col border-r border-[#146976]/20 transition-transform lg:relative lg:translate-x-0 lg:w-64 md:w-96 lg:shrink-0`}
       >
-        <div className="p-6">
+        <Link href="/" className="p-6">
           <div className="flex items-center gap-3">
             <div className="bg-[#146976] p-2 rounded-lg flex items-center justify-center">
               <MedicalServicesIcon className="text-white text-2xl" />
@@ -86,8 +93,9 @@ export default function DashboardRootLayout({
               </p>
             </div>
           </div>
-        </div>
+        </Link>
 
+        {/* Role is guaranteed to exist here because of the loading check above */}
         {role && (
           <nav className="flex-1 space-y-1 mt-4">
             <RoutesNavigation role={role} />
@@ -96,21 +104,27 @@ export default function DashboardRootLayout({
 
         <div className="p-4 border-t border-[#146976]/20 w-full">
           <button
-            onClick={() => handleLogOut()}
+            onClick={handleLogOut}
             className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-red-500/10 hover:text-red-400 cursor-pointer transition-colors w-full"
           >
             <ExitToAppIcon />
             <span className="font-medium">Logout</span>
           </button>
         </div>
-        {/* user logo and name */}
+
+        {/* User info at bottom */}
         <div className="flex items-center gap-3 px-8 py-2">
           <div className="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center overflow-hidden border border-white/20">
-            <img
+            <Image
+              width={100}
+              height={100}
+              unoptimized
               alt="Profile Avatar"
               className="w-full h-full object-cover"
-              data-alt="user profile"
-              src={user?.image ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_eN9ltaN4YL-7g4jrTdTXHsBUf_bWxQ_cSg&s"}
+              src={
+                user?.image ??
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_eN9ltaN4YL-7g4jrTdTXHsBUf_bWxQ_cSg&s"
+              }
             />
           </div>
           <div className="flex-1 min-w-0">
@@ -122,30 +136,19 @@ export default function DashboardRootLayout({
         </div>
       </aside>
 
-      {/* Main content */}
-      {/* <div className="flex-1 bg-[#121e20] overflow-y-auto">
-        {role === UserRoles.SELLER
-          ? seller
-          : role === UserRoles.ADMIN
-            ? admin
-            : customer}
-      </div> */}
+      {/* Main content — only renders the slot matching the user's role */}
       <div className="flex-1 bg-[#121e20] overflow-y-auto">
         {role === UserRoles.CUSTOMER && customer}
         {role === UserRoles.SELLER && seller}
         {role === UserRoles.ADMIN && admin}
       </div>
 
-      {/* Sidebar Toggle Button */}
+      {/* Mobile sidebar toggle */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
         className="fixed top-4 right-4 lg:hidden p-2 bg-[#146976] rounded-full text-white z-50"
       >
-        {sidebarOpen ? (
-          <CancelIcon className="text-white" />
-        ) : (
-          <MenuOpenIcon className="text-white" />
-        )}
+        {sidebarOpen ? <CancelIcon /> : <MenuOpenIcon />}
       </button>
     </div>
   );

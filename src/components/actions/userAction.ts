@@ -8,6 +8,7 @@ import {
   updateUser,
 } from "@/services/user.service";
 import { User, UserResponse } from "@/types/userTypes";
+import { redirect } from "next/navigation";
 
 interface ISession {
   user: User;
@@ -49,5 +50,6 @@ export async function loggedInUserAction() {
 }
 
 export async function logOutAction() {
-  return await logout();
+  await logout();
+  redirect("/login");
 }

@@ -1,5 +1,11 @@
-import { GetOrdersResponse, orderResponseById, ordersById } from "@/types/order";
-import { cookies } from "next/headers";
+import {
+  GetOrdersResponse,
+  orderResponseById,
+  ordersById,
+} from "@/types/order";
+import { getCookieHeader } from "@/lib/server-cookie";
+
+const BACKEND = process.env.BACKEND_URL;
 
 interface CartItem {
   medicineId: string;
@@ -15,36 +21,17 @@ interface OrderPayload {
 }
 
 export const placeOrder = async (order: OrderPayload) => {
-  const cookieStore = await cookies();
-  const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+  const cookieHeader = await getCookieHeader();
 
-  if (!sessionToken) {
-    console.error("No session token found");
-    throw new Error("User is not authenticated");
-  }
+  const res = await fetch(`${BACKEND}/api/order`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", cookie: cookieHeader },
+    body: JSON.stringify(order),
+  });
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/order`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `better-auth.session_token=${sessionToken}`,
-      },
-      credentials: "include",
-      body: JSON.stringify(order),
-    },
-  );
-
-  if (!res.ok) {
-    const text = res.statusText;
-    console.error("Order request failed:", text);
+  if (!res.ok)
     throw new Error(`Checkout failed: ${res.status} ${res.statusText}`);
-  }
-
-  const data = await res.json();
-
-  return data;
+  return res.json();
 };
 
 export const allOrders = async (
@@ -52,30 +39,19 @@ export const allOrders = async (
   limit: number,
 ): Promise<GetOrdersResponse | null> => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
-
-    if (!sessionToken) return null;
+    const cookieHeader = await getCookieHeader();
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/order?page=${page}&limit=${limit}`,
+      `${BACKEND}/api/order?page=${page}&limit=${limit}`,
       {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `better-auth.session_token=${sessionToken}`,
-        },
-        credentials: "include",
+        headers: { "Content-Type": "application/json", cookie: cookieHeader },
         cache: "no-store",
       },
     );
 
-    if (!res.ok) {
-      throw new Error(`Fetching orders failed: ${res.statusText}`);
-    }
-
-    const data: GetOrdersResponse = await res.json();
-    return data;
+    if (!res.ok) throw new Error(`Fetching orders failed: ${res.statusText}`);
+    return res.json();
   } catch (err) {
     console.error(err);
     return null;
@@ -83,32 +59,19 @@ export const allOrders = async (
 };
 
 export const getAllOrdesByUserId = async (
-  userId: string
+  userId: string,
 ): Promise<ordersById[]> => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken =
-      cookieStore.get("better-auth.session_token")?.value;
+    const cookieHeader = await getCookieHeader();
 
-    if (!sessionToken) return [];
-
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/order/all-orders/${userId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `better-auth.session_token=${sessionToken}`,
-        },
-        credentials: "include",
-        cache: "no-store",
-      }
-    );
+    const res = await fetch(`${BACKEND}/api/order/all-orders/${userId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json", cookie: cookieHeader },
+      cache: "no-store",
+    });
 
     if (!res.ok) throw new Error("Fetching failed");
-
     const data: orderResponseById = await res.json();
-
     return data.data ?? [];
   } catch (err) {
     console.error(err);
@@ -116,28 +79,18 @@ export const getAllOrdesByUserId = async (
   }
 };
 
-export const updateOrder = async (status: string) => {
+export const updateOrder = async (orderId: string, status: string) => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/order`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        next: { revalidate: 5 },
-        body: JSON.stringify({ status }),
-      },
-    );
+    const cookieHeader = await getCookieHeader();
 
-    if (!res.ok) {
-      throw new Error(`Error: ${res.status}`);
-    }
+    const res = await fetch(`${BACKEND}/api/order/${orderId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", cookie: cookieHeader },
+      body: JSON.stringify({ status }),
+    });
 
-    const data = await res.json();
-
-    return data;
+    if (!res.ok) throw new Error(`Error: ${res.status}`);
+    return res.json();
   } catch (err) {
     console.error(err);
   }
@@ -145,27 +98,16 @@ export const updateOrder = async (status: string) => {
 
 export const getSingleOrder = async (id: string) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+    const cookieHeader = await getCookieHeader();
 
-    if (!sessionToken) return [];
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/order/${id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `better-auth.session_token=${sessionToken}`,
-        },
-        cache: "no-store",
-      },
-    );
+    const res = await fetch(`${BACKEND}/api/order/${id}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json", cookie: cookieHeader },
+      cache: "no-store",
+    });
 
-    if (!res.ok) {
-      throw new Error(`Error: ${res.status}`);
-    }
-    const data = await res.json();
-    return data;
+    if (!res.ok) throw new Error(`Error: ${res.status}`);
+    return res.json();
   } catch (err) {
     console.error(err);
   }

@@ -16,7 +16,8 @@ import { addToCartAction } from "@/components/actions/cartAction";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getAllMedicine } from "@/services/medicine.service";
+import { getMedicineAction } from "@/components/actions/medicineAction";
+import Image from "next/image";
 
 interface IMedicineProps {
   allCategory: Category[];
@@ -48,12 +49,12 @@ export default function AllProducts({
   const fetchMedicines = async (page: number) => {
     setLoading(true);
     try {
-      const res = await getAllMedicine(page, limit);
+      const res = await getMedicineAction(page, limit);
       // const cat = await allCategoryAction(1, 10);
       // setAllCategory(cat);
       setMedicines(res.medicines);
       setTotal(res.total);
-      setTotalPages(res.totalPages);
+      setTotalPages(res.totalPages ?? 1);
     } catch (err) {
       console.error(err);
       setMedicines([]);
@@ -164,7 +165,7 @@ export default function AllProducts({
             <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">
               Categories
             </p>
-            <div className="space-y-3">
+            <div className="space-y-3 max-h-44 overflow-y-scroll">
               {allCategory.map((cat: Category) => (
                 <label
                   key={cat.id}
@@ -261,7 +262,7 @@ export default function AllProducts({
                       : "none",
                 )
               }
-              className="appearance-none bg-gray-800 border border-gray-600 rounded-[0.5rem] py-2 pl-4 pr-10 text-sm focus:ring-[#146976] focus:border-[#146976] text-white"
+              className="appearance-none bg-gray-800 border border-gray-600 rounded-xl py-2 pl-4 pr-10 text-sm focus:ring-[#146976] focus:border-[#146976] text-white"
             >
               <option value="none">Sort by: None</option>
               <option value="low">Price: Low to High</option>
@@ -290,10 +291,12 @@ export default function AllProducts({
             {filteredMedicines.map((product) => (
               <div
                 key={product.id}
-                className="bg-gray-900 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all group border border-gray-800 h-[400px] flex flex-col"
+                className="bg-gray-900 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all group border border-gray-800 h-100 flex flex-col"
               >
                 <div className="aspect-square relative overflow-hidden bg-gray-800">
-                  <img
+                  <Image
+                    fill
+                    unoptimized
                     className="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform"
                     src={product.img}
                     alt={product.name}
@@ -333,7 +336,7 @@ export default function AllProducts({
                   <h3 className="font-bold text-gray-300 mb-1 line-clamp-1 group-hover:text-[#146976] transition-colors">
                     {product.name}
                   </h3>
-                  <p className="text-xs text-gray-400 mb-4 italic">
+                  <p className="text-xs text-gray-400 mb-1 italic">
                     -{product.category.name}
                   </p>
                   <div className="flex items-center justify-between mt-auto">

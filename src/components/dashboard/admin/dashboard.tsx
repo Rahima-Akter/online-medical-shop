@@ -81,7 +81,7 @@ export default async function Dashboard() {
         {/* KPI Cards Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {/* KPI 1: Total Users */}
-          <div className="bg-[#d9f3f7] rounded-xl p-6 shadow-xl flex flex-col justify-between min-h-[140px]">
+          <div className="bg-[#d9f3f7] rounded-xl p-6 shadow-xl flex flex-col justify-between min-h-35">
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-[#146976] text-sm font-bold uppercase tracking-wider">
@@ -111,7 +111,7 @@ export default async function Dashboard() {
           </div>
 
           {/* KPI 2: Total Sellers */}
-          <div className="bg-[#d9f3f7] rounded-xl p-6 shadow-xl flex flex-col justify-between min-h-[140px]">
+          <div className="bg-[#d9f3f7] rounded-xl p-6 shadow-xl flex flex-col justify-between min-h-35">
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-[#146976] text-sm font-bold uppercase tracking-wider">
@@ -141,7 +141,7 @@ export default async function Dashboard() {
           </div>
 
           {/* KPI 3: Platform Revenue */}
-          <div className="bg-[#d9f3f7] rounded-xl p-6 shadow-xl flex flex-col justify-between min-h-[140px]">
+          <div className="bg-[#d9f3f7] rounded-xl p-6 shadow-xl flex flex-col justify-between min-h-35">
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-[#146976] text-sm font-bold uppercase tracking-wider">
@@ -187,7 +187,7 @@ export default async function Dashboard() {
               </p>
             </div>
           </div>
-          <div className="relative h-[240px] w-full mt-4">
+          <div className="relative h-60 w-full mt-4">
             <svg
               className="w-full h-full"
               preserveAspectRatio="none"
@@ -256,7 +256,7 @@ export default async function Dashboard() {
             </span>
           </div>
           <div
-            className={`grid grid-cols-${sellerNames.length} items-end gap-4 h-[240px] px-4 pt-4`}
+            className={`grid grid-cols-${sellerNames.length} items-end gap-4 h-60 px-4 pt-4`}
           >
             {sellerNames.map((seller, idx) => {
               const revenue = sellerPerformance[seller] ?? 0; // fallback to 0

@@ -1,3 +1,4 @@
+"use client";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import SecurityIcon from "@mui/icons-material/Security";
@@ -9,9 +10,78 @@ import LockIcon from "@mui/icons-material/Lock";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import Link from "next/link";
-import { ExpandCircleDown } from "@mui/icons-material";
+import { ExpandCircleDown, LocationOn } from "@mui/icons-material";
+import Image from "next/image";
+import { toast } from "sonner";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+
+interface RegisterFormData {
+  name: string;
+  email: string;
+  image: string;
+  phone_number: string;
+  default_shipping_address: string;
+  password: string;
+  role: "CUSTOMER" | "SELLER";
+}
 
 export default function RegisterForm() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormData>();
+
+  const onSubmit = async (data: RegisterFormData) => {
+    setLoading(true);
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            credentials: "include",
+          },
+          body: JSON.stringify({
+            email: data.email,
+            password: data.password,
+            name: data.name,
+            role: data.role,
+            image: data.image,
+            phone_number: data.phone_number,
+            // date_of_birth: "",
+            default_shipping_address: data.default_shipping_address,
+          }),
+        },
+      );
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        toast.error(result.error || "Registration failed");
+        setLoading(false);
+        return;
+      }
+
+      toast.success("Account created successfully 🎉");
+      router.push("/login");
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-col lg:flex-row w-full max-w-6xl h-full lg:min-h-212.5 bg-[#ECE3DA] rounded-xl overflow-hidden shadow-lg">
@@ -25,7 +95,7 @@ export default function RegisterForm() {
             }}
           />
           <div className="relative z-20 flex flex-col justify-between p-12 px-8 h-full text-white w-screen">
-            <div className="absolute top-[5rem] left-14 right-14 z-20 space-y-64">
+            <div className="absolute top-20 left-14 right-14 z-20 space-y-64">
               {/* The content will be moved upwards by 5rem */}
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center">
@@ -63,21 +133,30 @@ export default function RegisterForm() {
                 <div className="flex items-center gap-4 pt-4 border-t border-white/10">
                   <div className="flex -space-x-3">
                     <div className="w-10 h-10 rounded-full border-2 border-[#146976] bg-gray-200 overflow-hidden">
-                      <img
+                      <Image
+                        unoptimized
+                        width={100}
+                        height={100}
                         className="w-full h-full object-cover"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHaiqn4v9YsGr3yryp4xPqyYzvdvM6t3RgVxX51A0tnltJ9Hfc7TZzo2gLOPjMcS00-HVHoiBiODdwcINbvuN4dFXrB9XwcnFkGDRCupfc0WqZASgHqK9kWoj-DpOGizBHKvwD1al6aXg4qTb95kAbFqdrkndQ4fFdeusFVoTe3XpGcBflOVAnM2ZI_sSpRXKRZqgzbQIeCNl0rKXb8sh8cRL1X4HzUbG6ge-8jCyxYHFF35LOwrzkEZ-lLMyIWU4rA9p-KBLBCA"
                         alt="Pharmacist professional profile"
                       />
                     </div>
                     <div className="w-10 h-10 rounded-full border-2 border-[#146976] bg-gray-200 overflow-hidden">
-                      <img
+                      <Image
+                        unoptimized
+                        width={100}
+                        height={100}
                         className="w-full h-full object-cover"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuAitHmEE_10iKADGQQXS93S9LoepVPC0WesUFtYK5DN8XxS1cc1J4YCaTEZzIVh4f__KAUW6ZyyF1VH-MM-H7_T4OSQNZe1ew9ExSKYY2eB6S11lF0w59eA7vqHNzua5aPPgleCh42P-DVaSK9M-6MX07j_SqgMP_rNv7oMtwnj-X_Q_0A3PPWFK9GcqzhUkAIyuoQpPZciznVjhML0VcU-8IDCgY3xisBDHlSATkYPCctR53Q5MUuKBG0IsjNQ0nm9dmuT_FHLWQ"
                         alt="Doctor professional profile"
                       />
                     </div>
                     <div className="w-10 h-10 rounded-full border-2 border-[#146976] bg-gray-200 overflow-hidden">
-                      <img
+                      <Image
+                        unoptimized
+                        width={100}
+                        height={100}
                         className="w-full h-full object-cover"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSRoTG98UkXQoMKnDzOR6d5IyI_SbN1bZ_ttx4p26yhMu1GcfqbkDFogU6FHs3XUqYIOJM7hw5YV1w3RyKaQCsqlA9JTqqbRyMOszf2liOPJuEO5L1vWrfQjQIoUd-T7yEakoJnF-6JvdXsqaJHxitr_jT6Gy_1_8Z0XAeBRO_RTtbzJiIjObY5uUGSN8Q-jlDQUYhX0GIQGkPILZak4l0c6Hdv-Q3HpYAZO9Kmv-0vFw1hpiJoFQgI27IQsKKE_l66x8IuiazjQ"
                         alt="Medical staff profile"
@@ -154,46 +233,126 @@ export default function RegisterForm() {
             </div>
           </div>
 
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             {/* Full Name */}
             <div className="relative">
               {/* <label className="floating-label" htmlFor="fullname">
                 Full Name
               </label> */}
               <input
-                className="form-input block w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 bg-white text-gray-900 focus:border-[#146976] focus:ring-2 focus:ring-[#146976]/20 transition-all outline-none palceholder-text:black shadow-lg shadow-[#146976]/20 placeholder:font-semibold"
+                className={`form-input block w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 bg-white text-gray-900 focus:border-[#146976] focus:ring-2 focus:ring-[#146976]/20 transition-all outline-none palceholder-text:black shadow-lg shadow-[#146976]/20 placeholder:font-semibold ${
+                  errors.name ? "border-red-500" : "border-gray-200"
+                }`}
                 id="fullname"
                 placeholder="Full Name"
                 type="text"
+                {...register("name", { required: "Name is required" })}
               />
               <PersonIcon className="absolute left-4 top-4 text-gray-400" />
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.name.message}
+                </p>
+              )}
             </div>
 
             {/* Email */}
             <div className="relative">
               <MailIcon className="absolute left-4 top-4 text-gray-400" />
               <input
-                className="form-input block w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 bg-white text-gray-900 focus:border-[#146976] focus:ring-2 focus:ring-[#146976]/20 transition-all outline-none shadow-lg shadow-[#146976]/20 placeholder:font-semibold"
+                className={`form-input block w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 bg-white text-gray-900 focus:border-[#146976] focus:ring-2 focus:ring-[#146976]/20 transition-all outline-none shadow-lg shadow-[#146976]/20 placeholder:font-semibold ${
+                  errors.email ? "border-red-500" : "border-gray-200"
+                }`}
                 id="email"
                 placeholder="Email Address"
                 type="email"
+                {...register("email", { required: "Email is required" })}
               />
               {/* <label className="floating-label" htmlFor="email">
                 Email Address
               </label> */}
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
-            {/* Phone */}
+            {/* Image URL */}
+            <div className="relative">
+              <PersonIcon className="absolute left-4 top-4 text-gray-400" />
+              <input
+                className={`form-input block w-full pl-12 pr-4 py-4 rounded-xl border bg-white text-gray-900 
+    focus:border-[#146976] focus:ring-2 focus:ring-[#146976]/20 transition-all outline-none 
+    shadow-lg shadow-[#146976]/20 placeholder:font-semibold ${
+      errors.image ? "border-red-500" : "border-gray-200"
+    }`}
+                id="image"
+                placeholder="Profile Image URL"
+                type="text"
+                {...register("image", {
+                  required: "Image URL is required",
+                  pattern: {
+                    value: /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))/i,
+                    message: "Enter a valid image URL",
+                  },
+                })}
+              />
+
+              {errors.image && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.image.message}
+                </p>
+              )}
+            </div>
+
+            {/* phone_number */}
             <div className="relative">
               <CallIcon className="absolute left-4 top-4  text-gray-400" />
               <input
-                className="form-input block w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 bg-white text-gray-900 focus:border-[#146976] focus:ring-2 focus:ring-[#146976]/20 transition-all outline-none shadow-lg shadow-[#146976]/20 placeholder:font-semibold"
-                id="phone"
-                placeholder="Phone Number"
+                className={`form-input block w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 bg-white text-gray-900 focus:border-[#146976] focus:ring-2 focus:ring-[#146976]/20 transition-all outline-none shadow-lg shadow-[#146976]/20 placeholder:font-semibold ${
+                  errors.phone_number ? "border-red-500" : "border-gray-200"
+                }`}
+                id="phone_number"
+                placeholder="Enter Your Number"
                 type="tel"
+                {...register("phone_number", {
+                  required: "phone number is required",
+                })}
               />
-              {/* <label className="floating-label" htmlFor="phone">
-                Phone Number
+              {errors.phone_number && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.phone_number?.message}
+                </p>
+              )}
+              {/* <label className="floating-label" htmlFor="phone_number">
+                phone_number Number
+              </label> */}
+            </div>
+
+            {/* shipping address */}
+            <div className="relative">
+              <LocationOn className="absolute left-4 top-4  text-gray-400" />
+              <input
+                className={`form-input block w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 bg-white text-gray-900 focus:border-[#146976] focus:ring-2 focus:ring-[#146976]/20 transition-all outline-none shadow-lg shadow-[#146976]/20 placeholder:font-semibold ${
+                  errors.default_shipping_address
+                    ? "border-red-500"
+                    : "border-gray-200"
+                }`}
+                id="default_shipping_address"
+                placeholder="default_shipping_address"
+                type="tel"
+                {...register("default_shipping_address", {
+                  required: "shipping address is required",
+                })}
+              />
+              {errors.default_shipping_address && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.default_shipping_address?.message}
+                </p>
+              )}
+              {/* <label className="floating-label" htmlFor="phone_number">
+                Shipping Address
               </label> */}
             </div>
 
@@ -201,20 +360,24 @@ export default function RegisterForm() {
             <div className="relative">
               <SwitchAccountIcon className="absolute left-4 top-4 text-gray-400" />
               <select
-                className="form-select block w-full pl-12 pr-10 py-4 rounded-xl border border-gray-200 bg-white text-gray-900 appearance-none 
+                className={`form-select block w-full pl-12 pr-10 py-4 rounded-xl border border-gray-200 bg-white text-gray-900 appearance-none 
   focus:border-[#146976] focus:ring-2 focus:ring-[#146976]/20 transition-all outline-none 
   hover:border-[#146976] hover:ring-2 hover:ring-[#146976]/10 shadow-lg shadow-[#146976]/20 
-  focus:shadow-[#146976]/30 dark:bg-[#1e2a3e] dark:text-white dark:border-gray-600 dark:focus:ring-[#3b82f6]"
+  focus:shadow-[#146976]/30 dark:bg-[#1e2a3e] dark:text-white dark:border-gray-600 dark:focus:ring-[#3b82f6] ${
+    errors.role ? "border-red-500" : "border-gray-200"
+  }`}
                 id="role"
+                {...register("role", { required: "Role is required" })}
               >
-                <option value="" className="text-[#A3B0B8] font-semibold">
-                  Select your role
-                </option>
-                <option value="Customer">I am a Customer</option>
-                <option value="Seller">I am a Seller</option>
+                <option value="">Select Role</option>
+                <option value="CUSTOMER">I am a Customer</option>
+                <option value="SELLER">I am a Seller</option>
               </select>
 
-              <label className="text-green-600 font-extrabold absolute text-xs left-14 -top-2" htmlFor="role">
+              <label
+                className="text-green-600 font-extrabold absolute text-xs left-14 -top-2"
+                htmlFor="role"
+              >
                 Role
               </label>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
@@ -222,16 +385,30 @@ export default function RegisterForm() {
                   <ExpandCircleDown />
                 </span>
               </div>
+              {errors.role && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.role.message}
+                </p>
+              )}
             </div>
 
             {/* Password */}
             <div className="relative">
               <LockIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
-                className="form-input block w-full pl-12 pr-12 py-4 rounded-xl border border-gray-200 bg-white text-gray-900 focus:border-[#146976] focus:ring-2 focus:ring-[#146976]/20 transition-all outline-none shadow-lg shadow-[#146976]/20 placeholder:font-semibold"
+                className={`form-input block w-full pl-12 pr-12 py-4 rounded-xl border border-gray-200 bg-white text-gray-900 focus:border-[#146976] focus:ring-2 focus:ring-[#146976]/20 transition-all outline-none shadow-lg shadow-[#146976]/20 placeholder:font-semibold ${
+                  errors.password ? "border-red-500" : "border-gray-200"
+                }`}
                 id="password"
                 placeholder="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
+                {...register("password", {
+                  required: "Password required",
+                  minLength: {
+                    value: 6,
+                    message: "Min 6 characters",
+                  },
+                })}
               />
               {/* <label className="floating-label" htmlFor="password">
                 Create Password
@@ -239,9 +416,15 @@ export default function RegisterForm() {
               <button
                 className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
                 type="button"
+                onClick={() => setShowPassword(!showPassword)}
               >
                 <VisibilityIcon />
               </button>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
 
             {/* Terms & Conditions */}
@@ -271,10 +454,11 @@ export default function RegisterForm() {
 
             {/* Submit Button */}
             <button
-              className="w-full h-14 bg-[#146976] hover:bg-[#146976]/95 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#146976]/20 active:scale-[0.98] mt-4"
+              className="w-full h-14 bg-[#146976] hover:bg-[#146976]/95 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#146976]/20 active:scale-[0.98] mt-4 cursor-pointer"
               type="submit"
+              disabled={loading}
             >
-              <span>Create Account</span>
+              <span>{loading ? "Creating Account..." : "Create Account"}</span>
               <HowToRegIcon />
             </button>
           </form>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
@@ -11,7 +12,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { allCartItemsAction } from "../actions/cartAction";
-import { loggedInUserAction } from "../actions/userAction";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
@@ -26,8 +26,23 @@ export default function Navbar() {
     };
 
     const fetchUser = async () => {
-      const isUser = await loggedInUserAction();
-      setIsLoggedIn(isUser ? true : false);
+      try {
+        const res = await fetch("/api/auth/get-session", {
+          credentials: "include",
+        });
+        
+        if (!res.ok) {
+          setIsLoggedIn(false);
+          return;
+        }
+
+        const data = await res.json();
+
+        setIsLoggedIn(!!data?.user);
+      } catch (err: any) {
+        console.error(err);
+        setIsLoggedIn(false);
+      }
     };
 
     fetchUser();

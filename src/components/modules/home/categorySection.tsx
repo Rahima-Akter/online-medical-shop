@@ -22,7 +22,7 @@ export default async function CategorySection() {
 
   return (
     <section className="bg-[#121e20] py-20">
-      <div className="max-w-[1440px] mx-auto px-4 md:px-10 lg:px-20">
+      <div className="max-w-360 mx-auto px-4 md:px-10 lg:px-20">
         <div className="flex items-end justify-between mb-12">
           <div>
             <h2 className="text-white text-3xl md:text-4xl font-black tracking-tight">

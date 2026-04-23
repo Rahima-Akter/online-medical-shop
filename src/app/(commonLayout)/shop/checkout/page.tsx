@@ -1,5 +1,5 @@
+export const dynamic = "force-dynamic";
 import CheckoutServer from "@/components/modules/shop/checkout/checkoutServer";
-
 
 export default function CheckOutPage() {
   return (
