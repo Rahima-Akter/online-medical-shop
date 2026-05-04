@@ -222,7 +222,7 @@ export default function RegisterForm() {
             <span>Continue with Google</span>
           </button>
 
-          <div className="relative my-8">
+          {/* <div className="relative my-8">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-400"></div>
             </div>
@@ -231,7 +231,7 @@ export default function RegisterForm() {
                 or register with email
               </span>
             </div>
-          </div>
+          </div> */}
 
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             {/* Full Name */}

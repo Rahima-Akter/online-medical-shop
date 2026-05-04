@@ -8,7 +8,6 @@ import {
   updateUser,
 } from "@/services/user.service";
 import { User, UserResponse } from "@/types/userTypes";
-import { redirect } from "next/navigation";
 
 interface ISession {
   user: User;
@@ -22,8 +21,12 @@ export async function UserAction() {
 
 export async function UserInfoAction() {
   const session = (await getSession()) as ISession | null;
-  if (!session) return null;
-  return session?.user;
+  if (!session?.user) {
+    console.warn("No session found");
+    return null;
+  }
+
+  return session.user;
 }
 
 export async function allUserAction(page: number, limit: number) {
@@ -51,5 +54,4 @@ export async function loggedInUserAction() {
 
 export async function logOutAction() {
   await logout();
-  redirect("/login");
 }

@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { User } from "@/types/userTypes";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function DashboardRootLayout({
   admin,
@@ -31,6 +32,7 @@ export default function DashboardRootLayout({
   const [role, setRole] = useState<UserRole | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     async function loadUserData() {
@@ -55,6 +57,7 @@ export default function DashboardRootLayout({
     try {
       await logOutAction();
       toast.success("Loged Out Successfully");
+      router.push("/login");
     } catch (err) {
       console.log(err);
       toast.error("Something Went Wrong!");

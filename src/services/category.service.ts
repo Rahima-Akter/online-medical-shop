@@ -3,7 +3,7 @@ import { getCookieHeader } from "@/lib/server-cookie";
 
 const BACKEND = env.BACKEND_URL;
 
-export const getAllCategory = async (page: number, limit: number) => {
+export const getAllCategory = async (page?: number, limit?: number) => {
   try {
     const res = await fetch(
       `${BACKEND}/api/category?page=${page}&limit=${limit}`,
@@ -12,7 +12,6 @@ export const getAllCategory = async (page: number, limit: number) => {
         cache: "no-store",
       },
     );
-    console.log("API RESPONSE:", res);
 
     if (!res.ok) throw new Error(`Error: ${res.statusText}`);
     const response = await res.json();

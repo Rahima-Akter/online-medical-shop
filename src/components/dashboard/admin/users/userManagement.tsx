@@ -1,5 +1,8 @@
 "use client";
-import { allUserAction } from "@/components/actions/userAction";
+import {
+  allUserAction,
+  deleteUserAction,
+} from "@/components/actions/userAction";
 import { Spinner } from "@/components/ui/spinner";
 import { UserRoles } from "@/roles/roles";
 import { User } from "@/types/userTypes";
@@ -8,14 +11,11 @@ import {
   CheckCircle,
   ChevronRight,
   DeleteForever,
-  EditSquare,
   ExpandMore,
   FilterList,
   Group,
-  MoreHoriz,
   Search,
   Storefront,
-  TrendingUp,
   Visibility,
 } from "@mui/icons-material";
 import { ChevronLeft } from "lucide-react";
@@ -97,6 +97,20 @@ export default function UserManagement() {
     });
 
     setFilteredUsers(filtered);
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await deleteUserAction(id);
+      if (res) {
+        toast.success("User Deleted");
+        setUserData((prev) => prev.filter((user) => user.id !== id));
+        window.location.reload();
+      }
+    } catch (err) {
+      toast.error("Failed to delete!");
+      console.log(err);
+    }
   };
 
   return (
@@ -261,7 +275,8 @@ export default function UserManagement() {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-[#146976]/20 border border-[#146976]/30 overflow-hidden">
                           <Image
-                            fill
+                            width={100}
+                            height={100}
                             alt="User Avatar"
                             className="w-full h-full object-cover"
                             src={user.image || ""}
@@ -308,7 +323,10 @@ export default function UserManagement() {
                           <Visibility />
                         </button>
                       </Link>
-                      <button className="text-[#FCFBFA]/40 hover:text-[#FCFBFA] transition-colors cursor-pointer">
+                      <button
+                        onClick={() => handleDelete(user.id)}
+                        className="text-[#FCFBFA]/40 hover:text-[#FCFBFA] transition-colors cursor-pointer"
+                      >
                         <DeleteForever />
                       </button>
                     </td>

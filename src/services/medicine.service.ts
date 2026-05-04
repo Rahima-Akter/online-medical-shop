@@ -50,7 +50,17 @@ export const addMedicine = async (payLoad: IAddMed) => {
       cache: "no-store",
     });
 
-    if (!res.ok) throw new Error("Failed to add medicine");
+    if (!res.ok) {
+      const errorText = await res.text();
+
+      console.error("BACKEND ERROR BODY:", errorText);
+
+      return {
+        ok: false,
+        error: errorText,
+      };
+    }
+
     const data = await res.json();
     revalidatePath("/shop");
     return data;

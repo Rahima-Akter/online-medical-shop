@@ -52,11 +52,11 @@ export default function SellerMedicineManagement() {
         const { medicines, currentPage, totalPages, total } =
           await getMedicineAction(page, limit);
         setMeds(medicines);
-        setCurrentPage(currentPage);
+        // setCurrentPage(currentPage);
         setTotalPages(totalPages || 1);
         setTotal(total);
-        setStart((currentPage - 1) * limit + 1);
-        setEnd(Math.min(currentPage * limit, total));
+        setStart((page - 1) * limit + 1);
+        setEnd(Math.min(page * limit, total));
         const role = await UserAction();
         setRole(role);
       } catch (err) {
@@ -66,7 +66,7 @@ export default function SellerMedicineManagement() {
       }
     };
     fetchMeds();
-  }, [page, limit]);
+  }, [searchParams, page, limit]);
 
   // Pagination click
   const goToPage = (p: number) => {
@@ -350,10 +350,10 @@ export default function SellerMedicineManagement() {
               <div className="flex gap-2">
                 {/* Prev arrow */}
                 <button
-                  onClick={() => goToPage(currentPage - 1)}
-                  disabled={currentPage === 1}
+                  onClick={() => goToPage(page - 1)}
+                  disabled={page === 1}
                   className={`px-3 py-1 w-10 h-10 flex items-center justify-center rounded-lg border border-[#1F363A]  hover:border-[#146875] transition-all cursor-pointer ${
-                    currentPage === 1
+                    page === 1
                       ? "bg-gray-300 cursor-not-allowed"
                       : "bg-emerald-500/10 text-gray-400 hover:text-white"
                   }`}
@@ -362,7 +362,7 @@ export default function SellerMedicineManagement() {
                 </button>
 
                 {/* Page buttons */}
-                {getPagination(currentPage, totalPages).map((p, i) =>
+                {getPagination(page, totalPages).map((p, i) =>
                   p === "…" ? (
                     <span key={i} className="px-3 py-1 text-gray-400">
                       …
@@ -372,7 +372,7 @@ export default function SellerMedicineManagement() {
                       key={i}
                       onClick={() => goToPage(p as number)}
                       className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${
-                        currentPage === p
+                        page === p
                           ? "bg-[#146875] text-white font-black shadow-lg shadow-[#146875]/20"
                           : "border border-[#1F363A] bg-[#16282B] text-gray-400 hover:text-white hover:border-[#146875] transition-all font-bold"
                       }`}
@@ -384,10 +384,10 @@ export default function SellerMedicineManagement() {
 
                 {/* Next arrow */}
                 <button
-                  onClick={() => goToPage(currentPage + 1)}
-                  disabled={currentPage === totalPages}
+                  onClick={() => goToPage(page + 1)}
+                  disabled={page === totalPages}
                   className={`px-3 py-1 w-10 h-10 flex items-center justify-center rounded-lg border border-[#1F363A]  hover:border-[#146875] transition-all cursor-pointer ${
-                    currentPage === totalPages
+                    page === totalPages
                       ? "bg-gray-300 cursor-not-allowed"
                       : "bg-emerald-500/10 text-gray-400 hover:text-white"
                   }`}

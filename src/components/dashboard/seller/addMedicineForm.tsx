@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addMedicineAction } from "@/components/actions/medicineAction";
 import { toast } from "sonner";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
@@ -13,6 +13,9 @@ import Inventory2Icon from "@mui/icons-material/Inventory2";
 import { Pill } from "lucide-react";
 import { UserInfoAction } from "@/components/actions/userAction";
 import { Description, HealthAndSafety, Report } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
+import { allCategoryAction } from "@/components/actions/categoryAction";
+import { Category } from "@/types/medicine";
 
 type FormValues = {
   name: string;
@@ -31,9 +34,34 @@ type FormValues = {
 export default function AddMedicineForm() {
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const routes = useRouter();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const { categories } = await allCategoryAction(1, 500);
+      setCategories(categories);
+    };
+    fetchCategories();
+  }, []);
 
   const onSubmit = async (data: FormValues) => {
     const sessionData = await UserInfoAction();
+    if (!sessionData?.id) {
+      toast.error("Session expired. Please login again.");
+      return;
+    }
+
+    if (!data.categoryId) {
+      toast.error("Please select a category");
+      return;
+    }
+
+    if (!categories.length) {
+      toast.error("No categories found");
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -43,26 +71,29 @@ export default function AddMedicineForm() {
         stock: data.stock,
         manufacturer: data.manufacturer,
         rx_required: data.prescription,
-        active_ingrdients: data.ingredients,
-        dosage_instructions: data.dosage,
+        active_ingrdients: data.ingredients?.trim() || "",
+        dosage_instructions: data.dosage?.trim() || "",
         side_effects: data.sideEffects
           ? data.sideEffects.split(",").map((i) => i.trim())
           : [],
         serious_side_effects: data.seriousSideEffects
           ? data.seriousSideEffects.split(",").map((i) => i.trim())
           : [],
-        img: data.image,
+        img: data.image?.trim() || "",
         isActive: true,
-        sellerId: sessionData?.id,
+        sellerId: sessionData.id || "",
         categoryId: data.categoryId,
       };
 
-      await addMedicineAction(payload);
-      toast.success("Medicine added successfully ✅");
-      reset();
+      const res = await addMedicineAction(payload);
+      if (res) {
+        toast.success("Medicine added successfully");
+        reset();
+        routes.push("/medicine-management");
+      }
     } catch (err) {
       console.error(err);
-      toast.error("Failed to add medicine ❌");
+      toast.error("Failed to add medicine!");
     } finally {
       setLoading(false);
     }
@@ -138,24 +169,15 @@ export default function AddMedicineForm() {
                   <option className="bg-[#0A1618]" value="">
                     Select Category
                   </option>
-                  <option
-                    className="bg-[#0A1618]"
-                    value="f43ca115-3f23-44ee-9c4e-23dc85917fa1"
-                  >
-                    Antibiotics
-                  </option>
-                  <option
-                    className="bg-[#0A1618]"
-                    value="11111111-1111-1111-1111-111111111111"
-                  >
-                    Painkillers
-                  </option>
-                  <option
-                    className="bg-[#0A1618]"
-                    value="22222222-2222-2222-2222-222222222222"
-                  >
-                    Supplements
-                  </option>
+                  {categories.map((category) => (
+                    <option
+                      className="bg-[#0A1618]"
+                      key={category.id}
+                      value={category.id}
+                    >
+                      {category.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>

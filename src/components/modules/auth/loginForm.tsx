@@ -40,8 +40,8 @@ export default function UserLoginForm() {
         password: data.password,
       });
 
-      if (!res.data) {
-        const msg = res.error?.message || "Email or password does not match";
+      if (!res) {
+        const msg = "Email or password does not match";
         toast.error(msg);
         setLoading(false);
         return;
@@ -59,7 +59,7 @@ export default function UserLoginForm() {
     } catch (err) {
       console.error(err);
       toast.error(
-        err instanceof Error ? err.message : "Something went wrong, try again",
+        err instanceof Error ? err.message : "Something went wrong, try again!",
       );
       setLoading(false);
     }

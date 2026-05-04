@@ -3,7 +3,7 @@ export interface Category {
   name: string;
   isActive: boolean;
   createdAt: string;
-  _count: {
+  _count?: {
     medicines: number;
   };
 }
@@ -12,6 +12,6 @@ export type CategoryResponse = {
   categories: Category[];
   total: number;
   limit: number;
-  curretPage: number;
+  currentPage: number;
   totalPage: number;
 };

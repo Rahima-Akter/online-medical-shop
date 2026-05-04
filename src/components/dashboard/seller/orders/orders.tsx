@@ -302,35 +302,41 @@ export default async function SellerOrders({ searchParams }: IsearchParams) {
 
           <div className="space-y-4">
             {/* Finished Stock Cards */}
-            {finishedStock.map((medicine) => (
-              <div
-                key={medicine.id}
-                className="flex items-center justify-between p-3 rounded-lg border bg-red-200"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-red-600">
-                    <HourglassDisabled />
-                  </span>
-
-                  <div>
-                    <p className="text-sm font-bold text-slate-800 leading-none">
-                      {medicine.name}
-                    </p>
-                    <p className="text-xs text-slate-500 mt-1">
-                      {medicine.stock} units left
-                    </p>
-                  </div>
-                </div>
-
-                <button
-                  disabled={role === UserRoles.ADMIN}
-                  className={`px-3 py-1 text-xs font-bold rounded-md transition-all 
-                    ${role === UserRoles.ADMIN ? "bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed" : "bg-white border border-red-200 text-red-600 hover:bg-red-600 hover:text-white cursor-pointer"}`}
+            {finishedStock && finishedStock.length > 0 ? (
+              finishedStock.map((medicine) => (
+                <div
+                  key={medicine.id}
+                  className="flex items-center justify-between p-3 rounded-lg border bg-red-200"
                 >
-                  Restock
-                </button>
-              </div>
-            ))}
+                  <div className="flex items-center gap-3">
+                    <span className="material-symbols-outlined text-red-600">
+                      <HourglassDisabled />
+                    </span>
+
+                    <div>
+                      <p className="text-sm font-bold text-slate-800 leading-none">
+                        {medicine.name}
+                      </p>
+                      <p className="text-xs text-slate-500 mt-1">
+                        {medicine.stock} units left
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    disabled={role === UserRoles.ADMIN}
+                    className={`px-3 py-1 text-xs font-bold rounded-md transition-all 
+                    ${role === UserRoles.ADMIN ? "bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed" : "bg-white border border-red-200 text-red-600 hover:bg-red-600 hover:text-white cursor-pointer"}`}
+                  >
+                    Restock
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p className="text-center font-semibold text-lg flex justify-center items-center text-green-600">
+                The Stocks are fully Restocked
+              </p>
+            )}
 
             {/* Critical Stock Cards */}
             {leftStock.map((medicine) => (

@@ -64,7 +64,8 @@ export default function UserDetails() {
         <div className="flex items-start gap-6">
           <div className="">
             <Image
-              fill
+              width={100}
+              height={100}
               className="size-32 rounded-2xl border-2 border-[#146875]/30 object-cover shadow-2xl shadow-[#146875]/20"
               alt="Detailed user profile portrait"
               src={user?.image || ""}

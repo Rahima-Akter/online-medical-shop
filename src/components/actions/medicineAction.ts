@@ -14,7 +14,12 @@ export async function getMedicineAction(page: number, limit: number) {
 }
 
 export async function addMedicineAction(payLoad: IAddMed) {
-  return await addMedicine(payLoad);
+  try {
+    return await addMedicine(payLoad);
+  } catch (err) {
+    console.error("addMedicineAction failed:", err);
+    return { ok: false, error: "Server action failed" };
+  }
 }
 
 export async function updateMedicineAction(id: string, payLoad: IAddMed) {
