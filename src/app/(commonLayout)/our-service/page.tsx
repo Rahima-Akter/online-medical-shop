@@ -1,9 +1,7 @@
+import OurServices from "@/components/footerRoutes/service";
+
 const OurServicePage = () => {
-    return (
-        <div>
-            OurServicePage
-        </div>
-    );
+  return <OurServices />;
 };
 
 export default OurServicePage;
