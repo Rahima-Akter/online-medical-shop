@@ -1,148 +1,215 @@
+import Link from "next/link";
 import {
-  IconClock,
+  IconCheck,
+  IconPackage,
+  IconTruck,
+  IconHome,
+  IconBolt,
   IconWorld,
-  IconLocationSearch,
-  IconCreditCard,
+  IconInfoCircle,
 } from "@tabler/icons-react";
 import Image from "next/image";
 
+// Shipping FAQ Section
 const ShipingFAQ = () => {
   return (
-    <div className="antialiased bg-[#0A1618] text-[#dde4e6]">
-      <main className="max-w-200 mx-auto px-6 md:py-16 lg:py-10">
-        {/* Header */}
-        <header className="mb-16">
-          <div className="inline-flex items-center gap-2 mb-4"></div>
-          <h1 className="font-display-xl text-[3rem] leading-[1.1] tracking-[-0.033em] font-black text-[#dde4e6] mb-6">
-            Shipping <span className="text-[#13cfec]">FAQs.</span>
-          </h1>
-          <p className="font-body-lg text-[1.125rem] leading-relaxed text-[#bbc9cd] max-w-xl">
-            Our logistics network is optimized for clinical precision. Find
-            answers regarding delivery timelines, global coverage, and real-time
-            pharmaceutical tracking.
-          </p>
-        </header>
-
-        {/* FAQ Items */}
-        <section className="space-y-6">
-          {/* Item 1 */}
-          <div className="bg-[#1a2122] border border-white/5 p-6 rounded-lg group hover:border-[#7de8ff]/20 transition-colors">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 flex items-center justify-center bg-[#7de8ff]/10 rounded-lg shrink-0">
-                <IconClock className="text-[#7de8ff]" />
-              </div>
-              <div>
-                <h3 className="font-h2 text-[1.5rem] leading-tight font-bold text-[#dde4e6] mb-2">
-                  How long does delivery take?
-                </h3>
-                <p className="font-body-sm text-[0.875rem] leading-normal text-[#bbc9cd]">
-                  Local shipments are prioritized through our clinical supply
-                  chain, typically arriving within{" "}
-                  <span className="text-[#7de8ff]">1-3 business days</span>.
-                  Emergency courier options are available for specialized
-                  medical supplies upon request.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Item 2 */}
-          <div className="bg-[#1a2122] border border-white/5 p-6 rounded-lg group hover:border-[#7de8ff]/20 transition-colors">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 flex items-center justify-center bg-[#7de8ff]/10 rounded-lg shrink-0">
-                <IconWorld className="text-[#7de8ff]" />
-              </div>
-              <div>
-                <h3 className="font-h2 text-[1.5rem] leading-tight font-bold text-[#dde4e6] mb-2">
-                  Do you ship internationally?
-                </h3>
-                <p className="font-body-sm text-[0.875rem] leading-normal text-[#bbc9cd]">
-                  Yes. We currently provide secure pharmaceutical distribution
-                  to <span className="text-[#7de8ff]">over 50 countries</span>.
-                  Every international shipment is compliant with local health
-                  authority regulations and climate-controlled requirements.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Item 3 */}
-          <div className="bg-[#1a2122] border border-white/5 p-6 rounded-lg group hover:border-[#7de8ff]/20 transition-colors">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 flex items-center justify-center bg-[#7de8ff]/10 rounded-lg shrink-0">
-                <IconLocationSearch className="text-[#7de8ff]" />
-              </div>
-              <div>
-                <h3 className="font-h2 text-[1.5rem] leading-tight font-bold text-[#dde4e6] mb-2">
-                  Can I track my order in real-time?
-                </h3>
-                <p className="font-body-sm text-[0.875rem] leading-normal text-[#bbc9cd]">
-                  Yes. Every shipment is equipped with an encrypted tracking ID
-                  accessible via the{" "}
-                  <span className="text-[#7de8ff] underline cursor-pointer">
-                    tracking portal
-                  </span>
-                  . This provides live updates on transit location and estimated
-                  arrival milestones.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Item 4 */}
-          <div className="bg-[#1a2122] border border-white/5 p-6 rounded-lg group hover:border-[#7de8ff]/20 transition-colors">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 flex items-center justify-center bg-[#7de8ff]/10 rounded-lg shrink-0">
-                <IconCreditCard className="text-[#7de8ff]" />
-              </div>
-              <div>
-                <h3 className="font-h2 text-[1.5rem] leading-tight font-bold text-[#dde4e6] mb-2">
-                  What are the shipping costs?
-                </h3>
-                <p className="font-body-sm text-[0.875rem] leading-normal text-[#bbc9cd]">
-                  Standard clinical shipping is{" "}
-                  <span className="text-[#7de8ff]">
-                    free for all orders over $50
-                  </span>
-                  . For smaller orders, a flat-rate logistics fee is calculated
-                  based on the weight and temperature sensitivity of the
-                  contents.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Support Section */}
-        <section className="mt-16 border-t border-white/5 pt-6">
-          <div className="bg-[#7de8ff]/5 border border-[#7de8ff]/20 p-8 rounded-lg flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <h4 className="font-h2 text-[1.5rem] text-[#dde4e6]">
-                Still need assistance?
-              </h4>
-              <p className="font-body-sm text-[0.875rem] text-[#bbc9cd]">
-                Our logistics support team is available 24/7 for urgent delivery
-                inquiries.
+    <div className="bg-[#0A1618]">
+      <main className="max-w-240 mx-auto px-6 pb-20 pt-5">
+        {/* Breadcrumbs */}
+        <div className="flex flex-col flex-1">
+          <div className="flex flex-wrap justify-between gap-3 py-4">
+            <div className="flex min-w-72 flex-col gap-3">
+              <p className="text-[#ffffff] text-4xl font-black leading-tight tracking-[-0.033em]">
+                Shipping Information
+              </p>
+              <p className="text-[#FFB38E]/80 text-base font-normal leading-normal">
+                Track your orders and understand our delivery commitments.
               </p>
             </div>
-            <button className="bg-[#0e1416] border border-white/10 hover:bg-white/5 text-[#dde4e6] px-6 py-3 rounded-[0.125rem] font-label-caps text-[0.75rem] leading-none tracking-[0.05em] font-bold transition-all">
-              CONTACT SUPPORT
-            </button>
           </div>
-        </section>
 
-        {/* Footer */}
-        <footer className="mt-16 pb-12 text-center">
-          <div className="mb-8 overflow-hidden rounded-xl relative border border-white/5 aspect-21/9">
-            <Image
-              unoptimized
-              fill
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3KrRh4oqtFYzP80naS7OhQX9WbDrQ6mWctehTsM3Mep7s1l1RjrX8bmnXPZwDlzMOiY_IqYmAvM0nDEc6ayeeA2brwO9y6rL0K6nNmqARn0XY3JPe1TdHND9OT5b_Y8Aj-ImgVgSq4RjDOVOy_PaC07dMpAchKArCSBw71zKy-KnoIbUZ4hQyJJKuZEJrBU8zo41EF1_FC2ps5pRpo8LoM3GfwW0A5WL2jmj0mc01hs1EIpye2ifg29-8yKPMaxQwO1QTOohYTQ"
-              alt=""
-              className="w-full h-full object-cover opacity-60"
-            />
+          {/* Delivery Timelines */}
+          <div className="mt-8 bg-[#142D30] rounded-xl p-6 border border-[#ffffff]/5">
+            <h2 className="text-[#ffffff] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-6">
+              Delivery Timelines
+            </h2>
+
+            <div className="grid grid-cols-[40px_1fr] gap-x-2">
+              {/* Step 1 */}
+              <div className="flex flex-col items-center gap-1 pt-3">
+                <div className="text-[#FFB38E]">
+                  <IconCheck size={24} />
+                </div>
+                <div className="w-[1.5px] bg-[#FFB38E]/20 h-2 grow"></div>
+              </div>
+              <div className="flex flex-1 flex-col py-3 border-b border-[#ffffff]/5">
+                <p className="text-[#ffffff] text-base font-medium leading-normal">
+                  Order Confirmed
+                </p>
+                <p className="text-[#FFB38E]/70 text-base font-normal leading-normal">
+                  Instant notification via email
+                </p>
+              </div>
+
+              {/* Step 2 */}
+              <div className="flex flex-col items-center gap-1">
+                <div className="w-[1.5px] bg-[#FFB38E]/20 h-2"></div>
+                <div className="text-[#FFB38E]">
+                  <IconPackage size={24} />
+                </div>
+                <div className="w-[1.5px] bg-[#FFB38E]/20 h-2 grow"></div>
+              </div>
+              <div className="flex flex-1 flex-col py-3 border-b border-[#ffffff]/5">
+                <p className="text-[#ffffff] text-base font-medium leading-normal">
+                  Processing &amp; Packing
+                </p>
+                <p className="text-[#FFB38E]/70 text-base font-normal leading-normal">
+                  1-2 Business Days
+                </p>
+              </div>
+
+              {/* Step 3 */}
+              <div className="flex flex-col items-center gap-1">
+                <div className="w-[1.5px] bg-[#FFB38E]/20 h-2"></div>
+                <div className="text-[#FFB38E]">
+                  <IconTruck size={24} />
+                </div>
+                <div className="w-[1.5px] bg-[#FFB38E]/20 h-2 grow"></div>
+              </div>
+              <div className="flex flex-1 flex-col py-3 border-b border-[#ffffff]/5">
+                <p className="text-[#ffffff] text-base font-medium leading-normal">
+                  In Transit
+                </p>
+                <p className="text-[#FFB38E]/70 text-base font-normal leading-normal">
+                  3-5 Business Days
+                </p>
+              </div>
+
+              {/* Step 4 */}
+              <div className="flex flex-col items-center gap-1 pb-3">
+                <div className="w-[1.5px] bg-[#FFB38E]/20 h-2"></div>
+                <div className="text-[#FFB38E]">
+                  <IconHome size={24} />
+                </div>
+              </div>
+              <div className="flex flex-1 flex-col py-3">
+                <p className="text-[#ffffff] text-base font-medium leading-normal">
+                  Delivered
+                </p>
+                <p className="text-[#FFB38E]/70 text-base font-normal leading-normal">
+                  Final Destination Reach
+                </p>
+              </div>
+            </div>
           </div>
-        </footer>
+
+          {/* Policies */}
+          <h2 className="text-[#ffffff] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-10">
+            Shipping Methods &amp; Policies
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Card 1 */}
+            <div className="bg-[#142D30] p-6 rounded-xl border border-[#ffffff]/5 flex flex-col gap-3">
+              <div className="w-12 h-12 bg-[#FFB38E]/10 rounded-lg flex items-center justify-center text-[#FFB38E]">
+                <IconBolt size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-[#ffffff]">
+                Express Delivery
+              </h3>
+              <p className="text-[#FFB38E]/70 text-sm leading-relaxed">
+                Need it fast? Our express shipping ensures your package arrives
+                within 24-48 hours of dispatch. Available for select
+                metropolitan areas with real-time GPS tracking.
+              </p>
+              <div className="mt-auto pt-4 flex justify-between items-center text-sm font-medium">
+                <span className="text-[#ffffff]">Cost: $14.99</span>
+                <span className="text-[#FFB38E]">Best Value</span>
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-[#142D30] p-6 rounded-xl border border-[#ffffff]/5 flex flex-col gap-3">
+              <div className="w-12 h-12 bg-[#FFB38E]/10 rounded-lg flex items-center justify-center text-[#FFB38E]">
+                <IconWorld size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-[#ffffff]">
+                International Shipping
+              </h3>
+              <p className="text-[#FFB38E]/70 text-sm leading-relaxed">
+                We ship to over 50 countries worldwide. International orders
+                typically arrive within 7-14 business days, depending on local
+                customs processing and courier schedules.
+              </p>
+              <div className="mt-auto pt-4 flex justify-between items-center text-sm font-medium">
+                <span className="text-[#ffffff]">Starts at: $25.00</span>
+                <span className="text-[#FFB38E]">Global Reach</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Notice */}
+          <div className="mt-8 p-6 bg-[#142D30]/50 rounded-xl border border-dashed border-[#FFB38E]/30 flex gap-4 items-start">
+            <IconInfoCircle className="text-[#FFB38E] mt-1" />
+            <div className="flex flex-col gap-2">
+              <p className="text-sm font-bold text-[#ffffff]">
+                Holiday Season Notice
+              </p>
+              <p className="text-sm text-[#FFB38E]/70 leading-relaxed">
+                During peak holiday periods (November - December), please allow
+                an additional 2-3 business days for processing and delivery due
+                to high volume with our courier partners.
+              </p>
+            </div>
+          </div>
+
+          {/* Image */}
+          <div className="mt-12 rounded-2xl overflow-hidden relative aspect-video">
+            <Image
+              className="w-full h-full object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWNS8MQZ9FS1MbOh3agjD_WRxdjsoLPaj-p7Av7TJnn2hTro4xpEw-UeJ9Z7n_S9pW-UwFy1Haq3BZoygAGkfKs3y5Ju3pJUtd3gZj-yv78tw173AK_o7yYCaGXq_G3zrdSvz6IVmr9YgmDtwf09_yjhdoWW8TMv-PScDRB6p4YP3HS0pwYHZoroZIuYQZ5G2HQzXYnVvcyRVfO6tO8oHkM3zfqpGz-ccK4iUdN-5jYifYOXvYTiWy9PQd3Os5cwYhYJDtaTJbjA"
+              alt=""
+              unoptimized
+              width={100}
+              height={100}
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-[#0A1618] via-transparent to-transparent"></div>
+            <div className="absolute bottom-6 left-6 right-6">
+              <p className="text-2xl font-bold text-[#ffffff]">
+                Global Network
+              </p>
+              <p className="text-[#FFB38E]/90 text-sm max-w-md mt-2">
+                Our proprietary logistics network connects three continents with
+                carbon-neutral shipping operations.
+              </p>
+            </div>
+          </div>
+
+          {/* Support */}
+          <div className="mt-16 flex flex-col items-center text-center gap-4 py-10 border-t border-[#ffffff]/5">
+            <h3 className="text-xl font-bold text-[#ffffff]">
+              Still have questions?
+            </h3>
+            <p className="text-[#FFB38E]/70 max-w-md">
+              Our support team is available 24/7 to help you with tracking or
+              shipping modifications.
+            </p>
+            <div className="flex gap-4 mt-2">
+              <Link
+                href="/contact"
+                className="px-6 py-2 bg-[#FFB38E] text-[#0A1618] font-bold rounded-lg hover:bg-[#ffffff] transition-colors"
+              >
+                Contact Support
+              </Link>
+              <Link
+                href="/privacy-policy"
+                className="px-6 py-2 border border-[#FFB38E] text-[#FFB38E] font-bold rounded-lg hover:bg-[#FFB38E]/10 transition-colors"
+              >
+                View Full Policy
+              </Link>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );
