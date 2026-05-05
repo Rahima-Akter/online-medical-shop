@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { Bedtime, Close, Restaurant, Verified } from "@mui/icons-material";
+import { Bedtime, Close, Restaurant } from "@mui/icons-material";
 import { IconActivity, IconArrowRight } from "@tabler/icons-react";
 
 interface Card {

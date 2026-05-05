@@ -4,6 +4,7 @@ import FeaturedMedicines from "@/components/modules/home/featuredMedicine";
 import HealthAndWellness from "@/components/modules/home/healthAndWellness";
 import HeroSection from "@/components/modules/home/heroSection";
 import CertifiedPartners from "@/components/modules/home/partners";
+import ReviewsHighlight from "@/components/modules/home/reviewsHighlight";
 import TrustFeatures from "@/components/modules/home/trustedFeatures";
 
 export default async function Home() {
@@ -14,6 +15,7 @@ export default async function Home() {
       <FeaturedMedicines />
       <CertifiedPartners />
       <HealthAndWellness />
+      <ReviewsHighlight />
       <TrustFeatures />
     </div>
   );
