@@ -2,7 +2,10 @@ import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import ContactlessIcon from "@mui/icons-material/Contactless";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import { RssFeed, Share } from "@mui/icons-material";
+import { GitHub, LinkedIn, RssFeed, Share } from "@mui/icons-material";
+import Link from "next/link";
+import { IconGlobe, IconWebhook } from "@tabler/icons-react";
+import { Globe } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -20,47 +23,41 @@ export default function Footer() {
               The world&apos;s leading online pharmacy providing high-quality
               medicines and personal care products directly to your home.
             </p>
-            <div className="flex gap-4">
-              <a
-                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#EBBA92] hover:text-[#1E3F45] transition-colors"
-                href="#"
-              >
-                <span className="material-symbols-outlined text-xl">
-                  <Share />
-                </span>
-              </a>
-              <a
-                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#EBBA92] hover:text-[#1E3F45] transition-colors"
-                href="#"
-              >
-                <span className="material-symbols-outlined text-xl">
-                  <RssFeed />
-                </span>
-              </a>
-            </div>
           </div>
           <div>
             <h4 className="text-lg font-bold mb-6">Quick Links</h4>
             <ul className="space-y-4 text-white/60 text-sm">
               <li>
-                <a className="hover:text-[#EBBA92] transition-colors" href="#">
+                <Link
+                  className="hover:text-[#EBBA92] transition-colors"
+                  href="/about"
+                >
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-[#EBBA92] transition-colors" href="#">
+                <Link
+                  className="hover:text-[#EBBA92] transition-colors"
+                  href="/our-service"
+                >
                   Our Services
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-[#EBBA92] transition-colors" href="#">
+                <Link
+                  className="hover:text-[#EBBA92] transition-colors"
+                  href="/contact"
+                >
                   Contact Support
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-[#EBBA92] transition-colors" href="#">
+                <Link
+                  className="hover:text-[#EBBA92] transition-colors"
+                  href="/terms"
+                >
                   Terms of Use
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -68,24 +65,36 @@ export default function Footer() {
             <h4 className="text-lg font-bold mb-6">Support</h4>
             <ul className="space-y-4 text-white/60 text-sm">
               <li>
-                <a className="hover:text-[#EBBA92] transition-colors" href="#">
+                <Link
+                  className="hover:text-[#EBBA92] transition-colors"
+                  href="/privacy-policy"
+                >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-[#EBBA92] transition-colors" href="#">
+                <Link
+                  className="hover:text-[#EBBA92] transition-colors"
+                  href="/return-policy"
+                >
                   Return Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-[#EBBA92] transition-colors" href="#">
+                <Link
+                  className="hover:text-[#EBBA92] transition-colors"
+                  href="/shiping-faq"
+                >
                   Shipping FAQs
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-[#EBBA92] transition-colors" href="#">
+                <Link
+                  className="hover:text-[#EBBA92] transition-colors"
+                  href="/order-tracking"
+                >
                   Order Tracking
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -112,18 +121,29 @@ export default function Footer() {
             reserved.
           </p>
           <div className="flex gap-6 text-white/40">
-            <span className="material-symbols-outlined">
-              <ContactlessIcon />
-            </span>
-            <span className="material-symbols-outlined">
-              <CreditCardIcon />
-            </span>
-            <span className="material-symbols-outlined">
-              <AccountBalanceWalletIcon />
-            </span>
+            <Link
+              href="https://github.com/Rahima-Akter"
+              className="material-symbols-outlined"
+            >
+              <GitHub />
+            </Link>
+            <Link
+              href="https://www.linkedin.com/in/rahima-akter99"
+              className="material-symbols-outlined"
+            >
+              <LinkedIn />
+            </Link>
+            <Link
+              href="https://rahima-akter-portfolio.netlify.app/"
+              className="material-symbols-outlined"
+            >
+              <Globe />
+            </Link>
           </div>
         </div>
-        <p className="text-center text-xs pt-2 text-[#4196a5] hover:text-[#EBBA92] transition-colors duration-500">Made by Rahima Akter</p>
+        <p className="text-center text-xs pt-2 text-[#4196a5] hover:text-[#EBBA92] transition-colors duration-500">
+          Made by Rahima Akter
+        </p>
       </div>
     </footer>
   );

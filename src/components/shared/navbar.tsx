@@ -30,7 +30,7 @@ export default function Navbar() {
         const res = await fetch("/api/auth/get-session", {
           credentials: "include",
         });
-        
+
         if (!res.ok) {
           setIsLoggedIn(false);
           return;
@@ -61,7 +61,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Hamburger */}
-        <div className="md:hidden relative">
+        <div className="lg:hidden relative">
           <button
             className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -83,6 +83,18 @@ export default function Navbar() {
                 href="/shop"
               >
                 Shop
+              </Link>
+              <Link
+                className={`text-sm font-semibold hover:text-[#EBBA92] transition-colors ${pathname === "/shop" ? "text-[#EBBA92] underline" : "text-white"}`}
+                href="/about"
+              >
+                About us
+              </Link>
+              <Link
+                className={`text-sm font-semibold hover:text-[#EBBA92] transition-colors ${pathname === "/shop" ? "text-[#EBBA92] underline" : "text-white"}`}
+                href="/contact"
+              >
+                Contact us
               </Link>
 
               {/* Favorite */}
@@ -134,7 +146,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Navigation & Actions */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-8">
           {/* Desktop Navigation */}
           <nav className="flex items-center gap-8">
             <Link
@@ -148,6 +160,18 @@ export default function Navbar() {
               href="/shop"
             >
               Shop
+            </Link>
+            <Link
+              className={`text-sm font-semibold hover:text-[#EBBA92] transition-colors ${pathname === "/shop" ? "text-[#EBBA92] underline" : "text-white"}`}
+              href="/about"
+            >
+              About us
+            </Link>
+            <Link
+              className={`text-sm font-semibold hover:text-[#EBBA92] transition-colors ${pathname === "/shop" ? "text-[#EBBA92] underline" : "text-white"}`}
+              href="/contact"
+            >
+              Contact us
             </Link>
           </nav>
 
