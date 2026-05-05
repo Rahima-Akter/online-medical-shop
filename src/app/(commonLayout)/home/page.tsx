@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 import CategorySection from "@/components/modules/home/categorySection";
 import FeaturedMedicines from "@/components/modules/home/featuredMedicine";
+import HealthAndWellness from "@/components/modules/home/healthAndWellness";
 import HeroSection from "@/components/modules/home/heroSection";
 import CertifiedPartners from "@/components/modules/home/partners";
 import TrustFeatures from "@/components/modules/home/trustedFeatures";
@@ -12,6 +13,7 @@ export default async function Home() {
       <CategorySection />
       <FeaturedMedicines />
       <CertifiedPartners />
+      <HealthAndWellness />
       <TrustFeatures />
     </div>
   );

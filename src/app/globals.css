@@ -129,6 +129,36 @@
 }
 
 /* order tracking styles */
+/* modal styles */
+.glass-morphic {
+  background: rgba(10, 22, 24, 0.8);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.content-gradient {
+  background: linear-gradient(to bottom, rgba(10, 22, 24, 0) 0%, rgba(10, 22, 24, 1) 100%);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* modal styles */
 
 :root {
   --radius: 0.625rem;
