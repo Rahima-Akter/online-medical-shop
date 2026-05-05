@@ -83,6 +83,53 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* order tracking styles */
+.step-line::after {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 40px;
+  bottom: -20px;
+  width: 2px;
+  background: linear-gradient(to bottom, #13cfec 0%, rgba(19, 207, 236, 0) 100%);
+}
+
+.step-item:last-child .step-line::after {
+  display: none;
+}
+
+.map-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: dash 5s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.pulse {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-ring {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: .5;
+    transform: scale(1.1);
+  }
+}
+
+/* order tracking styles */
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
